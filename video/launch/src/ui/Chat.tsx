@@ -1,0 +1,154 @@
+import React from 'react';
+import { Mark } from '../brand/Mark';
+import { C, TYPE, U, typeStyle } from '../brand/tokens';
+import { clamp, E, prog, spr, SPR } from '../lib/anim';
+import { mixColor } from '../lib/color';
+import { TypeOn, TypeTiming } from '../fx/TypeOn';
+import { f60 } from '../timeline';
+
+// The one chat container's pieces (TREATMENT.md §3). Both panels (the interview, the real
+// session) are built from the same parts, reskinned: a flat grey Avatar and no accent during the
+// interview, the real ∂ Avatar and the green accent the moment the session appears. Every piece
+// takes its own (x, y) in world px, scaled by U, and places itself by transform only.
+
+export const Avatar: React.FC<{ x: number; y: number; size: number; kind: 'rederive' | 'generic'; opacity?: number }> = ({ x, y, size, kind, opacity = 1 }) => (
+  <div
+    style={{
+      position: 'absolute',
+      left: 0,
+      top: 0,
+      width: size,
+      height: size,
+      borderRadius: '50%',
+      background: kind === 'rederive' ? C.paper : C.line,
+      opacity,
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      transform: `translate(${x - size / 2}px, ${y - size / 2}px)`,
+    }}
+  >
+    {kind === 'rederive' && <Mark size={size * 0.52} color={C.ink} />}
+  </div>
+);
+
+/** A dashed ring that spins while rederive "thinks", then yields to the message it resolves into. */
+export const ThinkingRing: React.FC<{ x: number; y: number; frame: number; start: number; end: number; bright?: boolean; size?: number }> = ({ x, y, frame, start, end, bright = false, size = 22 }) => {
+  const p = prog(frame, start, start + f60(10), E.out); // arrives
+  const q = prog(frame, end, end + f60(10), E.in); // yields to the resolved message
+  const o = p * (1 - q);
+  if (o <= 0.002) return null;
+  const deg = ((frame - start) * 7.5) % 360; // one turn per 48 f
+  const stroke = mixColor(C.mute, C.accent, bright ? prog(frame, end - f60(8), end, E.smooth) : 0);
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" style={{ position: 'absolute', left: 0, top: 0, opacity: o, transform: `translate(${x - size / 2}px, ${y - size / 2}px) rotate(${deg}deg)` }}>
+      <circle cx="12" cy="12" r="9.5" fill="none" stroke={stroke} strokeWidth="2.2" strokeDasharray="30 15" strokeLinecap="round" />
+    </svg>
+  );
+};
+
+type Align = 'left' | 'right';
+
+/** A message that appears whole (rederive's side: the product's own output, never typed). x is the bubble's left (align left) or right (align right) edge, y its vertical centre. */
+export const Bubble: React.FC<{
+  text: string;
+  frame: number;
+  in: number;
+  x: number;
+  y: number;
+  align: Align;
+  dim?: number; // 0 = current/full colour, 1 = relaxed to mute (an older message, per pd-terminal-burst-output)
+  accent?: React.ReactNode; // optional: render with one phrase highlighted (the payoff)
+}> = ({ text, frame, in: start, x, y, align, dim = 0, accent }) => {
+  const s = spr(frame, start, SPR.firm); // 0..1, no overshoot: it just arrives
+  const o = clamp(s * 1.6); // reaches full opacity well before the spring settles its last pixel
+  if (o <= 0.002) return null;
+  const bg = align === 'left' ? C.ink2 : C.mist;
+  const fg = align === 'left' ? mixColor(C.paper, C.mute, dim) : C.ink;
+  return (
+    <div
+      data-text="bubble"
+      style={{
+        position: 'absolute',
+        left: 0,
+        top: 0,
+        maxWidth: 1040 * U,
+        padding: `${16 * U}px ${20 * U}px`,
+        borderRadius: 16 * U,
+        background: bg,
+        opacity: o,
+        transform: `translate(${align === 'left' ? x : x - 1040 * U}px, ${(y - (TYPE.ui.size * U * TYPE.ui.lead) / 2 - 16 * U + (1 - s) * 10).toFixed(2)}px)`,
+      }}
+    >
+      <span style={{ ...typeStyle('ui'), color: fg, display: 'block' }}>{accent ?? text}</span>
+    </div>
+  );
+};
+
+/** A message typed by a human at the keyboard (the user's side: TypeOn, human cadence, a live caret). */
+export const TypedBubble: React.FC<{
+  text: string;
+  frame: number;
+  x: number; // right edge (always align right)
+  y: number;
+  timing: TypeTiming;
+  dim?: number;
+  caretOut?: number;
+}> = ({ text, frame, x, y, timing, dim = 0, caretOut }) => {
+  if (frame < timing.start - f60(6)) return null;
+  const grow = prog(frame, timing.start - f60(6), timing.start + f60(2), E.out); // the box opens just ahead of the first key
+  return (
+    <div
+      style={{
+        position: 'absolute',
+        left: 0,
+        top: 0,
+        maxWidth: 1040 * U,
+        padding: `${16 * U}px ${20 * U}px`,
+        borderRadius: 16 * U,
+        background: C.mist,
+        opacity: grow,
+        transform: `translate(${x - 1040 * U}px, ${(y - (TYPE.ui.size * U * TYPE.ui.lead) / 2 - 16 * U + (1 - grow) * 6).toFixed(2)}px)`,
+      }}
+    >
+      <span style={{ ...typeStyle('ui') }}>
+        <TypeOn text={text} frame={frame} {...timing} role="ui" caret caretColor={C.ink} caretOut={caretOut} charStyle={() => ({ color: mixColor(C.ink, C.mute, dim) })} />
+      </span>
+    </div>
+  );
+};
+
+/** The empty reply box: a human has not answered yet. Cursor blinks; nothing is sent. x is its right edge. */
+export const ReplyBox: React.FC<{ frame: number; in: number; out?: number; x: number; y: number; blink?: number }> = ({ frame, in: start, out, x, y, blink = f60(30) }) => {
+  const o = prog(frame, start, start + f60(10), E.out) * (out !== undefined ? 1 - prog(frame, out, out + f60(8), E.in) : 1);
+  if (o <= 0.002) return null;
+  const on = Math.floor(Math.abs(frame - start) / blink) % 2 === 0;
+  const h = TYPE.ui.size * U * TYPE.ui.lead + 32 * U;
+  return (
+    <div
+      style={{
+        position: 'absolute',
+        left: 0,
+        top: 0,
+        width: 220 * U,
+        height: h,
+        padding: `${16 * U}px ${20 * U}px`,
+        borderRadius: 16 * U,
+        border: `1.5px solid ${C.line}`,
+        opacity: o,
+        boxSizing: 'border-box',
+        transform: `translate(${x - 220 * U}px, ${y - h / 2}px)`,
+      }}
+    >
+      <span style={{ display: 'inline-block', width: 2 * U, height: TYPE.ui.size * U, background: C.mute, opacity: on ? 1 : 0 }} />
+    </div>
+  );
+};
+
+/** A panel's header bar: a small avatar/favicon and a label, flat grey for the interview, real for the session. */
+export const Header: React.FC<{ x: number; y: number; label: string; kind: 'rederive' | 'generic'; accentPulse?: number; w: number; opacity?: number }> = ({ x, y, label, kind, accentPulse = 0, w, opacity = 1 }) => (
+  <div style={{ position: 'absolute', left: 0, top: 0, width: w, height: 64 * U, display: 'flex', alignItems: 'center', padding: `0 ${28 * U}px`, borderBottom: `1.5px solid ${C.line}`, opacity, transform: `translate(${x}px, ${y}px)`, boxSizing: 'border-box' }}>
+    <Avatar x={13 * U} y={32 * U} size={26 * U} kind={kind} />
+    <span style={{ ...typeStyle('mono', 20 * U), color: mixColor(C.mute, C.accent, accentPulse), marginLeft: 26 * U }}>{label}</span>
+  </div>
+);

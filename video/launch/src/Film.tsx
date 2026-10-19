@@ -2,6 +2,9 @@ import React from 'react';
 import { AbsoluteFill, getStaticFiles, Html5Audio, Sequence, staticFile } from 'remotion';
 import { Act1 } from './acts/Act1';
 import { Act2 } from './acts/Act2';
+import { Act3 } from './acts/Act3';
+import { Act4 } from './acts/Act4';
+import { Act5 } from './acts/Act5';
 import { C } from './brand/tokens';
 import { Audit } from './lib/Audit';
 import { FontGate } from './lib/FontGate';
@@ -15,17 +18,26 @@ export const SOUNDTRACK = 'audio/soundtrack.wav';
 export type FilmProps = { audit?: boolean; safe?: SafeSpec };
 
 // The film: one Sequence per act, handing off on exact frames (each seam is designed inside the
-// acts, not a crossfade here). The soundtrack plays in the Studio once it exists.
+// acts, not a crossfade here). hook -> turn -> proof -> payoff -> lockup (TREATMENT.md §4).
 export const Film: React.FC<FilmProps> = ({ audit = false, safe }) => {
   const hasScore = getStaticFiles().some((s) => s.name === SOUNDTRACK);
   return (
     <FontGate>
-      <AbsoluteFill style={{ background: C.paper }}>
-        <Sequence from={ACT.statement.from} durationInFrames={ACT.statement.dur} name="1 Statement">
+      <AbsoluteFill style={{ background: C.ink }}>
+        <Sequence from={ACT.hook.from} durationInFrames={ACT.hook.dur} name="1 Hook">
           <Act1 />
         </Sequence>
-        <Sequence from={ACT.mark.from} durationInFrames={ACT.mark.dur} name="2 Mark">
+        <Sequence from={ACT.turn.from} durationInFrames={ACT.turn.dur} name="2 Turn">
           <Act2 />
+        </Sequence>
+        <Sequence from={ACT.proof.from} durationInFrames={ACT.proof.dur} name="3 Proof">
+          <Act3 />
+        </Sequence>
+        <Sequence from={ACT.payoff.from} durationInFrames={ACT.payoff.dur} name="4 Payoff">
+          <Act4 />
+        </Sequence>
+        <Sequence from={ACT.lockup.from} durationInFrames={ACT.lockup.dur} name="5 Lockup">
+          <Act5 />
         </Sequence>
         {hasScore && <Html5Audio src={staticFile(SOUNDTRACK)} />}
         {audit && <Audit safe={safe} />}

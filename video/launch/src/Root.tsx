@@ -2,7 +2,10 @@ import React from 'react';
 import { Composition, Folder, Still } from 'remotion';
 import { Act1 } from './acts/Act1';
 import { Act2 } from './acts/Act2';
-import { C, U } from './brand/tokens';
+import { Act3 } from './acts/Act3';
+import { Act4 } from './acts/Act4';
+import { Act5 } from './acts/Act5';
+import { C } from './brand/tokens';
 import { Film, FilmProps } from './Film';
 import { FilmSub, subMetadata } from './FilmSub';
 import { Audit } from './lib/Audit';
@@ -15,7 +18,7 @@ import { ACT, FPS, H, TOTAL, W } from './timeline';
 const solo = (Act: React.FC) => {
   const Solo: React.FC<FilmProps> = ({ audit = false, safe }) => (
     <FontGate>
-      <div style={{ position: 'absolute', inset: 0, background: C.paper }}>
+      <div style={{ position: 'absolute', inset: 0, background: C.ink }}>
         <Act />
         {audit && <Audit safe={safe} />}
       </div>
@@ -25,6 +28,9 @@ const solo = (Act: React.FC) => {
 };
 const Act1Solo = solo(Act1);
 const Act2Solo = solo(Act2);
+const Act3Solo = solo(Act3);
+const Act4Solo = solo(Act4);
+const Act5Solo = solo(Act5);
 
 export const RemotionRoot: React.FC = () => (
   <>
@@ -43,22 +49,25 @@ export const RemotionRoot: React.FC = () => (
     />
 
     <Folder name="Acts">
-      <Composition id="Act1" component={Act1Solo} durationInFrames={ACT.statement.dur} fps={FPS} width={W} height={H} defaultProps={{ audit: false } as FilmProps} />
-      <Composition id="Act2" component={Act2Solo} durationInFrames={ACT.mark.dur} fps={FPS} width={W} height={H} defaultProps={{ audit: false } as FilmProps} />
+      <Composition id="Act1" component={Act1Solo} durationInFrames={ACT.hook.dur} fps={FPS} width={W} height={H} defaultProps={{ audit: false } as FilmProps} />
+      <Composition id="Act2" component={Act2Solo} durationInFrames={ACT.turn.dur} fps={FPS} width={W} height={H} defaultProps={{ audit: false } as FilmProps} />
+      <Composition id="Act3" component={Act3Solo} durationInFrames={ACT.proof.dur} fps={FPS} width={W} height={H} defaultProps={{ audit: false } as FilmProps} />
+      <Composition id="Act4" component={Act4Solo} durationInFrames={ACT.payoff.dur} fps={FPS} width={W} height={H} defaultProps={{ audit: false } as FilmProps} />
+      <Composition id="Act5" component={Act5Solo} durationInFrames={ACT.lockup.dur} fps={FPS} width={W} height={H} defaultProps={{ audit: false } as FilmProps} />
     </Folder>
 
     <Folder name="Stills">
-      <Still id="Mark16" component={MarkStill} width={16} height={16} defaultProps={{ size: 16, surface: 'paper' as const }} />
-      <Still id="MarkLarge" component={MarkStill} width={W} height={H} defaultProps={{ size: 640 * U, surface: 'paper' as const }} />
+      <Still id="Mark16" component={MarkStill} width={16} height={16} defaultProps={{ size: 16, surface: 'ink' as const }} />
+      <Still id="MarkLarge" component={MarkStill} width={W} height={H} defaultProps={{ size: 440, surface: 'ink' as const }} />
       <Still id="MarkSizes" component={MarkSizes} width={W} height={H} />
     </Folder>
 
     {/* The brand as files, for a brand the film invented: bash scripts/brand-kit.sh renders these. */}
     <Folder name="Brand">
-      <Still id="BrandMark" component={BrandMark} defaultProps={{ size: 1024, ground: 'light' as const }} calculateMetadata={({ props }) => ({ width: props.size, height: props.size })} />
-      <Still id="BrandLockup" component={BrandLockup} width={2400} height={800} defaultProps={{ ground: 'light' as const }} />
-      <Still id="BrandAvatar" component={BrandAvatar} width={400} height={400} defaultProps={{ ground: 'light' as const }} />
-      <Still id="BrandHeader" component={BrandHeader} width={1500} height={500} defaultProps={{ ground: 'light' as const }} />
+      <Still id="BrandMark" component={BrandMark} defaultProps={{ size: 1024, ground: 'dark' as const }} calculateMetadata={({ props }) => ({ width: props.size, height: props.size })} />
+      <Still id="BrandLockup" component={BrandLockup} width={2400} height={800} defaultProps={{ ground: 'dark' as const }} />
+      <Still id="BrandAvatar" component={BrandAvatar} width={400} height={400} defaultProps={{ ground: 'dark' as const }} />
+      <Still id="BrandHeader" component={BrandHeader} width={1500} height={500} defaultProps={{ ground: 'dark' as const }} />
     </Folder>
   </>
 );
