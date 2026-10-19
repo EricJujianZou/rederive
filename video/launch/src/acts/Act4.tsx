@@ -24,10 +24,15 @@ export const Act4: React.FC = () => {
   const pull = prog(f, CUE.pullbackStart, CUE.pullbackEnd, E.cam);
   const ax = mix(ax0, cardCX, pull);
   const ay = mix(ay0, cardCY, pull);
-  const k = lmix(1.6, 1, pull);
+  // A slow breathing arc across the whole act, so the tight hold before the pull-back drifts
+  // instead of sitting dead, and the act still ends at k = 1 (Act 5 has no camera of its own, so
+  // this is the seam that has to land flat) even though the pull-back alone would end there anyway.
+  const dt = prog(f, ACT.payoff.from, ACT.payoff.from + ACT.payoff.dur, E.linear);
+  const drift = 1 + 0.025 * 4 * dt * (1 - dt);
+  const k = lmix(1.6, 1, pull) * drift;
   const cam = camera({ ax, ay, sx: W / 2, sy: H / 2, k });
 
-  const flash = prog(f, CUE.payoffBoldFlash - 1, CUE.payoffBoldFlash + 8, E.out);
+  const flash = prog(f, CUE.payoffBoldFlash - 1, CUE.payoffBoldFlash + 8, E.smooth);
   const boldColor = mixColor(C.paper, C.accent, flash);
   const payoff = (
     <>

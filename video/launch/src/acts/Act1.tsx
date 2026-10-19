@@ -43,7 +43,13 @@ export const Act1: React.FC = () => {
   const ay = mix(wordY, cardCY, pull);
   const sx = mix(60 * U, W / 2, pull);
   const sy = mix(H / 2, H / 2, pull);
-  const k = lmix(K0, 1, pull);
+  // A slow breathing arc through the hold: the blinking caret alone reads as a stalled player to
+  // a frame-diff (forensics), so the frame keeps drifting even while nothing new is said. It peaks
+  // mid-hold and returns to 1 by the act's last frame, so both seams (the pull-back's own end, and
+  // Act 2's fresh k = 1 start) land at the same scale with nothing to pop across the cut.
+  const t = prog(f, L(CUE.hookResolved), ACT.hook.dur, E.linear);
+  const holdPush = 1 + 0.035 * 4 * t * (1 - t);
+  const k = lmix(K0, 1, pull) * holdPush;
   const cam = camera({ ax, ay, sx, sy, k });
 
   const ia = interviewAvatarCenter();

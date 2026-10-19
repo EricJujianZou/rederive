@@ -1,7 +1,7 @@
 import React from 'react';
 import { AbsoluteFill, useCurrentFrame } from 'remotion';
 import { C } from '../brand/tokens';
-import { hitPulse, mix } from '../lib/anim';
+import { E, hitPulse, mix, prog } from '../lib/anim';
 import { camera } from '../lib/camera';
 import { ACT, CUE, H, W } from '../timeline';
 import { SessionCard, Thread } from '../ui/SessionPanel';
@@ -23,7 +23,12 @@ export const Act3: React.FC = () => {
   const push = hitPulse(f - CUE.pushInPeak, 20, 24);
   const ax = mix(cardCX, SESSION.x + SESSION.w * 0.4, push);
   const ay = mix(cardCY, rowCenterY(ROW.constraint), push);
-  const k = 1 + 0.26 * push;
+  // A slow breathing arc under the whole act (peaks mid-act, returns to 1 by the last frame), so
+  // the long reading pauses between messages still drift instead of reading as a stalled player,
+  // and the act both opens and closes at k = 1 to match its neighbours (Act 2's hold, Act 4's cut).
+  const dt = prog(f, ACT.proof.from, ACT.proof.from + ACT.proof.dur, E.linear);
+  const drift = 1 + 0.03 * 4 * dt * (1 - dt);
+  const k = (1 + 0.26 * push) * drift;
   const cam = camera({ ax, ay, sx: W / 2, sy: H / 2, k });
 
   return (

@@ -63,13 +63,13 @@ export const Thread: React.FC<{
     <div style={{ position: 'absolute', left: 0, top: 0, width: '100%', height: '100%', opacity: o }}>
       <Header x={SESSION.x} y={SESSION.y} label="rederive" kind="rederive" accentPulse={accentPulse} w={SESSION.w} />
 
-      <Avatar x={pa.x} y={pa.y} size={SESSION.avatar} kind="rederive" opacity={prog(frame, cue.ringAppear1, cue.ringAppear1 + f60(10), E.out)} />
+      <Avatar x={pa.x} y={pa.y} size={SESSION.avatar} kind="rederive" opacity={prog(frame, cue.ringAppear1, cue.ringAppear1 + f60(10), E.smooth)} />
       <ThinkingRing x={pa.x} y={pa.y} frame={frame} start={cue.ringAppear1} end={cue.ringResolve1} />
       <Bubble text={text.problem} frame={frame} in={cue.ringResolve1} x={left} y={rowCenterY(ROW.problem)} align="left" dim={frame >= cue.problemOut ? prog(frame, cue.problemOut, cue.problemOut + f60(24), E.smooth) : 0} />
 
       <TypedBubble text={text.naive} frame={frame} x={SESSION.x + SESSION.w - SESSION.pad} y={rowCenterY(ROW.naive)} timing={{ start: cue.naiveTypeStart, cps: 16 }} caretOut={cue.naiveResolved + f60(6)} dim={frame >= cue.naiveOut ? prog(frame, cue.naiveOut, cue.naiveOut + f60(24), E.smooth) : 0} />
 
-      <Avatar x={ca.x} y={ca.y} size={SESSION.avatar} kind="rederive" opacity={prog(frame, cue.ringAppear2, cue.ringAppear2 + f60(10), E.out)} />
+      <Avatar x={ca.x} y={ca.y} size={SESSION.avatar} kind="rederive" opacity={prog(frame, cue.ringAppear2, cue.ringAppear2 + f60(10), E.smooth)} />
       <ThinkingRing x={ca.x} y={ca.y} frame={frame} start={cue.ringAppear2} end={cue.ringResolve2} />
       <Bubble text={text.constraint} frame={frame} in={cue.ringResolve2} x={left} y={rowCenterY(ROW.constraint)} align="left" dim={frame >= cue.constraintOut ? prog(frame, cue.constraintOut, cue.constraintOut + f60(24), E.smooth) : 0} />
 
@@ -77,7 +77,7 @@ export const Thread: React.FC<{
       <TypedBubble text={text.better} frame={frame} x={SESSION.x + SESSION.w - SESSION.pad} y={rowCenterY(ROW.better)} timing={{ start: cue.betterIn, cps: 20 }} caretOut={cue.betterResolved + f60(6)} dim={frame >= cue.betterOut ? prog(frame, cue.betterOut, cue.betterOut + f60(24), E.smooth) : 0} />
 
       {showPayoffAvatar && (
-        <Avatar x={pya.x} y={pya.y} size={SESSION.avatar} kind="rederive" opacity={prog(frame, cue.ringAppear3, cue.ringAppear3 + f60(10), E.out)} />
+        <Avatar x={pya.x} y={pya.y} size={SESSION.avatar} kind="rederive" opacity={prog(frame, cue.ringAppear3, cue.ringAppear3 + f60(10), E.smooth)} />
       )}
       <ThinkingRing x={pya.x} y={pya.y} frame={frame} start={cue.ringAppear3} end={cue.ringResolveBright} bright />
       <Bubble text="" accent={text.payoff} frame={frame} in={cue.payoffIn} x={left} y={rowCenterY(ROW.payoff)} align="left" />

@@ -35,7 +35,7 @@ export const Avatar: React.FC<{ x: number; y: number; size: number; kind: 'reder
 
 /** A dashed ring that spins while rederive "thinks", then yields to the message it resolves into. */
 export const ThinkingRing: React.FC<{ x: number; y: number; frame: number; start: number; end: number; bright?: boolean; size?: number }> = ({ x, y, frame, start, end, bright = false, size = 22 }) => {
-  const p = prog(frame, start, start + f60(10), E.out); // arrives
+  const p = prog(frame, start, start + f60(10), E.smooth); // arrives
   const q = prog(frame, end, end + f60(10), E.in); // yields to the resolved message
   const o = p * (1 - q);
   if (o <= 0.002) return null;
@@ -99,7 +99,7 @@ export const TypedBubble: React.FC<{
   caretOut?: number;
 }> = ({ text, frame, x, y, timing, dim = 0, caretOut }) => {
   if (frame < timing.start - f60(6)) return null;
-  const grow = prog(frame, timing.start - f60(6), timing.start + f60(2), E.out); // the box opens just ahead of the first key
+  const grow = prog(frame, timing.start - f60(6), timing.start + f60(2), E.smooth); // the box opens just ahead of the first key
   // The box is sized to the full, finished line (not the maxWidth ceiling), so its right edge sits
   // flush against x throughout typing instead of only once the box happens to fill the ceiling.
   const { size, weight, track } = TYPE.ui;
@@ -129,7 +129,7 @@ export const TypedBubble: React.FC<{
 
 /** The empty reply box: a human has not answered yet. Cursor blinks; nothing is sent. x is its right edge. */
 export const ReplyBox: React.FC<{ frame: number; in: number; out?: number; x: number; y: number; blink?: number }> = ({ frame, in: start, out, x, y, blink = f60(30) }) => {
-  const o = prog(frame, start, start + f60(10), E.out) * (out !== undefined ? 1 - prog(frame, out, out + f60(8), E.in) : 1);
+  const o = prog(frame, start, start + f60(10), E.smooth) * (out !== undefined ? 1 - prog(frame, out, out + f60(8), E.in) : 1);
   if (o <= 0.002) return null;
   const on = Math.floor(Math.abs(frame - start) / blink) % 2 === 0;
   const h = TYPE.ui.size * U * TYPE.ui.lead + 32 * U;

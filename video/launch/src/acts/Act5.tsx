@@ -69,8 +69,8 @@ export const Act5: React.FC = () => {
   const flood = floodT <= 0 ? 0 : hitPulse(floodT, 5, 9) * 0.55;
 
   // --- wordmark, tagline, URL ----------------------------------------------------------------
-  const nameP = prog(f, CUE.wordmarkIn, CUE.wordmarkResolved, E.out);
-  const urlP = prog(f, CUE.urlIn, CUE.urlIn + f60(26), E.out);
+  const nameP = prog(f, CUE.wordmarkIn, CUE.wordmarkResolved, E.smooth);
+  const urlP = prog(f, CUE.urlIn, CUE.urlIn + f60(26), E.smooth);
 
   return (
     <AbsoluteFill style={{ background: C.ink, overflow: 'hidden' }}>

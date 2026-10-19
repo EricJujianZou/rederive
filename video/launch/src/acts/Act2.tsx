@@ -2,7 +2,7 @@ import React from 'react';
 import { AbsoluteFill, useCurrentFrame } from 'remotion';
 import { C } from '../brand/tokens';
 import { E, lmix, prog } from '../lib/anim';
-import { breath, camera } from '../lib/camera';
+import { camera } from '../lib/camera';
 import { Iris } from '../fx/Iris';
 import { ACT, CUE, f60, H, W } from '../timeline';
 import { Avatar, Header, ReplyBox } from '../ui/Chat';
@@ -38,9 +38,12 @@ export const Act2: React.FC = () => {
   const ia = interviewAvatarCenter();
   const avatar = avatarPos();
 
-  // A very slow breath keeps the post-iris hold from reading as a dead frame: the session is
-  // real and alive even before the first message, not a static screenshot.
-  const push = breath(prog(f, 0, ACT.turn.dur, E.linear), 0.02);
+  // A slow breathing arc keeps the post-iris hold from reading as a dead, static frame (forensics'
+  // own "hold" check wants genuine per-frame drift here, not just a looser threshold): it peaks
+  // mid-act and returns to 1 by the last frame, matching both neighbours' resting k = 1 so nothing
+  // pops across either cut.
+  const bt = prog(f, 0, ACT.turn.dur, E.linear);
+  const push = 1 + 0.06 * 4 * bt * (1 - bt);
   const cam = camera({ ax: W / 2, ay: H / 2, sx: W / 2, sy: H / 2, k: push });
 
   return (
@@ -68,7 +71,8 @@ export const Act2: React.FC = () => {
             </div>
             <Header x={0} y={0} label="interview" kind="generic" w={INTERVIEW.w} />
             <Avatar x={ia.x - INTERVIEW.x} y={ia.y - INTERVIEW.y} size={INTERVIEW.avatar} kind="generic" />
-            <ReplyBox frame={f} in={-1000} x={INTERVIEW.w - INTERVIEW.pad} y={interviewRowCenterY(1) - INTERVIEW.y} />
+            {/* same absolute (frame, in) as Act1's copy, so the caret's blink phase is continuous across the cut */}
+            <ReplyBox frame={f + ACT.turn.from} in={CUE.hookResolved} x={INTERVIEW.w - INTERVIEW.pad} y={interviewRowCenterY(1) - INTERVIEW.y} />
           </div>
         )}
 
