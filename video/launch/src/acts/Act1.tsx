@@ -49,8 +49,12 @@ export const Act1: React.FC = () => {
 
   const pull = isWide ? prog(f, L(CUE.hookIn), L(CUE.hookResolved), E.dolly) : 1;
   const K0 = 3.2;
+  // cardCX is always width / 2 (the panel is always horizontally frame-centred), so it is fine on
+  // both paths; cardCY is not always height / 2 ('vertical' bottom-anchors the panel off true
+  // centre, see layout.ts), so the non-wide path anchors on the frame's own centre instead of the
+  // panel's, or the camera would recentre the deliberately off-centre panel back to mid-frame.
   const ax = isWide ? mix(wordX, cardCX, pull) : cardCX;
-  const ay = isWide ? mix(wordY, cardCY, pull) : cardCY;
+  const ay = isWide ? mix(wordY, cardCY, pull) : height / 2;
   const sx = isWide ? mix(60 * u, width / 2, pull) : width / 2;
   const sy = height / 2;
   // A slow breathing arc through the hold: the blinking caret alone reads as a stalled player to

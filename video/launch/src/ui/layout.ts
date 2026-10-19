@@ -151,8 +151,17 @@ export const layoutFor = (w: number, h: number): Layout => {
   // it: the panel's last row is real text, not decoration, so it has to stay inside the band like
   // any other line) instead of centring it in the band.
   const bandBottom = h - 420;
-  const SESSION: Panel = fmt === 'vertical' ? { ...sessionDims, x: (w - sessionDims.w) / 2, y: bandBottom - sessionDims.h } : { ...sessionDims, x: (w - sessionDims.w) / 2, y: h / 2 - sessionDims.h / 2 };
-  const INTERVIEW: Panel = fmt === 'vertical' ? { ...interviewDims, x: (w - interviewDims.w) / 2, y: bandBottom - interviewDims.h } : { ...interviewDims, x: (w - interviewDims.w) / 2, y: h / 2 - interviewDims.h / 2 };
+  // Both panels share one vertical centre, exactly like the 'wide' static geometry does (SESSION
+  // and INTERVIEW both centre on H / 2 there): Act2's turn clips one panel's footprint growing
+  // into the other's (the revealRect in Act2.tsx), and its own camera holds the act's whole anchor
+  // fixed at that shared centre between Act1's exit pose and Act3's entry pose, so if the two
+  // panels centred independently (each bottom-anchored to its own, different height) the camera
+  // would jump at both seams (verified: f240 and f360 seam-pops at first build). SESSION is the
+  // taller of the two, so centring on where IT would bottom-anchor is what actually reaches the
+  // band's own bottom line; INTERVIEW, shorter, simply shares that same centre.
+  const cy = fmt === 'vertical' ? bandBottom - sessionDims.h / 2 : h / 2;
+  const SESSION: Panel = { ...sessionDims, x: (w - sessionDims.w) / 2, y: cy - sessionDims.h / 2 };
+  const INTERVIEW: Panel = { ...interviewDims, x: (w - interviewDims.w) / 2, y: cy - interviewDims.h / 2 };
 
   const rowTopL = (i: number) => SESSION.y + SESSION.headerH + SESSION.pad + i * (SESSION.rowH + SESSION.rowGap);
   const rowCenterYL = (i: number) => rowTopL(i) + SESSION.rowH / 2;

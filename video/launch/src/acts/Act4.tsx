@@ -33,8 +33,12 @@ export const Act4: React.FC = () => {
   // social frames it stays wide the whole act (ax/ay always the panel's own centre, k == 1) rather
   // than re-risking an untuned version of the same bleed. The bold-flash colour change and the
   // avatar pulse still carry the beat without it.
+  // cardCY is not always height / 2 ('vertical' bottom-anchors the panel off true centre, see
+  // layout.ts), so the non-wide path anchors on the frame's own centre instead of the panel's, or
+  // the camera would recentre the deliberately off-centre panel back to mid-frame (same as
+  // Act1/Act2/Act3: this is what the f240/f360 seam-pops traced back to at first build).
   const ax = isWide ? mix(ax0, cardCX, pull) : cardCX;
-  const ay = isWide ? mix(ay0, cardCY, pull) : cardCY;
+  const ay = isWide ? mix(ay0, cardCY, pull) : height / 2;
   // A slow breathing arc across the whole act, so the tight hold before the pull-back drifts
   // instead of sitting dead, and the act still ends at k = 1 (Act 5 has no camera of its own, so
   // this is the seam that has to land flat) even though the pull-back alone would end there anyway.

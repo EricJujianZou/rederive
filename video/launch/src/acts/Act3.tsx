@@ -31,7 +31,10 @@ export const Act3: React.FC = () => {
   // anchor, so those formats get the gentler universal breathing arc only.
   const push = isWide ? hitPulse(f - CUE.pushInPeak, 20, 24) : 0;
   const ax = mix(cardCX, SESSION_L.x + SESSION_L.w * 0.49, push);
-  const ay = mix(cardCY, rowCenterYV(ROW.constraint), push);
+  // cardCY is not always height / 2 ('vertical' bottom-anchors the panel off true centre, see
+  // layout.ts); push is always 0 on the non-wide path, so this mix would just resolve to cardCY
+  // there and recentre the deliberately off-centre panel back to mid-frame, same as Act1/Act2.
+  const ay = mix(isWide ? cardCY : height / 2, rowCenterYV(ROW.constraint), push);
   // A slow breathing arc under the whole act (peaks mid-act, returns to 1 by the last frame), so
   // the long reading pauses between messages still drift instead of reading as a stalled player,
   // and the act both opens and closes at k = 1 to match its neighbours (Act 2's hold, Act 4's cut).
