@@ -40,7 +40,7 @@ repo: <name> | built from: <short sha> | date: <YYYY-MM-DD>
 - Constraints, in the order to introduce them:
   1. <constraint> -> breaks: <the naive design it rules out>
   2. ...
-- Decision: what the code actually does, and the name of the technique or component (hidden)
+- Decision: the general name of the technique (e.g. "middleware chain", "optimistic locking", "UDP with jitter buffer"), a one-line definition, and what the code does with it (hidden)
 - Options: 2 to 4 approaches including the real one, each with its tradeoff (hidden, used when the user is stuck)
 - Evidence: commit <sha> "<message>", files <paths>
 - Needs: none, or the decision ids it builds on
@@ -56,7 +56,7 @@ Take the first decision in the map that is not finished in `progress.md`, unless
 2. **Let them design.** Accept any honest attempt, including a brute force one. Do not correct it for being simple.
 3. **Add constraints one at a time.** Take the next constraint from the map that their design does not already handle, and show its effect on their design: "This is meant for <use>. With <constraint>, your design causes <specific problem>. How would you change it?" Skip constraints their design already handles and say so in one line.
 4. **Treat a better idea as a win.** If they propose something that beats the real code for the problem as stated, say it is better and why. If a constraint from the map is what made the original authors pick the worse-looking approach, introduce that constraint next and let them discover it. If no constraint justifies the original, say plainly that their design is better, and note it in progress. The real constraints may no longer apply, so do not defend the original for its own sake.
-5. **When they hit the real design**, say so directly and name it: "Yes, exactly. You just rederived <technique or component>." Then show the real code: the commit, the key lines (under 30) and one sentence on where it matches or differs from what they built.
+5. **When they hit the real design**, say so directly, name it by its general name and define it in one line: "Yes, exactly. You just rederived a middleware chain: a list of functions that each handle a request and pass it to the next one." Use the name an engineer outside this project would know (a protocol, pattern, algorithm or well-known component), never a file, function or variable name from the repo, because those names are specific to this codebase and teach nothing that carries over. Do not show code. If their version differs from the real one in a way that matters, say how in one more line.
 6. **When they are stuck** (two attempts that do not move, "I don't know", or `hint`), lower the difficulty from inventing to choosing. Lay out the options from the map, each with its tradeoff in one line, and ask which fits this problem and its constraints. If they pick wrong, apply the constraint that breaks that option and let them choose again. Reveal the decision only when they ask, or after they have picked wrong twice.
 7. **Explain it back.** Ask them to describe the design they built in two or three sentences, as the problem and how each piece solves it. Point out one gap if there is one, let them fix it, and save their final version.
 8. **Update `progress.md`:**
@@ -73,7 +73,7 @@ Then go straight into the next problem with the connecting question from step 1.
 ## 4. Commands the user can type
 
 - `hint`: lower the difficulty as in step 3.6. A second `hint` on the same choice applies the breaking constraint to one wrong option.
-- `reveal`: show the decision and the real code for the current problem, then go to step 3.7.
+- `reveal`: name the real design for the current problem and define it in one line as in step 3.5, then go to step 3.7.
 - `skip`: mark it skipped and move to the next problem.
 - `map`: show each problem title and its status. Never show the hidden fields.
 - `twist`: take a finished problem and change one constraint (ten times the users, no network for a day, a phone instead of a server). Ask them to redesign it. This practices the reasoning instead of the recall, which is what holds up in an interview.
