@@ -23,8 +23,9 @@ export const Act3: React.FC = () => {
   const push = hitPulse(f - CUE.pushInPeak, 20, 24);
   // Anchored closer to the panel's own centre than the constraint line's exact column (was 0.4):
   // at the old anchor and peak scale, the push carried the far-right typed answer past the right
-  // safe margin and over the 20 px/f text-speed ceiling at its own peak (f660, f690).
-  const ax = mix(cardCX, SESSION.x + SESSION.w * 0.46, push);
+  // safe margin and over the 20 px/f text-speed ceiling at its own peak (f660, f690). Nudged again
+  // (0.46 -> 0.49, see the drift note below) after the breathing widened.
+  const ax = mix(cardCX, SESSION.x + SESSION.w * 0.49, push);
   const ay = mix(cardCY, rowCenterY(ROW.constraint), push);
   // A slow breathing arc under the whole act (peaks mid-act, returns to 1 by the last frame), so
   // the long reading pauses between messages still drift instead of reading as a stalled player,
@@ -35,8 +36,11 @@ export const Act3: React.FC = () => {
   // 0.55-0.97 here, not actually near zero) still averaged under forensics' own "hold" floor at
   // the old amplitude. A flat additive floor would pop the f360 seam with Act2 (denv = 0 there
   // only, so a constant breaks the match); a bigger multiplier on the same envelope does not,
-  // since it still returns to exactly 1 at both ends.
-  const drift = 1 + 0.09 * denv;
+  // since it still returns to exactly 1 at both ends. Tapered by (1 - push) so it does not stack
+  // with the hero push at its own peak (denv and push are both near max around f680): at full
+  // amplitude the two together clipped the far-right typed bubble flush against the frame's right
+  // edge for 6 frames (f676-681, verified on decoded pixels).
+  const drift = 1 + 0.09 * denv * (1 - push);
   const k = (1 + 0.18 * push) * drift;
   // A pan carries the real measurable motion (a pure zoom around frame centre barely displaces
   // content that close to the anchor); same envelope, so it also returns to 0 by the act's end.

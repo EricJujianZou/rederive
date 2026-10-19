@@ -12,7 +12,7 @@
 import { E, SPR } from './lib/anim';
 import { delayTo, peak, settleOf } from './lib/sync';
 import { typeFrames } from './fx/TypeOn';
-import { ACT, CUE, FPS, TOTAL } from './timeline';
+import { ACT, CUE, f60, FPS, TOTAL } from './timeline';
 import { avatarCenter, SESSION } from './ui/layout';
 
 export type Kind =
@@ -68,7 +68,10 @@ export default function cues(): SoundEvent[] {
   // The iris opens on E.out, whose velocity peaks at its very first frame (apexFrac 0, which the
   // whoosh helper refuses): placed by hand, apex a third of the way through its growth instead.
   ev.push({ f: CUE.irisSeed + (CUE.sessionReveal - CUE.irisSeed) * 0.35, kind: 'whoosh', weight: 1.3, pan: 0, dur: CUE.sessionReveal - CUE.irisSeed, apexFrac: 0.35, id: 'iris-swallow' });
-  ev.push({ f: CUE.sessionReveal, kind: 'drop', weight: 0.9, id: 'session-revealed' }); // the world warms: a music event, not an effect alone
+  // sessionReveal is a beat-grid value, but the iris (start CUE.irisSeed - 1, dur f60(24), E.out)
+  // is actually fully open by its own 97% point well before that grid line; the drop was landing
+  // 19 f after the picture had already finished revealing. Its own settle frame instead.
+  ev.push({ f: settleOf(CUE.irisSeed - 1, CUE.irisSeed - 1 + f60(24), E.out, 0.97), kind: 'drop', weight: 0.9, id: 'session-revealed' }); // the world warms: a music event, not an effect alone
 
   // --- proof: each rederive message pops in; typed answers tick per word -------------------
   const pa = avatarCenter('problem');

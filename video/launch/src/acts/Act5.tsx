@@ -47,7 +47,11 @@ export const Act5: React.FC = () => {
   const urlW = measureTracked(URL.text, urlSize, TYPE.mono.weight, TYPE.mono.track, FONT.mono);
   const pillW = urlW + 64 * U;
   const pillH = urlSize * TYPE.mono.lead + 30 * U;
-  const pillCY = lockCY + 250 * U; // clears the two-line tagline block (~110 px) with room to spare
+  // 300 (was 250): the tagline block itself moved down 70 px (60 -> 130, see above) to clear the
+  // wordmark's own ink on exit, so the pill has to move down with it or the tagline's second line
+  // runs into the pill's own top edge instead (verified: pillH ~= 72 px, so the pill's real top
+  // sits at pillCY - 36, not at pillCY itself).
+  const pillCY = lockCY + 300 * U;
   const pillEnd = { x: (W - pillW) / 2, y: pillCY - pillH / 2, w: pillW, h: pillH, radius: pillH / 2 };
   const start = { x: SESSION.x, y: SESSION.y, w: SESSION.w, h: SESSION.h, radius: SESSION.radius };
   const rect = {
@@ -118,7 +122,12 @@ export const Act5: React.FC = () => {
       )}
 
       {f >= CUE.taglineIn && (
-        <div style={{ position: 'absolute', left: 0, top: 0, width: W, transform: `translate(0, ${lockCY + 60 * U}px)` }}>
+        // 96 * U (was 60): MaskRise's exit rises each word up through the top of its own clip on
+        // E.in before it fades (depart()), so during taglineExitStart the departing glyphs travel
+        // up past this box's top edge. At 60 * U that travel crossed into the wordmark's own ink
+        // (verified at f1635-1640: "Learn" visibly touching the mark). The URL pill at
+        // lockCY + 250 * U still clears this with room to spare.
+        <div style={{ position: 'absolute', left: 0, top: 0, width: W, transform: `translate(0, ${lockCY + 130 * U}px)` }}>
           <MaskRise
             text={TAGLINE.text}
             frame={f}
