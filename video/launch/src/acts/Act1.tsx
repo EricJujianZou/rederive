@@ -1,7 +1,7 @@
 import React from 'react';
 import { AbsoluteFill, useCurrentFrame } from 'remotion';
 import { C, TYPE, U, typeStyle } from '../brand/tokens';
-import { E, prog } from '../lib/anim';
+import { E, lmix, mix, prog } from '../lib/anim';
 import { camera } from '../lib/camera';
 import { measureTracked } from '../lib/measure';
 import { ACT, copy, CUE, H, W } from '../timeline';
@@ -27,20 +27,24 @@ export const Act1: React.FC = () => {
   // interview card's own centre at rest.
   const idx = LINE.text.lastIndexOf('this');
   const before = measureTracked(LINE.text.slice(0, idx), size, weight, track);
-  const wordW = measureTracked('this.', size, weight, track);
   const left = interviewBubbleLeft();
   const rowY = interviewRowCenterY(0);
-  const wordX = left + before + wordW / 2;
+  // Anchor the word's own left edge near the frame's left edge (not its centre), so the crop
+  // reads as cut into the sentence, not as the whole line zoomed in place.
+  const wordX = left + before;
   const wordY = rowY;
 
   const cardCX = INTERVIEW.x + INTERVIEW.w / 2;
   const cardCY = INTERVIEW.y + INTERVIEW.h / 2;
 
   const pull = prog(f, L(CUE.hookPullStart), L(CUE.hookResolved), E.dolly);
-  const ax = wordX + (cardCX - wordX) * pull;
-  const ay = wordY + (cardCY - wordY) * pull;
-  const k = 1 + (3.2 - 1) * (1 - pull);
-  const cam = camera({ ax, ay, sx: W / 2, sy: H / 2, k });
+  const K0 = 3.2;
+  const ax = mix(wordX, cardCX, pull);
+  const ay = mix(wordY, cardCY, pull);
+  const sx = mix(60 * U, W / 2, pull);
+  const sy = mix(H / 2, H / 2, pull);
+  const k = lmix(K0, 1, pull);
+  const cam = camera({ ax, ay, sx, sy, k });
 
   const ia = interviewAvatarCenter();
 

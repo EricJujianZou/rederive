@@ -3,6 +3,7 @@ import { Mark } from '../brand/Mark';
 import { C, TYPE, U, typeStyle } from '../brand/tokens';
 import { clamp, E, prog, spr, SPR } from '../lib/anim';
 import { mixColor } from '../lib/color';
+import { measureTracked } from '../lib/measure';
 import { TypeOn, TypeTiming } from '../fx/TypeOn';
 import { f60 } from '../timeline';
 
@@ -60,6 +61,8 @@ export const Bubble: React.FC<{
   dim?: number; // 0 = current/full colour, 1 = relaxed to mute (an older message, per pd-terminal-burst-output)
   accent?: React.ReactNode; // optional: render with one phrase highlighted (the payoff)
 }> = ({ text, frame, in: start, x, y, align, dim = 0, accent }) => {
+  // align="right" assumes a maxWidth-filling box (not exercised in this film: every Bubble here
+  // is align="left"; TypedBubble is the one used on the right, and it sizes to its real text).
   const s = spr(frame, start, SPR.firm); // 0..1, no overshoot: it just arrives
   const o = clamp(s * 1.6); // reaches full opacity well before the spring settles its last pixel
   if (o <= 0.002) return null;
@@ -97,18 +100,24 @@ export const TypedBubble: React.FC<{
 }> = ({ text, frame, x, y, timing, dim = 0, caretOut }) => {
   if (frame < timing.start - f60(6)) return null;
   const grow = prog(frame, timing.start - f60(6), timing.start + f60(2), E.out); // the box opens just ahead of the first key
+  // The box is sized to the full, finished line (not the maxWidth ceiling), so its right edge sits
+  // flush against x throughout typing instead of only once the box happens to fill the ceiling.
+  const { size, weight, track } = TYPE.ui;
+  const textW = Math.min(1000 * U, measureTracked(text, size * U, weight, track));
+  const boxW = textW + 40 * U;
   return (
     <div
       style={{
         position: 'absolute',
         left: 0,
         top: 0,
-        maxWidth: 1040 * U,
+        width: boxW,
         padding: `${16 * U}px ${20 * U}px`,
         borderRadius: 16 * U,
         background: C.mist,
         opacity: grow,
-        transform: `translate(${x - 1040 * U}px, ${(y - (TYPE.ui.size * U * TYPE.ui.lead) / 2 - 16 * U + (1 - grow) * 6).toFixed(2)}px)`,
+        boxSizing: 'border-box',
+        transform: `translate(${x - boxW}px, ${(y - (TYPE.ui.size * U * TYPE.ui.lead) / 2 - 16 * U + (1 - grow) * 6).toFixed(2)}px)`,
       }}
     >
       <span style={{ ...typeStyle('ui') }}>

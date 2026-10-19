@@ -45,7 +45,7 @@ export const Act5: React.FC = () => {
   const urlW = measureTracked(URL.text, urlSize, TYPE.mono.weight, TYPE.mono.track);
   const pillW = urlW + 64 * U;
   const pillH = urlSize * TYPE.mono.lead + 30 * U;
-  const pillCY = lockCY + 190 * U;
+  const pillCY = lockCY + 250 * U; // clears the two-line tagline block (~110 px) with room to spare
   const pillEnd = { x: (W - pillW) / 2, y: pillCY - pillH / 2, w: pillW, h: pillH, radius: pillH / 2 };
   const start = { x: SESSION.x, y: SESSION.y, w: SESSION.w, h: SESSION.h, radius: SESSION.radius };
   const rect = {

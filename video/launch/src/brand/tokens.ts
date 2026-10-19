@@ -56,7 +56,7 @@ export const typeStyle = (role: keyof typeof TYPE, size = TYPE[role].size * U): 
   letterSpacing: `${TYPE[role].track}em`,
   lineHeight: TYPE[role].lead,
   fontVariantNumeric: 'tabular-nums',
-  whiteSpace: 'pre-wrap',
+  whiteSpace: 'pre',
 });
 
 /**
