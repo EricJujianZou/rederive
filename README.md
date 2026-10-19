@@ -10,16 +10,43 @@
   &nbsp;
   <a href="https://agentskills.io"><img src="https://img.shields.io/badge/Agent_Skills-compatible-24292f?style=flat" alt="Agent Skills compatible" /></a>
   &nbsp;
-  <a href="#install"><img src="https://img.shields.io/badge/Claude_Code-plugin-24292f?style=flat" alt="Claude Code plugin" /></a>
-  &nbsp;
-  <a href="#other-agents"><img src="https://img.shields.io/badge/Codex_%2F_Cursor_%2F_Gemini-install-24292f?style=flat" alt="Codex, Cursor, Gemini CLI" /></a>
+  <a href="#install"><img src="https://img.shields.io/badge/works_in-Claude_Code%2C_Codex%2C_Cursor_%2B_22_more-24292f?style=flat" alt="Works in Claude Code, Codex, Cursor and 22 more agents" /></a>
 </p>
 
-<p align="center"><sub><a href="#a-session">A session</a> · <a href="#install">Install</a> · <a href="#how-it-works">How it works</a> · <a href="#license">License</a></sub></p>
+<p align="center"><sub><a href="#install">Install</a> · <a href="#a-session">A session</a> · <a href="#how-it-works">How it works</a> · <a href="#license">License</a></sub></p>
 
 **rederive** is a skill for coding agents that teaches you a codebase by making you design it yourself. It finds the decisions that shaped the code and gives each one to you as a problem to solve, with the real constraints added one at a time. It never tells you the answer.
 
 Use it on a project you built with AI and can't explain yet, before an interview where you walk through your own work, or on a famous repo like Express or Redis.
+
+## Install
+
+```
+npx skills add EricJujianZou/rederive
+```
+
+The same command installs it in Claude Code, Codex, Cursor, Gemini CLI, GitHub Copilot, opencode, Windsurf, Amp, Goose and about 15 other agents. It puts the skill in every agent folder it finds in your project. Add `-g` to install it for every project instead. Then type `/rederive` in your agent.
+
+It needs `git`, `bash` and `python3`.
+
+<details>
+<summary>Other ways to install</summary>
+
+As a Claude Code plugin:
+
+```
+/plugin marketplace add EricJujianZou/rederive
+/plugin install rederive@rederive
+```
+
+By hand, clone the repo and copy `skills/rederive` into your agent's skills folder, such as `~/.claude/skills/` or `~/.agents/skills/`:
+
+```
+git clone https://github.com/EricJujianZou/rederive
+cp -r rederive/skills/rederive ~/.agents/skills/
+```
+
+</details>
 
 ## A session
 
@@ -31,48 +58,6 @@ The start of a session on Express (an example, shortened):
     <img src="assets/session-light.png" alt="rederive asks how you would handle every HTTP request through one function. You suggest one big handler, then a shared auth function. It adds constraints until you describe a list of functions per route, and it tells you that you rederived a middleware chain." width="100%" />
   </picture>
 </p>
-
-## Install
-
-### Claude Code
-
-```
-/plugin marketplace add EricJujianZou/rederive
-/plugin install rederive@rederive
-```
-
-### Other agents
-
-Codex, Cursor, Gemini CLI, GitHub Copilot, opencode, Amp and Goose all read the shared `.agents/skills/` folder, so one command covers them:
-
-```
-npx skills add EricJujianZou/rederive
-```
-
-<details>
-<summary>Install by hand</summary>
-
-Clone the repo and copy `skills/rederive` into your agent's skills folder.
-
-```
-git clone https://github.com/EricJujianZou/rederive
-cp -r rederive/skills/rederive ~/.agents/skills/
-```
-
-| Agent | One project | Every project |
-|---|---|---|
-| Codex | `.agents/skills/` | `~/.agents/skills/` |
-| Cursor | `.cursor/skills/` | `~/.cursor/skills/` |
-| Gemini CLI | `.gemini/skills/` | `~/.gemini/skills/` |
-| GitHub Copilot | `.github/skills/` | `~/.copilot/skills/` |
-| opencode | `.opencode/skills/` | `~/.config/opencode/skills/` |
-| Windsurf | `.windsurf/skills/` | `~/.codeium/windsurf/skills/` |
-| Amp | `.agents/skills/` | `~/.config/amp/skills/` |
-| Goose | `.agents/skills/` | `~/.agents/skills/` |
-
-</details>
-
-It needs `git`, `bash` and `python3`.
 
 ## Use
 
