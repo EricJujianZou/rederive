@@ -19,14 +19,14 @@ The repo is the user's own when most commits are by the author in `git config us
 
 ## 2. Find the root problem
 
-Every map starts from why the project exists: the problem the author had before any code was written. If `<repo>/.rederive/map.md` already exists, skip to step 3.
+Every map starts from why the project exists: the problem the author had before any code was written. If the user says they want to start over, delete `<repo>/.rederive/map.md` and `log.md` first. If `map.md` exists, skip to step 3.
 
 - **The user's own repo:** ask "Why did you build this? What problem did you have before any of this code existed?" before reading anything, even if the README answers it. Their answer is the root problem. If it is only a feature list, ask once what they were trying to get done.
 - **Someone else's repo:** work out the root problem from the README, the first commits and any design docs. Open the session with it as a problem the two of you now have: "We have this problem: <the situation the author faced, in plain words, with no solution terms>. How would you solve it?"
 
 ## 3. Build the decision map (first run only)
 
-If `<repo>/.rederive/map.md` exists, read it and skip to step 4. If the user says they want to start over, delete `map.md` and `log.md` first and build a fresh map.
+If `<repo>/.rederive/map.md` exists, read it and skip to step 4.
 
 Otherwise, tell the user "Finding the most challenging problems and rearranging them into logic chains. This will take a few mins", then:
 
