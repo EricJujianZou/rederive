@@ -41,11 +41,31 @@ Claude Code:
 /plugin install rederive@rederive
 ```
 
-Other agents that load `SKILL.md` skills can use the `skills/rederive` folder. Copy it into the folder your agent loads skills from.
+Codex, Cursor, Gemini CLI, GitHub Copilot, opencode, Amp and Goose all load the shared `.agents/skills/` folder. One command installs it for them:
+
+```
+npx skills add EricJujianZou/rederive
+```
+
+To copy it by hand, clone the repo and put `skills/rederive` in your agent's skills folder:
+
+| Agent | In a project | For every project |
+|---|---|---|
+| Codex | `.agents/skills/` | `~/.agents/skills/` |
+| Cursor | `.cursor/skills/` or `.agents/skills/` | `~/.cursor/skills/` |
+| Gemini CLI | `.gemini/skills/` or `.agents/skills/` | `~/.gemini/skills/` |
+| GitHub Copilot | `.github/skills/` | `~/.copilot/skills/` |
+| opencode | `.opencode/skills/` | `~/.config/opencode/skills/` |
+| Windsurf | `.windsurf/skills/` | `~/.codeium/windsurf/skills/` |
+| Amp | `.agents/skills/` | `~/.config/amp/skills/` |
+| Goose | `.agents/skills/` | `~/.agents/skills/` |
 
 ```
 git clone https://github.com/EricJujianZou/rederive
+cp -r rederive/skills/rederive ~/.agents/skills/
 ```
+
+On agents without subagents, the tutor builds the map before the first question instead of in the background.
 
 It needs `git`, `bash` and `python3`.
 
