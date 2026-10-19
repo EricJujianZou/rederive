@@ -26,9 +26,9 @@ Every map starts from why the project exists: the problem the author had before 
 
 ## 3. Build the decision map (first run only)
 
-If `<repo>/.rederive/map.md` exists, read it and skip to step 4. If HEAD has moved more than 50 commits past the commit recorded in the map, tell the user and offer to add decisions for the new work.
+If `<repo>/.rederive/map.md` exists, read it and skip to step 4. If the user says they want to start over, delete `map.md` and `log.md` first and build a fresh map.
 
-Otherwise, tell the user in one line that you are reading the repo's history and that this takes a few minutes on a large repo, then:
+Otherwise, tell the user "Finding the most challenging problems and rearranging them into logic chains. This will take a few mins", then:
 
 1. Run `scripts/history.sh <repo>` from this skill's folder. It prints the first commits, commits whose messages name a design change, the largest commits, the most changed files, any design docs and the top-level layout. Then it prints the code structure: entry points, the files most imported by the rest of the code, the files that import the most, the import links among those central files, and the external packages used most.
 2. Read the README and any design docs it lists, then the entry points and the most changed files. Open the commits that look like turning points with `git show --stat <sha>` and read the diff of the important files only.
