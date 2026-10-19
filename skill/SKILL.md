@@ -23,10 +23,10 @@ If `<repo>/.rederive/map.md` exists, read it and skip to step 3. If HEAD has mov
 
 Otherwise, tell the user in one line that you are reading the repo's history and that this takes a few minutes on a large repo, then:
 
-1. Run `scripts/history.sh <repo>` from this skill's folder. It prints the first commits, commits whose messages name a design change, the largest commits, the most changed files, any design docs and the top-level layout.
+1. Run `scripts/history.sh <repo>` from this skill's folder. It prints the first commits, commits whose messages name a design change, the largest commits, the most changed files, any design docs and the top-level layout. When the history is thin (under 20 commits, or one commit holding half the code, which is common in AI-built and squashed repos), it says THIN_HISTORY and also prints the code structure: entry points, the files most imported by the rest of the code, the files that import the most, the import links among those central files, and the external packages used most.
 2. Read the README and any design docs it lists, then the entry points and the most changed files. Open the commits that look like turning points with `git show --stat <sha>` and read the diff of the important files only.
 3. Pick 5 to 12 design decisions. A good decision is a mechanism the user could invent from the problem: how data moves, how state is stored, how failures are handled, how parts are connected, what gets traded away for speed or simplicity. Skip choices that come down to picking a language, framework or library for its known strengths, because the reasons are memorizable facts rather than something to derive. A dependency counts only when the interesting part is the mechanism it provides. Skip styling, naming and config unless the project is about them.
-4. When the history is squashed or missing, infer decisions from the code alone and mark the evidence as "code only".
+4. When the output says THIN_HISTORY or NOT_A_GIT_REPO, build the map from the code structure instead of the commits. Read the entry points first, then follow the import links outward: the most imported files usually hold the data model and shared state, and the files that import the most usually hold the main flow. Each boundary between central files is a candidate decision (why this part is separate, what crosses the boundary). Treat commit messages in a thin history as unreliable labels and trust the diffs and the code over them. Mark the evidence as "code only".
 5. Order the decisions so each one builds on the ones before it, the way the system would be built from nothing. Start from the problem the project exists to solve.
 6. Write `<repo>/.rederive/map.md` in this format:
 
@@ -42,7 +42,7 @@ repo: <name> | built from: <short sha> | date: <YYYY-MM-DD>
   2. ...
 - Decision: the general name of the technique (e.g. "middleware chain", "optimistic locking", "UDP with jitter buffer"), a one-line definition, and what the code does with it (hidden)
 - Options: 2 to 4 approaches including the real one, each with its tradeoff (hidden, used when the user is stuck)
-- Evidence: commit <sha> "<message>", files <paths>
+- Evidence: commit <sha> "<message>", files <paths> (or "code only", files <paths>)
 - Needs: none, or the decision ids it builds on
 ```
 
