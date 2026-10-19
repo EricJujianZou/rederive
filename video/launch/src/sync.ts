@@ -64,8 +64,10 @@ export default function cues(): SoundEvent[] {
   ev.push(whoosh(CUE.hookPullStart, CUE.hookResolved, E.dolly, 0.6, -0.1, 'hook-pullback'));
 
   // --- turn: the panel folds away, the glyph iris carries the cut --------------------------
-  ev.push({ f: CUE.turnStart + 36, kind: 'click', weight: 0.8, pan: 0.3, id: 'panel-fold' });
-  ev.push(whoosh(CUE.irisSeed, CUE.sessionReveal, E.out, 1.3, 0, 'iris-swallow'));
+  ev.push({ f: CUE.turnStart + 36, kind: 'click', weight: 0.55, pan: 0.3, id: 'panel-fold' });
+  // The iris opens on E.out, whose velocity peaks at its very first frame (apexFrac 0, which the
+  // whoosh helper refuses): placed by hand, apex a third of the way through its growth instead.
+  ev.push({ f: CUE.irisSeed + (CUE.sessionReveal - CUE.irisSeed) * 0.35, kind: 'whoosh', weight: 1.3, pan: 0, dur: CUE.sessionReveal - CUE.irisSeed, apexFrac: 0.35, id: 'iris-swallow' });
   ev.push({ f: CUE.sessionReveal, kind: 'drop', weight: 0.9, id: 'session-revealed' }); // the world warms: a music event, not an effect alone
 
   // --- proof: each rederive message pops in; typed answers tick per word -------------------
@@ -73,8 +75,8 @@ export default function cues(): SoundEvent[] {
   const ca = avatarCenter('constraint');
   ev.push({ f: CUE.ringResolve1 + delayTo(SPR.firm, 0.5), kind: 'pop', weight: 0.9, pan: panX(pa.x), id: 'problem-lands' });
   ev.push(...typedWordTicks('One big function with if statements.', CUE.naiveTypeStart, 16, 0.5, 'naive'));
-  ev.push({ f: CUE.ringResolve2 + delayTo(SPR.firm, 0.5), kind: 'pop', weight: 1, pan: panX(ca.x), id: 'constraint-lands' });
-  ev.push({ f: CUE.pushInPeak, kind: 'tick', weight: 0.7, pan: 0, id: 'push-in' });
+  ev.push({ f: CUE.ringResolve2 + delayTo(SPR.firm, 0.5), kind: 'pop', weight: 1.15, pan: panX(ca.x), id: 'constraint-lands' });
+  ev.push({ f: CUE.pushInPeak, kind: 'tick', weight: 0.85, pan: 0, id: 'push-in' });
   ev.push(...typedWordTicks('Put the check in one function every route calls first.', CUE.betterIn, 20, 0.5, 'better'));
 
   // --- payoff: the loudest moment in the film -----------------------------------------------
@@ -84,8 +86,8 @@ export default function cues(): SoundEvent[] {
   ev.push(whoosh(CUE.pullbackStart, CUE.pullbackEnd, E.cam, 0.6, 0, 'payoff-pullback'));
 
   // --- lockup: the panel collapses, the avatar becomes the mark, the accent floods once -----
-  ev.push({ f: CUE.detachStart, kind: 'click', weight: 0.7, pan: panX(SESSION.x + SESSION.pad), id: 'avatar-detaches' });
-  ev.push({ f: CUE.collapseEnd, kind: 'click', weight: 0.8, pan: 0, id: 'panel-becomes-pill' });
+  ev.push({ f: CUE.detachStart, kind: 'click', weight: 0.55, pan: panX(SESSION.x + SESSION.pad), id: 'avatar-detaches' });
+  ev.push({ f: CUE.collapseEnd, kind: 'click', weight: 0.6, pan: 0, id: 'panel-becomes-pill' });
   ev.push({ f: CUE.lockupIrisStart, kind: 'swell', weight: 1.1, dur: sec(0.6), id: 'accent-flood' });
   ev.push({ f: CUE.wordmarkResolved, kind: 'snap', weight: 0.9, pan: 0, id: 'wordmark-locks' });
   ev.push({ f: CUE.taglineResolved, kind: 'tick', weight: 0.6, pan: 0, id: 'tagline-settles' });
