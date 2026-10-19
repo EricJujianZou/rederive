@@ -1,7 +1,7 @@
 import React from 'react';
 import { AbsoluteFill, useCurrentFrame } from 'remotion';
 import { C, TYPE, U, typeStyle } from '../brand/tokens';
-import { E, lmix, prog } from '../lib/anim';
+import { E, lmix, mix, prog } from '../lib/anim';
 import { camera } from '../lib/camera';
 import { Iris } from '../fx/Iris';
 import { ACT, copy, CUE, f60, H, W } from '../timeline';
@@ -40,6 +40,20 @@ export const Act2: React.FC = () => {
   const ia = interviewAvatarCenter();
   const avatar = avatarPos();
 
+  // The cold session scene sits behind the interview panel for the whole act (the turn's own
+  // claim: "already sitting behind it at full size"), but it is bigger than the interview panel
+  // (SESSION enclosing INTERVIEW on every side), so showing it at full extent from f=0 pops a
+  // border of new pixels in on the very cut frame (forensics f240: a property flipping across the
+  // seam). Clip it to a rect that starts exactly on the interview panel's own footprint (nothing
+  // new versus Act1's last frame) and grows to the full session rect as the panel shrinks away, so
+  // the reveal reads as uncovered, not switched on.
+  const revealRect = {
+    x: mix(INTERVIEW.x, SESSION.x, shrink),
+    y: mix(INTERVIEW.y, SESSION.y, shrink),
+    w: lmix(INTERVIEW.w, SESSION.w, shrink),
+    h: lmix(INTERVIEW.h, SESSION.h, shrink),
+  };
+
   // A slow breathing arc keeps the post-iris hold from reading as a dead, static frame (forensics'
   // own "hold" check wants genuine per-frame drift here, not just a looser threshold): it peaks
   // mid-act and returns to 1 by the last frame, matching both neighbours' resting k = 1 so nothing
@@ -54,8 +68,13 @@ export const Act2: React.FC = () => {
   return (
     <AbsoluteFill style={{ background: C.ink, overflow: 'hidden' }}>
       <div style={cam}>
-        {/* the hero: already at its final size, static, cold until the iris warms it */}
-        <Scene warm={false} />
+        {/* the hero: already at its final size, static, cold until the iris warms it. Clipped to
+            revealRect so the cut frame shows nothing the interview panel didn't already cover. */}
+        <div style={{ position: 'absolute', left: 0, top: 0, overflow: 'hidden', transform: `translate(${revealRect.x}px, ${revealRect.y}px)`, width: revealRect.w, height: revealRect.h }}>
+          <div style={{ position: 'absolute', left: 0, top: 0, transform: `translate(${-revealRect.x}px, ${-revealRect.y}px)` }}>
+            <Scene warm={false} />
+          </div>
+        </div>
 
         {/* the clutter: the interview panel, shrinking into the corner where the reply box sits */}
         {op > 0.002 && (
