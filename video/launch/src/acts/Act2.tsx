@@ -1,13 +1,15 @@
 import React from 'react';
 import { AbsoluteFill, useCurrentFrame } from 'remotion';
-import { C } from '../brand/tokens';
+import { C, TYPE, U, typeStyle } from '../brand/tokens';
 import { E, lmix, prog } from '../lib/anim';
 import { camera } from '../lib/camera';
 import { Iris } from '../fx/Iris';
-import { ACT, CUE, f60, H, W } from '../timeline';
+import { ACT, copy, CUE, f60, H, W } from '../timeline';
 import { Avatar, Header, ReplyBox } from '../ui/Chat';
 import { SessionCard } from '../ui/SessionPanel';
-import { interviewAvatarCenter, interviewRowCenterY, INTERVIEW, SESSION } from '../ui/layout';
+import { interviewAvatarCenter, interviewBubbleLeft, interviewRowCenterY, INTERVIEW, SESSION } from '../ui/layout';
+
+const LINE = copy('interviewer');
 
 // ACT 2 - TURN. The interview panel shrinks into the corner where the candidate's cursor sits
 // (tr-subtract-reveal, window-minimize variant), uncovering the real rederive session, already
@@ -43,8 +45,11 @@ export const Act2: React.FC = () => {
   // mid-act and returns to 1 by the last frame, matching both neighbours' resting k = 1 so nothing
   // pops across either cut.
   const bt = prog(f, 0, ACT.turn.dur, E.linear);
-  const push = 1 + 0.06 * 4 * bt * (1 - bt);
-  const cam = camera({ ax: W / 2, ay: H / 2, sx: W / 2, sy: H / 2, k: push });
+  const benv = 4 * bt * (1 - bt);
+  const push = 1 + 0.03 * benv;
+  // A pan carries the real measurable motion: a pure zoom centred on the frame barely displaces
+  // content that close to the anchor.
+  const cam = camera({ ax: W / 2, ay: H / 2, sx: W / 2 + 6 * benv, sy: H / 2, k: push });
 
   return (
     <AbsoluteFill style={{ background: C.ink, overflow: 'hidden' }}>
@@ -71,7 +76,22 @@ export const Act2: React.FC = () => {
             </div>
             <Header x={0} y={0} label="interview" kind="generic" w={INTERVIEW.w} />
             <Avatar x={ia.x - INTERVIEW.x} y={ia.y - INTERVIEW.y} size={INTERVIEW.avatar} kind="generic" />
-            {/* same absolute (frame, in) as Act1's copy, so the caret's blink phase is continuous across the cut */}
+            {/* same markup, position and (frame, in) as Act1's copy, so nothing changes across the cut */}
+            <div
+              style={{
+                position: 'absolute',
+                left: 0,
+                top: 0,
+                maxWidth: 1040 * U,
+                padding: `${16 * U}px ${20 * U}px`,
+                borderRadius: 16 * U,
+                background: C.ink2,
+                border: `1.5px solid ${C.line}`,
+                transform: `translate(${interviewBubbleLeft() - INTERVIEW.x}px, ${interviewRowCenterY(0) - INTERVIEW.y - (TYPE.ui.size * U * TYPE.ui.lead) / 2 - 16 * U}px)`,
+              }}
+            >
+              <span style={{ ...typeStyle('ui'), color: C.paper }}>{LINE.text}</span>
+            </div>
             <ReplyBox frame={f + ACT.turn.from} in={CUE.hookResolved} x={INTERVIEW.w - INTERVIEW.pad} y={interviewRowCenterY(1) - INTERVIEW.y} />
           </div>
         )}

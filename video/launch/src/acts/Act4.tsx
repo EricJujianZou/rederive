@@ -28,9 +28,10 @@ export const Act4: React.FC = () => {
   // instead of sitting dead, and the act still ends at k = 1 (Act 5 has no camera of its own, so
   // this is the seam that has to land flat) even though the pull-back alone would end there anyway.
   const dt = prog(f, ACT.payoff.from, ACT.payoff.from + ACT.payoff.dur, E.linear);
-  const drift = 1 + 0.025 * 4 * dt * (1 - dt);
+  const denv = 4 * dt * (1 - dt);
+  const drift = 1 + 0.02 * denv;
   const k = lmix(1.6, 1, pull) * drift;
-  const cam = camera({ ax, ay, sx: W / 2, sy: H / 2, k });
+  const cam = camera({ ax, ay, sx: W / 2 + 4 * denv, sy: H / 2, k });
 
   const flash = prog(f, CUE.payoffBoldFlash - 1, CUE.payoffBoldFlash + 8, E.smooth);
   const boldColor = mixColor(C.paper, C.accent, flash);

@@ -1,11 +1,12 @@
 import React from 'react';
-import { AbsoluteFill, getStaticFiles, Html5Audio, Sequence, staticFile } from 'remotion';
+import { AbsoluteFill, getStaticFiles, Html5Audio, Sequence, staticFile, useCurrentFrame } from 'remotion';
 import { Act1 } from './acts/Act1';
 import { Act2 } from './acts/Act2';
 import { Act3 } from './acts/Act3';
 import { Act4 } from './acts/Act4';
 import { Act5 } from './acts/Act5';
 import { C } from './brand/tokens';
+import { Grain } from './fx/Grain';
 import { Audit } from './lib/Audit';
 import { FontGate } from './lib/FontGate';
 import type { SafeSpec } from './lib/safe';
@@ -21,6 +22,7 @@ export type FilmProps = { audit?: boolean; safe?: SafeSpec };
 // acts, not a crossfade here). hook -> turn -> proof -> payoff -> lockup (TREATMENT.md §4).
 export const Film: React.FC<FilmProps> = ({ audit = false, safe }) => {
   const hasScore = getStaticFiles().some((s) => s.name === SOUNDTRACK);
+  const frame = useCurrentFrame();
   return (
     <FontGate>
       <AbsoluteFill style={{ background: C.ink }}>
@@ -39,6 +41,7 @@ export const Film: React.FC<FilmProps> = ({ audit = false, safe }) => {
         <Sequence from={ACT.lockup.from} durationInFrames={ACT.lockup.dur} name="5 Lockup">
           <Act5 />
         </Sequence>
+        <Grain frame={frame} />
         {hasScore && <Html5Audio src={staticFile(SOUNDTRACK)} />}
         {audit && <Audit safe={safe} />}
       </AbsoluteFill>

@@ -27,9 +27,12 @@ export const Act3: React.FC = () => {
   // the long reading pauses between messages still drift instead of reading as a stalled player,
   // and the act both opens and closes at k = 1 to match its neighbours (Act 2's hold, Act 4's cut).
   const dt = prog(f, ACT.proof.from, ACT.proof.from + ACT.proof.dur, E.linear);
-  const drift = 1 + 0.03 * 4 * dt * (1 - dt);
+  const denv = 4 * dt * (1 - dt);
+  const drift = 1 + 0.05 * denv;
   const k = (1 + 0.26 * push) * drift;
-  const cam = camera({ ax, ay, sx: W / 2, sy: H / 2, k });
+  // A pan carries the real measurable motion (a pure zoom around frame centre barely displaces
+  // content that close to the anchor); same envelope, so it also returns to 0 by the act's end.
+  const cam = camera({ ax, ay, sx: W / 2 + 9 * denv, sy: H / 2, k });
 
   return (
     <AbsoluteFill style={{ background: C.ink, overflow: 'hidden' }}>

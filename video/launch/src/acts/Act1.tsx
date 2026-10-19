@@ -37,7 +37,10 @@ export const Act1: React.FC = () => {
   const cardCX = INTERVIEW.x + INTERVIEW.w / 2;
   const cardCY = INTERVIEW.y + INTERVIEW.h / 2;
 
-  const pull = prog(f, L(CUE.hookPullStart), L(CUE.hookResolved), E.dolly);
+  // Starts at frame 0, not CUE.hookPullStart: the hook law wants frame 0 already moving, and a
+  // held, perfectly static crop for the first half-second reads as a stalled player (forensics
+  // flagged exactly this).
+  const pull = prog(f, L(CUE.hookIn), L(CUE.hookResolved), E.dolly);
   const K0 = 3.2;
   const ax = mix(wordX, cardCX, pull);
   const ay = mix(wordY, cardCY, pull);
@@ -47,10 +50,14 @@ export const Act1: React.FC = () => {
   // a frame-diff (forensics), so the frame keeps drifting even while nothing new is said. It peaks
   // mid-hold and returns to 1 by the act's last frame, so both seams (the pull-back's own end, and
   // Act 2's fresh k = 1 start) land at the same scale with nothing to pop across the cut.
+  // A pure zoom around the card's own centre barely displaces the card's own content (it is all
+  // close to the anchor), so a few px of pan carries the real, measurable motion; the small zoom
+  // rides along for a touch of depth. Same envelope, so both return to the neighbours' resting pose.
   const t = prog(f, L(CUE.hookResolved), ACT.hook.dur, E.linear);
-  const holdPush = 1 + 0.035 * 4 * t * (1 - t);
+  const env = 4 * t * (1 - t);
+  const holdPush = 1 + 0.02 * env;
   const k = lmix(K0, 1, pull) * holdPush;
-  const cam = camera({ ax, ay, sx, sy, k });
+  const cam = camera({ ax, ay, sx: sx + 6 * env, sy, k });
 
   const ia = interviewAvatarCenter();
 
