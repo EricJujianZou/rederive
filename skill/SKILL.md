@@ -5,9 +5,7 @@ description: Teaches a codebase by making the user re-derive its design decision
 
 # Rederive
 
-This is learning from first principles. The user designs the system themselves, starting from the bare problem and the basic facts of the situation (what has to happen, what the hardware, network or platform can and cannot do), not from frameworks or names they have heard of. They end up at the real design (or a better one) because they worked it out. Your job is to pose problems and add constraints. Explaining is the last resort.
-
-Always frame a step as a problem to solve: "Here is the problem. How would you solve it?" Never frame it as a finished decision to justify: "The code does X. Why do you think they did that?" The second form turns the session into memorizing reasons, and the point is that the user builds the mechanism.
+The user designs the system themselves from the bare problem and the basic facts of the platform, not from frameworks they have heard of, and reaches the real design (or a better one) by working it out. You pose problems and add constraints. Explaining is the last resort.
 
 ## 1. Pick the repo
 
@@ -17,9 +15,18 @@ Always frame a step as a problem to solve: "Here is the problem. How would you s
 
 All state lives in `<repo>/.rederive/`. Add `.rederive/` to `<repo>/.git/info/exclude` the first time, so it never shows up in the user's commits.
 
-## 2. Build the decision map (first run only)
+The repo is the user's own when most commits are by the author in `git config user.email`, or they say it is.
 
-If `<repo>/.rederive/map.md` exists, read it and skip to step 3. If HEAD has moved more than 50 commits past the commit recorded in the map, tell the user and offer to add decisions for the new work.
+## 2. Find the root problem
+
+Every map starts from why the project exists: the problem the author had before any code was written. If `<repo>/.rederive/map.md` already exists, the root problem is recorded in it, so skip to step 3.
+
+- **The user's own repo:** ask "Why did you build this? What problem did you have before any of this code existed?" before reading anything, even if the README answers it. Their answer is the root problem. If it is only a feature list, ask once what they were trying to get done.
+- **Someone else's repo:** work out the root problem from the README, the first commits and any design docs. Open the session with it as a problem the two of you now have: "We have this problem: <the situation the author faced, in plain words, with no solution terms>. How would you solve it?"
+
+## 3. Build the decision map (first run only)
+
+If `<repo>/.rederive/map.md` exists, read it and skip to step 4. If HEAD has moved more than 50 commits past the commit recorded in the map, tell the user and offer to add decisions for the new work.
 
 Otherwise, tell the user in one line that you are reading the repo's history and that this takes a few minutes on a large repo, then:
 
@@ -27,12 +34,13 @@ Otherwise, tell the user in one line that you are reading the repo's history and
 2. Read the README and any design docs it lists, then the entry points and the most changed files. Open the commits that look like turning points with `git show --stat <sha>` and read the diff of the important files only.
 3. Pick 5 to 12 design decisions. A good decision is a mechanism the user could invent from the problem: how data moves, how state is stored, how failures are handled, how parts are connected, what gets traded away for speed or simplicity. Skip choices that come down to picking a language, framework or library for its known strengths, because the reasons are memorizable facts rather than something to derive. A dependency counts only when the interesting part is the mechanism it provides. Skip styling, naming and config unless the project is about them.
 4. When the output says THIN_HISTORY or NOT_A_GIT_REPO, build the map from the code structure instead of the commits. Read the entry points first, then follow the import links outward: the most imported files usually hold the data model and shared state, and the files that import the most usually hold the main flow. Each boundary between central files is a candidate decision (why this part is separate, what crosses the boundary). Treat commit messages in a thin history as unreliable labels and trust the diffs and the code over them. Mark the evidence as "code only".
-5. Order the decisions so each one builds on the ones before it, the way the system would be built from nothing. Start from the problem the project exists to solve.
+5. Order the decisions so each one builds on the ones before it, the way the system would be built from nothing. D1 is the first thing anyone would have to solve to address the root problem.
 6. Write `<repo>/.rederive/map.md` in this format:
 
 ```
 # Decision map
 repo: <name> | built from: <short sha> | date: <YYYY-MM-DD>
+root problem: <why the project exists, in the user's words for their own repo>
 
 ## D1. <the problem, phrased without naming the solution>
 - Problem: what has to work, in plain words, with no solution terms
@@ -46,13 +54,13 @@ repo: <name> | built from: <short sha> | date: <YYYY-MM-DD>
 - Needs: none, or the decision ids it builds on
 ```
 
-Tell the user how many problems you found and list only their titles. Never show Decision, Options or Evidence before the user has finished that decision, because they contain the answers.
+Do not list the decisions, their titles or how many there are. Go straight into the first problem. Never show Decision, Options or Evidence before the user has finished that decision, because they contain the answers.
 
-## 3. Run a decision
+## 4. Run a decision
 
 Take the first decision in the map that is not finished in `progress.md`, unless the user asks for a specific one. Judge the user's level from their answers as you go. Do not ask about their background or their goals.
 
-1. **Open the problem.** State the problem and what is given in two to four sentences, as if the code did not exist yet. Give none of the constraints yet. Ask how they would solve it. If an earlier decision is finished, connect to it: "Now that we have <the piece they built>, how do we solve <the next problem>?"
+1. **Open the problem.** For D1 in a new session, start from the root problem as in step 2. Otherwise state the problem and what is given in two to four sentences, as if the code did not exist yet. Give none of the constraints yet. Ask how they would solve it. If an earlier decision is finished, connect to it: "Now that we have <the piece they built>, how do we solve <the next problem>?"
 2. **Let them design.** Accept any honest attempt, including a brute force one. Do not correct it for being simple.
 3. **Add constraints one at a time.** Take the next constraint from the map that their design does not already handle, and show its effect on their design: "This is meant for <use>. With <constraint>, your design causes <specific problem>. How would you change it?" Skip constraints their design already handles and say so in one line.
 4. **Treat a better idea as a win.** If they propose something that beats the real code for the problem as stated, say it is better and why. If a constraint from the map is what made the original authors pick the worse-looking approach, introduce that constraint next and let them discover it. If no constraint justifies the original, say plainly that their design is better, and note it in progress. The real constraints may no longer apply, so do not defend the original for its own sake.
@@ -68,15 +76,15 @@ their words: <their final explanation>
 better idea: <only if they proposed one>
 ```
 
-Then go straight into the next problem with the connecting question from step 1.
+Then go straight into the next problem with the connecting question from step 4.1.
 
-## 4. Requests during a session
+## 5. Requests during a session
 
 There are no commands to learn. Read what the user says in plain words and act on it:
 
-- They want the answer: give the name and the one-line definition as in step 3.5, then go to step 3.7.
+- They want the answer: give the name and the one-line definition as in step 4.5, then go to step 4.7.
 - They want to skip a problem: mark it skipped and move to the next one.
-- They ask where they are: list each problem title and its status, never the hidden fields.
+- They ask where they are: list the finished problems with their status and name the current one. Never list the ones still ahead or the hidden fields.
 
 ## Rules
 
