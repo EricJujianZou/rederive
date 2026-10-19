@@ -72,14 +72,21 @@ export const Thread: React.FC<{
       <ThinkingRing x={pa.x} y={pa.y} frame={frame} start={cue.ringAppear1} end={cue.ringResolve1} />
       <Bubble text={text.problem} frame={frame} in={cue.ringResolve1} x={left} y={rowCenterY(ROW.problem)} align="left" dim={frame >= cue.problemOut ? prog(frame, cue.problemOut, cue.problemOut + f60(24), E.smooth) : 0} opacity={d} />
 
-      <TypedBubble text={text.naive} frame={frame} x={SESSION.x + SESSION.w - SESSION.pad} y={rowCenterY(ROW.naive)} timing={{ start: cue.naiveTypeStart, cps: 16 }} caretOut={cue.naiveResolved + f60(6)} dim={frame >= cue.naiveOut ? prog(frame, cue.naiveOut, cue.naiveOut + f60(24), E.smooth) : 0} opacity={d} />
+      {/* cps 20 (was 16): at 16 the line was still typing when the next ring (ringAppear2) had
+          already started spinning, 15 f after the real last key, not before it. caretOut follows
+          the real completion, not the declared (and, at the old cps, already wrong) naiveResolved
+          cue, so the caret never vanishes mid-key. */}
+      <TypedBubble text={text.naive} frame={frame} x={SESSION.x + SESSION.w - SESSION.pad} y={rowCenterY(ROW.naive)} timing={{ start: cue.naiveTypeStart, cps: 20 }} caretOut={cue.naiveTypeStart + Math.ceil((text.naive.length * 60) / 20) + f60(6)} dim={frame >= cue.naiveOut ? prog(frame, cue.naiveOut, cue.naiveOut + f60(24), E.smooth) : 0} opacity={d} />
 
       <Avatar x={ca.x} y={ca.y} size={SESSION.avatar} kind="rederive" opacity={d * prog(frame, cue.ringAppear2, cue.ringAppear2 + f60(10), E.smooth)} />
       <ThinkingRing x={ca.x} y={ca.y} frame={frame} start={cue.ringAppear2} end={cue.ringResolve2} />
       <Bubble text={text.constraint} frame={frame} in={cue.ringResolve2} x={left} y={rowCenterY(ROW.constraint)} align="left" dim={frame >= cue.constraintOut ? prog(frame, cue.constraintOut, cue.constraintOut + f60(24), E.smooth) : 0} opacity={d} />
 
       <ReplyBox frame={frame} in={cue.replyBoxAppear} out={cue.betterIn} x={SESSION.x + SESSION.w - SESSION.pad} y={rowCenterY(ROW.better)} />
-      <TypedBubble text={text.better} frame={frame} x={SESSION.x + SESSION.w - SESSION.pad} y={rowCenterY(ROW.better)} timing={{ start: cue.betterIn, cps: 20 }} caretOut={cue.betterResolved + f60(6)} dim={frame >= cue.betterOut ? prog(frame, cue.betterOut, cue.betterOut + f60(24), E.smooth) : 0} opacity={d} />
+      {/* cps 30 (was 20): at 20 this 54-character line was still typing at frame 1002, after
+          ringAppear3 (960) had already started, so rederive read as answering before the human
+          finished the sentence it was answering. caretOut follows the real completion. */}
+      <TypedBubble text={text.better} frame={frame} x={SESSION.x + SESSION.w - SESSION.pad} y={rowCenterY(ROW.better)} timing={{ start: cue.betterIn, cps: 30 }} caretOut={cue.betterIn + Math.ceil((text.better.length * 60) / 30) + f60(6)} dim={frame >= cue.betterOut ? prog(frame, cue.betterOut, cue.betterOut + f60(24), E.smooth) : 0} opacity={d} />
 
       {showPayoffAvatar && (
         <Avatar x={pya.x} y={pya.y} size={SESSION.avatar} kind="rederive" opacity={prog(frame, cue.ringAppear3, cue.ringAppear3 + f60(10), E.smooth)} />

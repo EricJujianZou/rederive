@@ -1,7 +1,7 @@
 import React from 'react';
 import { AbsoluteFill, useCurrentFrame } from 'remotion';
 import { Mark } from '../brand/Mark';
-import { C, TYPE, U, typeStyle } from '../brand/tokens';
+import { C, FONT, TYPE, U, typeStyle } from '../brand/tokens';
 import { E, hitPulse, lmix, mix, prog } from '../lib/anim';
 import { baselineOf, inkBox, measureTracked } from '../lib/measure';
 import { MaskRise } from '../fx/MaskRise';
@@ -42,7 +42,9 @@ export const Act5: React.FC = () => {
 
   // --- the URL pill: the panel's own collapse target ---------------------------------------
   const urlSize = TYPE.mono.size * U;
-  const urlW = measureTracked(URL.text, urlSize, TYPE.mono.weight, TYPE.mono.track);
+  // Measured in the face it actually renders in (typeStyle('mono', ...) below); the default
+  // display face is narrower, which undersized the pill and let the URL poke past its right edge.
+  const urlW = measureTracked(URL.text, urlSize, TYPE.mono.weight, TYPE.mono.track, FONT.mono);
   const pillW = urlW + 64 * U;
   const pillH = urlSize * TYPE.mono.lead + 30 * U;
   const pillCY = lockCY + 250 * U; // clears the two-line tagline block (~110 px) with room to spare
@@ -122,6 +124,8 @@ export const Act5: React.FC = () => {
             frame={f}
             start={CUE.taglineIn}
             out={CUE.taglineExitStart}
+            stagger={f60(3)}
+            dur={f60(24)}
             by="word"
             role="secondary"
             align="center"

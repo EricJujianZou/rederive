@@ -1,6 +1,6 @@
 import React from 'react';
 import { AbsoluteFill, useCurrentFrame } from 'remotion';
-import { C, TYPE, U, typeStyle } from '../brand/tokens';
+import { C, FONT, TYPE, U, typeStyle } from '../brand/tokens';
 import { E, lmix, mix, prog } from '../lib/anim';
 import { camera } from '../lib/camera';
 import { measureTracked } from '../lib/measure';
@@ -26,7 +26,10 @@ export const Act1: React.FC = () => {
   // The word "this" (the period stays with it): crop tight on its centre, then pull back to the
   // interview card's own centre at rest.
   const idx = LINE.text.lastIndexOf('this');
-  const before = measureTracked(LINE.text.slice(0, idx), size, weight, track);
+  // The line itself renders in Geist Mono (typeStyle('ui', ...) below): measure it in that face,
+  // not the default display face, or the prefix width undershoots and the crop anchors a few
+  // characters early (it landed on "through" instead of "this").
+  const before = measureTracked(LINE.text.slice(0, idx), size, weight, track, FONT.mono);
   const left = interviewBubbleLeft();
   const rowY = interviewRowCenterY(0);
   // Anchor the word's own left edge near the frame's left edge (not its centre), so the crop

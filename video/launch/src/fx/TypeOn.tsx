@@ -48,7 +48,10 @@ export const typeOn = (text: string, frame: number, t: TypeTiming & TypeFont) =>
   const role = t.role ?? 'display';
   const size = t.size ?? TYPE[role].size * U;
   const { weight, track } = TYPE[role];
-  const family = t.family ?? FONT.text;
+  // Role-aware, matching tokens.ts's own typeStyle(): a caller typing in the 'ui' or 'mono' role
+  // (every chat bubble, the URL) gets Geist Mono, not the display face's Geist Variable. Without
+  // this, a role="ui" caller with no explicit `family` silently typed in the wrong typeface.
+  const family = t.family ?? (role === 'mono' || role === 'ui' ? FONT.mono : FONT.text);
   const len = text.length;
   const at = typeFrames(len, t);
   const F = fd(frame);

@@ -31,11 +31,16 @@ export const Act3: React.FC = () => {
   // and the act both opens and closes at k = 1 to match its neighbours (Act 2's hold, Act 4's cut).
   const dt = prog(f, ACT.proof.from, ACT.proof.from + ACT.proof.dur, E.linear);
   const denv = 4 * dt * (1 - dt);
-  const drift = 1 + 0.05 * denv;
+  // Wider than before (0.05 / 9 px): the naive-answer read (f459-606, dt 0.17-0.41, denv already
+  // 0.55-0.97 here, not actually near zero) still averaged under forensics' own "hold" floor at
+  // the old amplitude. A flat additive floor would pop the f360 seam with Act2 (denv = 0 there
+  // only, so a constant breaks the match); a bigger multiplier on the same envelope does not,
+  // since it still returns to exactly 1 at both ends.
+  const drift = 1 + 0.09 * denv;
   const k = (1 + 0.18 * push) * drift;
   // A pan carries the real measurable motion (a pure zoom around frame centre barely displaces
   // content that close to the anchor); same envelope, so it also returns to 0 by the act's end.
-  const cam = camera({ ax, ay, sx: W / 2 + 9 * denv, sy: H / 2, k });
+  const cam = camera({ ax, ay, sx: W / 2 + 15 * denv, sy: H / 2, k });
 
   return (
     <AbsoluteFill style={{ background: C.ink, overflow: 'hidden' }}>

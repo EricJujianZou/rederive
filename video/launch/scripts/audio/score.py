@@ -878,6 +878,7 @@ def build_sfx(song, n, events, plan=None, thinned=None):
         if kind == 'tick':
             m = pitch or song.sig_tick
             x = S.tick(S.mtof(m), 0.08, 0.010, 0.8, seed)
+            ducks.append((t, w * 0.5))
         elif kind == 'tock':
             m = pitch or song.sig_tock
             x = S.tick(S.mtof(m), 0.08, 0.011, 0.8, seed, True) * 0.95 + S.tock(S.mtof(m) / 4, 0.08, 0.02, 0.05, seed) * 0.2
@@ -917,6 +918,7 @@ def build_sfx(song, n, events, plan=None, thinned=None):
             base = int(np.argmin([abs(m - target) for m in ladder]))
             m = pitch or ladder[min(len(ladder) - 1, base + pop_run)]
             x = S.blip(S.mtof(m), e.get('variant') != 'down')
+            ducks.append((t, w * 0.5))
         elif kind == 'whoosh':
             d = float(np.clip(dur or (0.45 + 0.35 * w), 0.15, 3.0))
             apex = float(e.get('apexFrac', 0.5))
@@ -965,6 +967,7 @@ def build_sfx(song, n, events, plan=None, thinned=None):
             x = S.ui_click(S.mtof(m), 0.14, click_seed, click_gap + 0.004 * r.standard_normal(), tone, seed)
             g = BASE['click'] * click_w * 10 ** (float(np.clip(r.normal(0, 0.25), -0.5, 0.5)) / 20)
             S.place(clicks, x, start, g, pan)
+            ducks.append((t, w * 0.5))
             placed.append(dict(i=i, f=f, kind=kind, id=e.get('id', ''), t=t, start=start, x=x, g=g, pan=pan, midi=m))
             continue
         elif kind == 'snap':

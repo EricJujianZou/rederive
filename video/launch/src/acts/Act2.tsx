@@ -58,12 +58,16 @@ export const Act2: React.FC = () => {
   // own "hold" check wants genuine per-frame drift here, not just a looser threshold): it peaks
   // mid-act and returns to 1 by the last frame, matching both neighbours' resting k = 1 so nothing
   // pops across either cut.
+  // Wider than before (0.03 / 6 px): a director's round-1 note called the stretch right after the
+  // iris swallow (roughly f280-355, local 40-115) dead air, with nothing visibly building. The
+  // amplitude still has to return to 0 by the act's own last frame (Act3's f360 seam is not a
+  // declared cut), so this widens the peak rather than adding a floor.
   const bt = prog(f, 0, ACT.turn.dur, E.linear);
   const benv = 4 * bt * (1 - bt);
-  const push = 1 + 0.03 * benv;
+  const push = 1 + 0.06 * benv;
   // A pan carries the real measurable motion: a pure zoom centred on the frame barely displaces
   // content that close to the anchor.
-  const cam = camera({ ax: W / 2, ay: H / 2, sx: W / 2 + 6 * benv, sy: H / 2, k: push });
+  const cam = camera({ ax: W / 2, ay: H / 2, sx: W / 2 + 14 * benv, sy: H / 2, k: push });
 
   return (
     <AbsoluteFill style={{ background: C.ink, overflow: 'hidden' }}>

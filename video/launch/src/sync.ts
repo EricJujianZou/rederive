@@ -74,22 +74,38 @@ export default function cues(): SoundEvent[] {
   const pa = avatarCenter('problem');
   const ca = avatarCenter('constraint');
   ev.push({ f: CUE.ringResolve1 + delayTo(SPR.firm, 0.5), kind: 'pop', weight: 0.9, pan: panX(pa.x), id: 'problem-lands' });
-  ev.push(...typedWordTicks('One big function with if statements.', CUE.naiveTypeStart, 16, 0.5, 'naive'));
+  // cps here must match SessionPanel.tsx's TypedBubble timing for the same line, or the key ticks
+  // drift from the letters actually landing (20/30, raised from 16/20 so neither line is still
+  // typing after the ring that is supposed to follow it has already started).
+  ev.push(...typedWordTicks('One big function with if statements.', CUE.naiveTypeStart, 20, 0.5, 'naive'));
   ev.push({ f: CUE.ringResolve2 + delayTo(SPR.firm, 0.5), kind: 'pop', weight: 1.15, pan: panX(ca.x), id: 'constraint-lands' });
   ev.push({ f: CUE.pushInPeak, kind: 'tick', weight: 0.85, pan: 0, id: 'push-in' });
-  ev.push(...typedWordTicks('Put the check in one function every route calls first.', CUE.betterIn, 20, 0.5, 'better'));
+  ev.push(...typedWordTicks('Put the check in one function every route calls first.', CUE.betterIn, 30, 0.5, 'better'));
 
   // --- payoff: the loudest moment in the film -----------------------------------------------
+  const pya = avatarCenter('payoff');
+  // The payoff bubble pops in on the same spring as the problem/constraint bubbles (Bubble's own
+  // spr(frame, start, SPR.firm) in src/ui/Chat.tsx); it was the one bubble with no matching pop.
+  ev.push({ f: CUE.ringResolveBright + delayTo(SPR.firm, 0.5), kind: 'pop', weight: 1.3, pan: panX(pya.x), id: 'payoff-lands' });
   ev.push({ f: CUE.payoffBoldFlash, kind: 'bell', weight: 1.4, variant: 'motif', id: 'payoff-bell' });
   ev.push({ f: CUE.payoffBoldFlash, kind: 'drop', weight: 1.3, id: 'payoff-drop' });
-  ev.push({ f: settleOf(CUE.payoffBoldFlash, CUE.payoffResolved, E.out, 0.97), kind: 'tock', weight: 0.8, pan: 0, id: 'payoff-settle' });
+  // Derived from the span headerPulse actually rises on (Act4.tsx: payoffBoldFlash - 1 to + 20 on
+  // E.smooth), not an assumed payoffResolved span nothing animates across.
+  ev.push({ f: settleOf(CUE.payoffBoldFlash - 1, CUE.payoffBoldFlash + 20, E.smooth, 0.97), kind: 'tock', weight: 0.8, pan: 0, id: 'payoff-settle' });
   ev.push(whoosh(CUE.pullbackStart, CUE.pullbackEnd, E.cam, 0.6, 0, 'payoff-pullback'));
+  // The resolve -> breakdown section turn (score.json) sits right where the picture's own biggest
+  // reveal is (the whole thread fading back in, Act4's otherRowsOpacity sweep): the whoosh's own
+  // swell has no attack for an onset to catch there, so give the turn a soft mark of its own.
+  ev.push({ f: CUE.pullbackStart, kind: 'tick', weight: 0.7, pan: 0, id: 'pullback-turn' });
 
   // --- lockup: the panel collapses, the avatar becomes the mark, the accent floods once -----
   ev.push({ f: CUE.detachStart, kind: 'click', weight: 0.55, pan: panX(SESSION.x + SESSION.pad), id: 'avatar-detaches' });
   ev.push({ f: CUE.collapseEnd, kind: 'click', weight: 0.6, pan: 0, id: 'panel-becomes-pill' });
   ev.push({ f: CUE.lockupIrisStart, kind: 'swell', weight: 1.1, dur: sec(0.6), id: 'accent-flood' });
-  ev.push({ f: CUE.wordmarkResolved, kind: 'snap', weight: 0.9, pan: 0, id: 'wordmark-locks' });
+  // wordmarkResolved is the fade's literal last frame; the opacity tween (E.smooth) reads as fully
+  // resolved well before that (av-audit: the picture stops moving ~40 f earlier), so the snap
+  // landed after the mark had already settled. Its own 97% settle point instead.
+  ev.push({ f: settleOf(CUE.wordmarkIn, CUE.wordmarkResolved, E.smooth, 0.97), kind: 'snap', weight: 0.9, pan: 0, id: 'wordmark-locks' });
   ev.push({ f: CUE.taglineResolved, kind: 'tick', weight: 0.6, pan: 0, id: 'tagline-settles' });
   ev.push({ f: CUE.urlIn + sec(0.2), kind: 'tick', weight: 0.5, pan: 0, id: 'url-settles' });
 

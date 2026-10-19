@@ -1,6 +1,6 @@
 import React from 'react';
 import { Mark } from '../brand/Mark';
-import { C, TYPE, U, typeStyle } from '../brand/tokens';
+import { C, FONT, TYPE, U, typeStyle } from '../brand/tokens';
 import { clamp, E, prog, spr, SPR } from '../lib/anim';
 import { mixColor } from '../lib/color';
 import { measureTracked } from '../lib/measure';
@@ -106,7 +106,7 @@ export const TypedBubble: React.FC<{
   // The box is sized to the full, finished line (not the maxWidth ceiling), so its right edge sits
   // flush against x throughout typing instead of only once the box happens to fill the ceiling.
   const { size, weight, track } = TYPE.ui;
-  const textW = Math.min(1000 * U, measureTracked(text, size * U, weight, track));
+  const textW = Math.min(1000 * U, measureTracked(text, size * U, weight, track, FONT.mono));
   const boxW = textW + 40 * U;
   return (
     <div

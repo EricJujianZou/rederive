@@ -111,7 +111,16 @@ export const CUE = {
   urlIn: b(13, 2), // 1500 (reads for 180 f = 3.0 s, over the brief's 1.7 s floor)
   wordmarkResolved: b(13, 3), // 1530
   taglineIn: b(13, 3), // 1530: starts the instant the wordmark resolves
-  taglineResolved: b(14, 0), // 1560
+  // Line 1 ("Learn any codebase by re-designing", 5 word-units, k=0..4) finishes rising at
+  // 1530 + 4*3 + 24 = 1566, a real mid-cascade milestone that also keeps the gap to taglineResolved
+  // under the 48 f ceiling (grid-check: nothing else happens between wordmarkResolved and the full
+  // sentence landing).
+  taglineLine1Resolved: 1566, // offgrid: a word-cascade landing, not a beat line
+  // The real frame the tagline's last word (unit 9 of 9, 0-based) finishes rising, given its
+  // MaskRise call's own stagger (f60(3)) and dur (f60(24)) in Act5.tsx: 1530 + 9*3 + 24 = 1581.
+  // Declared resolved was 1560 (b(14,0)) before a critic round caught it: the sentence was still
+  // only half-cascaded in at that frame, 45 f before it actually finished.
+  taglineResolved: 1581, // offgrid: the real completion frame of a 10-word, 2-line cascade, not a beat line
   taglineHoldTick: b(14, 1), // 1590
   taglineExitStart: b(14, 2), // 1620: reading-order exit begins as the tail starts to decay
 };
