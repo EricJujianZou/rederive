@@ -19,4 +19,4 @@ ln -s ~/rederive/skill ~/.claude/skills/rederive
 /rederive https://github.com/redis/redis
 ```
 
-During a session you can type `hint`, `reveal`, `skip`, `map` or `twist`.
+During a session, say what you want in plain words, such as "I'm stuck", "just tell me" or "skip this".
