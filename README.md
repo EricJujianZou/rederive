@@ -25,26 +25,12 @@ Use it on a project you built with AI and can't explain yet, before an interview
 
 The start of a session on Express (an example, shortened):
 
-```
-> /rederive https://github.com/expressjs/express
-
-We have this problem: Node gives you one function that receives every HTTP request. You want
-logging, parsing and auth written once and reused. How would you solve it?
-
-> one big handler with if statements for each url
-
-With 40 routes that each need auth, your handler repeats the auth check 40 times, and one missed
-check is a security hole. How would you change it?
-
-> put auth in a function and have every route call it first
-
-Now some routes need rate limiting before auth and others don't. How does your design handle that?
-
-> give each route a list of functions that run in order, each one decides whether to continue
-
-Yes, exactly, that's how a middleware chain works, you rederived it! It's a list of functions that
-each handle a request and pass it to the next one.
-```
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="assets/session-dark.png" />
+    <img src="assets/session-light.png" alt="rederive asks how you would handle every HTTP request through one function. You suggest one big handler, then a shared auth function. It adds constraints until you describe a list of functions per route, and it tells you that you rederived a middleware chain." width="100%" />
+  </picture>
+</p>
 
 ## Install
 
