@@ -51,7 +51,6 @@ root problem: <why the project exists, in the user's words for their own repo>
 - Decision: the general name of the technique (e.g. "middleware chain", "optimistic locking", "UDP with jitter buffer"), a one-line definition, and what the code does with it (hidden)
 - Options: 2 to 4 approaches including the real one, each with its tradeoff (hidden, used when the user is stuck)
 - Evidence: commit <sha> "<message>", files <paths> (or "code only", files <paths>)
-- Needs: none, or the decision ids it builds on
 ```
 
 Do not list the decisions, their titles or how many there are. Go straight into the first problem. Never show Decision, Options or Evidence before the user has finished that decision.
