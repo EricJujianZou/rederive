@@ -28,27 +28,13 @@ echo "## Repo"
 echo "commits: $total | first: $first | last: $last | authors: $authors | HEAD: $head_sha"
 [ "$(git rev-parse --is-shallow-repository)" = "true" ] && echo "WARNING: shallow clone, early history is missing. Run: git fetch --unshallow"
 
-# Lines added per commit, ignoring generated files. Used for the thin history check and the largest commits list.
+# Lines added per commit, ignoring generated files.
 sizes=$(git log --no-merges --format='@%h %ad %s' --date=short --numstat \
   | NOISE="$noise" awk 'BEGIN { noise = ENVIRON["NOISE"] }
       /^@/ { if (sha != "") print add "\t" sha; sha = substr($0, 2); add = 0; next }
       NF == 3 && $1 ~ /^[0-9]+$/ && $3 !~ noise { add += $1 }
       END { if (sha != "") print add "\t" sha }' \
   | sort -rn)
-all_added=$(printf '%s\n' "$sizes" | awk -F'\t' '{ s += $1 } END { print s + 0 }')
-top_added=$(printf '%s\n' "$sizes" | head -1 | cut -f1)
-top_share=$(( all_added > 0 ? 100 * ${top_added:-0} / all_added : 0 ))
-
-# History is thin when there are too few commits to show decisions changing, or one commit
-# holds most of the code (typical of AI-built or squashed repos). The code structure then
-# carries the map, so print it after the history.
-thin=""
-if [ "$total" -lt 20 ]; then
-  thin="only $total commits"
-elif [ "$top_share" -ge 50 ]; then
-  thin="one commit adds ${top_share}% of all lines"
-fi
-[ -n "$thin" ] && echo "THIN_HISTORY: $thin. Build the map mainly from the code structure at the end of this output."
 
 echo
 echo "## First 15 commits"
@@ -78,8 +64,6 @@ echo
 echo "## Top-level layout"
 git ls-files | grep -v -E "$noise" | awk -F/ 'NF > 1 { print $1 "/" } NF == 1 { print $1 }' | sort | uniq -c | sort -rn | head -25
 
-if [ -n "$thin" ]; then
-  echo
-  echo "# Code structure"
-  python3 -I "$here/structure.py" .
-fi
+echo
+echo "# Code structure"
+python3 -I "$here/structure.py" .
