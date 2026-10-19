@@ -1,0 +1,20 @@
+{
+  "name": "rederive",
+  "version": "0.1.0",
+  "description": "Learn a codebase by re-deriving its design decisions yourself. The tutor poses the problem each part of the code solves and adds the real constraints one at a time until you reach the design.",
+  "author": {
+    "name": "Eric Zou",
+    "url": "https://github.com/EricJujianZou"
+  },
+  "homepage": "https://github.com/EricJujianZou/rederive",
+  "repository": "https://github.com/EricJujianZou/rederive",
+  "license": "MIT",
+  "keywords": [
+    "learning",
+    "codebase",
+    "socratic",
+    "system-design",
+    "interview-prep",
+    "skill"
+  ]
+}

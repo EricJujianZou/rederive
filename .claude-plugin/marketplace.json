@@ -1,0 +1,15 @@
+{
+  "name": "rederive",
+  "description": "Claude Code plugin for learning a codebase by re-deriving its design decisions.",
+  "owner": {
+    "name": "Eric Zou",
+    "url": "https://github.com/EricJujianZou"
+  },
+  "plugins": [
+    {
+      "name": "rederive",
+      "source": "./",
+      "description": "Learn a codebase by re-deriving its design decisions yourself, one problem at a time."
+    }
+  ]
+}
