@@ -100,6 +100,7 @@ export const Act5: React.FC = () => {
 
       {nameP > 0 && (
         <span
+          data-text="wordmark"
           style={{
             position: 'absolute',
             left: 0,
@@ -146,7 +147,7 @@ export const Act5: React.FC = () => {
             transform: `translate(${pillEnd.x}px, ${pillEnd.y}px)`,
           }}
         >
-          <span style={{ ...typeStyle('mono', urlSize), color: C.mute }}>{URL.text}</span>
+          <span data-text="url" style={{ ...typeStyle('mono', urlSize), color: C.mute }}>{URL.text}</span>
         </div>
       )}
     </AbsoluteFill>

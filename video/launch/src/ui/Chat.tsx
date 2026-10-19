@@ -60,17 +60,17 @@ export const Bubble: React.FC<{
   align: Align;
   dim?: number; // 0 = current/full colour, 1 = relaxed to mute (an older message, per pd-terminal-burst-output)
   accent?: React.ReactNode; // optional: render with one phrase highlighted (the payoff)
-}> = ({ text, frame, in: start, x, y, align, dim = 0, accent }) => {
+  opacity?: number; // a second, independent fade: a row the camera is not framing, not an entrance
+}> = ({ text, frame, in: start, x, y, align, dim = 0, accent, opacity = 1 }) => {
   // align="right" assumes a maxWidth-filling box (not exercised in this film: every Bubble here
   // is align="left"; TypedBubble is the one used on the right, and it sizes to its real text).
   const s = spr(frame, start, SPR.firm); // 0..1, no overshoot: it just arrives
-  const o = clamp(s * 1.6); // reaches full opacity well before the spring settles its last pixel
+  const o = clamp(s * 1.6) * opacity; // reaches full opacity well before the spring settles its last pixel
   if (o <= 0.002) return null;
   const bg = align === 'left' ? C.ink2 : C.mist;
   const fg = align === 'left' ? mixColor(C.paper, C.mute, dim) : C.ink;
   return (
     <div
-      data-text="bubble"
       style={{
         position: 'absolute',
         left: 0,
@@ -83,7 +83,9 @@ export const Bubble: React.FC<{
         transform: `translate(${align === 'left' ? x : x - 1040 * U}px, ${(y - (TYPE.ui.size * U * TYPE.ui.lead) / 2 - 16 * U + (1 - s) * 10).toFixed(2)}px)`,
       }}
     >
-      <span style={{ ...typeStyle('ui'), color: fg, display: 'block' }}>{accent ?? text}</span>
+      {/* data-text on the span, not the padded box: the box has no font-size of its own, so the
+          layout audit was reading the inherited default (16px) instead of the real 26px role. */}
+      <span data-text="bubble" style={{ ...typeStyle('ui'), color: fg, display: 'block' }}>{accent ?? text}</span>
     </div>
   );
 };
@@ -97,7 +99,8 @@ export const TypedBubble: React.FC<{
   timing: TypeTiming;
   dim?: number;
   caretOut?: number;
-}> = ({ text, frame, x, y, timing, dim = 0, caretOut }) => {
+  opacity?: number; // a second, independent fade: a row the camera is not framing, not an entrance
+}> = ({ text, frame, x, y, timing, dim = 0, caretOut, opacity = 1 }) => {
   if (frame < timing.start - f60(6)) return null;
   const grow = prog(frame, timing.start - f60(6), timing.start + f60(2), E.smooth); // the box opens just ahead of the first key
   // The box is sized to the full, finished line (not the maxWidth ceiling), so its right edge sits
@@ -115,7 +118,7 @@ export const TypedBubble: React.FC<{
         padding: `${16 * U}px ${20 * U}px`,
         borderRadius: 16 * U,
         background: C.mist,
-        opacity: grow,
+        opacity: grow * opacity,
         boxSizing: 'border-box',
         transform: `translate(${x - boxW}px, ${(y - (TYPE.ui.size * U * TYPE.ui.lead) / 2 - 16 * U + (1 - grow) * 6).toFixed(2)}px)`,
       }}

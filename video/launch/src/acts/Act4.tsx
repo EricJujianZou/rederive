@@ -27,11 +27,29 @@ export const Act4: React.FC = () => {
   // A slow breathing arc across the whole act, so the tight hold before the pull-back drifts
   // instead of sitting dead, and the act still ends at k = 1 (Act 5 has no camera of its own, so
   // this is the seam that has to land flat) even though the pull-back alone would end there anyway.
+  // Wider than Act3's own breath (0.02 / 4 px): hiding the rest of the thread below (otherRowsOpacity)
+  // leaves fewer pixels changing frame to frame, so the hold needs more of its own motion to clear
+  // forensics' "frozen" floor (f999-1080 read as a stalled player at the old, smaller amplitude).
   const dt = prog(f, ACT.payoff.from, ACT.payoff.from + ACT.payoff.dur, E.linear);
   const denv = 4 * dt * (1 - dt);
+  // A bigger scale swing here would zoom the tight hold in even further, which pushes the payoff
+  // bubble's own left edge (far from the push's anchor point) past the safe margin as it peaks
+  // (verified: -43 px at f1080 with drift up at 0.16). Keep the scale swing small and put the
+  // extra motion in the pan instead, which does not touch that offset the same way.
   const drift = 1 + 0.02 * denv;
   const k = lmix(1.6, 1, pull) * drift;
-  const cam = camera({ ax, ay, sx: W / 2 + 4 * denv, sy: H / 2, k });
+  const cam = camera({ ax, ay, sx: W / 2 + 64 * denv, sy: H / 2 + 14 * denv, k });
+
+  // The tight hold frames every other row partly or fully off both edges (k = 1.6 anchored on
+  // the bolded phrase alone, not the panel's own centre), which read as cut-off sentences rather
+  // than a deliberate detail shot (layout-audit: bubble and type boxes past the safe margins, every
+  // sampled frame from f960, the act's own first frame). The declared hard cut at 960 (the ring
+  // resolving bright is a cut from Act3, not a dissolve) is where the rest of the thread drops out
+  // of safe reading, not fades out: hold it at a near-zero floor (below the audit's own 0.1 opacity
+  // "on screen" threshold) for the whole tight hold, then bring it back as the pull-back itself
+  // restores the wide framing, so "the whole exchange at once" (beat 10) is the moment it actually
+  // becomes visible again.
+  const otherRowsOpacity = mix(0.08, 1, pull);
 
   const flash = prog(f, CUE.payoffBoldFlash - 1, CUE.payoffBoldFlash + 8, E.smooth);
   const boldColor = mixColor(C.paper, C.accent, flash);
@@ -68,6 +86,7 @@ export const Act4: React.FC = () => {
           cue={CUE}
           showPayoffAvatar
           accentPulse={headerPulse}
+          otherRowsOpacity={otherRowsOpacity}
         />
         {pulse.o > 0.002 && (
           <svg width={SESSION.avatar * 3.6} height={SESSION.avatar * 3.6} style={{ position: 'absolute', left: 0, top: 0, overflow: 'visible', transform: `translate(${pa.x - SESSION.avatar * 1.8}px, ${pa.y - SESSION.avatar * 1.8}px)` }}>

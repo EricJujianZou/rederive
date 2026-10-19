@@ -21,7 +21,10 @@ export const Act3: React.FC = () => {
   const cardCX = SESSION.x + SESSION.w / 2;
   const cardCY = SESSION.y + SESSION.h / 2;
   const push = hitPulse(f - CUE.pushInPeak, 20, 24);
-  const ax = mix(cardCX, SESSION.x + SESSION.w * 0.4, push);
+  // Anchored closer to the panel's own centre than the constraint line's exact column (was 0.4):
+  // at the old anchor and peak scale, the push carried the far-right typed answer past the right
+  // safe margin and over the 20 px/f text-speed ceiling at its own peak (f660, f690).
+  const ax = mix(cardCX, SESSION.x + SESSION.w * 0.46, push);
   const ay = mix(cardCY, rowCenterY(ROW.constraint), push);
   // A slow breathing arc under the whole act (peaks mid-act, returns to 1 by the last frame), so
   // the long reading pauses between messages still drift instead of reading as a stalled player,
@@ -29,7 +32,7 @@ export const Act3: React.FC = () => {
   const dt = prog(f, ACT.proof.from, ACT.proof.from + ACT.proof.dur, E.linear);
   const denv = 4 * dt * (1 - dt);
   const drift = 1 + 0.05 * denv;
-  const k = (1 + 0.26 * push) * drift;
+  const k = (1 + 0.18 * push) * drift;
   // A pan carries the real measurable motion (a pure zoom around frame centre barely displaces
   // content that close to the anchor); same envelope, so it also returns to 0 by the act's end.
   const cam = camera({ ax, ay, sx: W / 2 + 9 * denv, sy: H / 2, k });

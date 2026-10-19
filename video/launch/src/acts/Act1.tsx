@@ -83,7 +83,6 @@ export const Act1: React.FC = () => {
         <Header x={INTERVIEW.x} y={INTERVIEW.y} label="interview" kind="generic" w={INTERVIEW.w} />
         <Avatar x={ia.x} y={ia.y} size={INTERVIEW.avatar} kind="generic" />
         <div
-          data-text="interviewer"
           style={{
             position: 'absolute',
             left: 0,
@@ -96,7 +95,9 @@ export const Act1: React.FC = () => {
             transform: `translate(${left}px, ${rowY - (size * TYPE.ui.lead) / 2 - 16 * U}px)`,
           }}
         >
-          <span style={{ ...typeStyle('ui', size), color: C.paper }}>{LINE.text}</span>
+          {/* data-text on the span: the padded box has no font-size of its own, so tagging it
+              reads the inherited default instead of this line's real, camera-scaled size. */}
+          <span data-text="interviewer" style={{ ...typeStyle('ui', size), color: C.paper }}>{LINE.text}</span>
         </div>
         <ReplyBox frame={f} in={L(CUE.hookResolved)} x={INTERVIEW.x + INTERVIEW.w - INTERVIEW.pad} y={interviewRowCenterY(1)} />
       </div>
