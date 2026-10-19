@@ -1,12 +1,12 @@
 import React from 'react';
-import { AbsoluteFill, useCurrentFrame } from 'remotion';
+import { AbsoluteFill, useCurrentFrame, useVideoConfig } from 'remotion';
 import { C } from '../brand/tokens';
 import { E, lmix, mix, prog } from '../lib/anim';
 import { camera } from '../lib/camera';
 import { mixColor } from '../lib/color';
-import { ACT, CUE, H, W } from '../timeline';
+import { ACT, CUE } from '../timeline';
 import { SessionCard, Thread } from '../ui/SessionPanel';
-import { avatarCenter, rowCenterY, ROW, SESSION } from '../ui/layout';
+import { avatarCenter, layoutFor, rowCenterY, ROW, SESSION } from '../ui/layout';
 
 // ACT 4 - PAYOFF. "Yes, exactly. You rederived a middleware chain." bolds in the accent the
 // instant it lands (cam-detail-first-pullback): tight on the phrase through the hold, then the
@@ -16,14 +16,25 @@ import { avatarCenter, rowCenterY, ROW, SESSION } from '../ui/layout';
 
 export const Act4: React.FC = () => {
   const f = useCurrentFrame() + ACT.payoff.from;
+  const { width, height } = useVideoConfig();
+  const lay = layoutFor(width, height);
+  const isWide = lay.fmt === 'wide';
+  const SESSION_L = isWide ? SESSION : lay.SESSION;
+  const rowCenterYV = isWide ? rowCenterY : lay.rowCenterY;
+  const avatarCenterV = isWide ? avatarCenter : lay.avatarCenter;
 
-  const cardCX = SESSION.x + SESSION.w / 2;
-  const cardCY = SESSION.y + SESSION.h / 2;
-  const ax0 = SESSION.x + SESSION.w * 0.46;
-  const ay0 = rowCenterY(ROW.payoff);
+  const cardCX = SESSION_L.x + SESSION_L.w / 2;
+  const cardCY = SESSION_L.y + SESSION_L.h / 2;
+  const ax0 = SESSION_L.x + SESSION_L.w * 0.46;
+  const ay0 = rowCenterYV(ROW.payoff);
   const pull = prog(f, CUE.pullbackStart, CUE.pullbackEnd, E.cam);
-  const ax = mix(ax0, cardCX, pull);
-  const ay = mix(ay0, cardCY, pull);
+  // The tight detail push (anchored on the bolded phrase, k up to 1.6) is tuned in 1920x1080 pixel
+  // math, and needed two critique-round fixes to clear its own safe margins there; on the narrower
+  // social frames it stays wide the whole act (ax/ay always the panel's own centre, k == 1) rather
+  // than re-risking an untuned version of the same bleed. The bold-flash colour change and the
+  // avatar pulse still carry the beat without it.
+  const ax = isWide ? mix(ax0, cardCX, pull) : cardCX;
+  const ay = isWide ? mix(ay0, cardCY, pull) : cardCY;
   // A slow breathing arc across the whole act, so the tight hold before the pull-back drifts
   // instead of sitting dead, and the act still ends at k = 1 (Act 5 has no camera of its own, so
   // this is the seam that has to land flat) even though the pull-back alone would end there anyway.
@@ -37,8 +48,8 @@ export const Act4: React.FC = () => {
   // (verified: -43 px at f1080 with drift up at 0.16). Keep the scale swing small and put the
   // extra motion in the pan instead, which does not touch that offset the same way.
   const drift = 1 + 0.02 * denv;
-  const k = lmix(1.6, 1, pull) * drift;
-  const cam = camera({ ax, ay, sx: W / 2 + 64 * denv, sy: H / 2 + 14 * denv, k });
+  const k = (isWide ? lmix(1.6, 1, pull) : 1) * drift;
+  const cam = camera({ ax, ay, sx: width / 2 + (isWide ? 64 : 10) * denv, sy: height / 2 + (isWide ? 14 : 6) * denv, k });
 
   // The tight hold frames every other row partly or fully off both edges (k = 1.6 anchored on
   // the bolded phrase alone, not the panel's own centre), which read as cut-off sentences rather
@@ -48,8 +59,9 @@ export const Act4: React.FC = () => {
   // of safe reading, not fades out: hold it at a near-zero floor (below the audit's own 0.1 opacity
   // "on screen" threshold) for the whole tight hold, then bring it back as the pull-back itself
   // restores the wide framing, so "the whole exchange at once" (beat 10) is the moment it actually
-  // becomes visible again.
-  const otherRowsOpacity = mix(0.08, 1, pull);
+  // becomes visible again. Only needed when the camera actually goes tight (isWide); the narrower
+  // formats never crop the other rows out of their own safe margins, so they just stay visible.
+  const otherRowsOpacity = isWide ? mix(0.08, 1, pull) : 1;
 
   const flash = prog(f, CUE.payoffBoldFlash - 1, CUE.payoffBoldFlash + 8, E.smooth);
   const boldColor = mixColor(C.paper, C.accent, flash);
@@ -62,18 +74,18 @@ export const Act4: React.FC = () => {
   const headerPulse = prog(f, CUE.payoffBoldFlash - 1, CUE.payoffBoldFlash + 20, E.smooth) * (1 - prog(f, CUE.payoffResolved, CUE.payoffHoldTick, E.smooth));
 
   // The small pulse on the avatar: a circle, accent, that rises and fades without leaving the shot.
-  const pa = avatarCenter('payoff');
+  const pa = avatarCenterV('payoff');
   const pulse = (() => {
     const t = f - CUE.irisPulse;
-    const u = t <= 0 ? 0 : Math.min(1, t / 18);
+    const up = t <= 0 ? 0 : Math.min(1, t / 18);
     const fade = t <= 0 ? 0 : Math.max(0, 1 - t / 30);
-    return { scale: 1 + 2.4 * u, o: 0.5 * fade };
+    return { scale: 1 + 2.4 * up, o: 0.5 * fade };
   })();
 
   return (
     <AbsoluteFill style={{ background: C.ink, overflow: 'hidden' }}>
       <div style={cam}>
-        <SessionCard />
+        <SessionCard session={SESSION_L} />
         <Thread
           frame={f}
           text={{
@@ -87,10 +99,16 @@ export const Act4: React.FC = () => {
           showPayoffAvatar
           accentPulse={headerPulse}
           otherRowsOpacity={otherRowsOpacity}
+          session={SESSION_L}
+          u={lay.u}
+          rowCenterYFn={rowCenterYV}
+          avatarCenterFn={isWide ? undefined : lay.avatarCenter}
+          bubbleLeftFn={isWide ? undefined : lay.bubbleLeft}
+          bubbleRightFn={isWide ? undefined : lay.bubbleRight}
         />
         {pulse.o > 0.002 && (
-          <svg width={SESSION.avatar * 3.6} height={SESSION.avatar * 3.6} style={{ position: 'absolute', left: 0, top: 0, overflow: 'visible', transform: `translate(${pa.x - SESSION.avatar * 1.8}px, ${pa.y - SESSION.avatar * 1.8}px)` }}>
-            <circle cx={SESSION.avatar * 1.8} cy={SESSION.avatar * 1.8} r={(SESSION.avatar / 2) * pulse.scale} fill="none" stroke={C.accent} strokeWidth={2} opacity={pulse.o} />
+          <svg width={SESSION_L.avatar * 3.6} height={SESSION_L.avatar * 3.6} style={{ position: 'absolute', left: 0, top: 0, overflow: 'visible', transform: `translate(${pa.x - SESSION_L.avatar * 1.8}px, ${pa.y - SESSION_L.avatar * 1.8}px)` }}>
+            <circle cx={SESSION_L.avatar * 1.8} cy={SESSION_L.avatar * 1.8} r={(SESSION_L.avatar / 2) * pulse.scale} fill="none" stroke={C.accent} strokeWidth={2} opacity={pulse.o} />
           </svg>
         )}
       </div>

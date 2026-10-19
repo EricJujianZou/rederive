@@ -1,11 +1,11 @@
 import React from 'react';
-import { AbsoluteFill, useCurrentFrame } from 'remotion';
+import { AbsoluteFill, useCurrentFrame, useVideoConfig } from 'remotion';
 import { C } from '../brand/tokens';
 import { E, hitPulse, mix, prog } from '../lib/anim';
 import { camera } from '../lib/camera';
-import { ACT, CUE, H, W } from '../timeline';
+import { ACT, CUE } from '../timeline';
 import { SessionCard, Thread } from '../ui/SessionPanel';
-import { rowCenterY, ROW, SESSION } from '../ui/layout';
+import { layoutFor, rowCenterY, ROW, SESSION } from '../ui/layout';
 
 // ACT 3 - PROOF. The problem lands with no solution words, the naive answer, the constraint that
 // breaks it (the camera's one hero move here: a push onto the line that breaks it), a held beat
@@ -17,16 +17,21 @@ import { rowCenterY, ROW, SESSION } from '../ui/layout';
 
 export const Act3: React.FC = () => {
   const f = useCurrentFrame() + ACT.proof.from;
+  const { width, height } = useVideoConfig();
+  const lay = layoutFor(width, height);
+  const isWide = lay.fmt === 'wide';
+  const SESSION_L = isWide ? SESSION : lay.SESSION;
+  const rowCenterYV = isWide ? rowCenterY : lay.rowCenterY;
 
-  const cardCX = SESSION.x + SESSION.w / 2;
-  const cardCY = SESSION.y + SESSION.h / 2;
-  const push = hitPulse(f - CUE.pushInPeak, 20, 24);
-  // Anchored closer to the panel's own centre than the constraint line's exact column (was 0.4):
-  // at the old anchor and peak scale, the push carried the far-right typed answer past the right
-  // safe margin and over the 20 px/f text-speed ceiling at its own peak (f660, f690). Nudged again
-  // (0.46 -> 0.49, see the drift note below) after the breathing widened.
-  const ax = mix(cardCX, SESSION.x + SESSION.w * 0.49, push);
-  const ay = mix(cardCY, rowCenterY(ROW.constraint), push);
+  const cardCX = SESSION_L.x + SESSION_L.w / 2;
+  const cardCY = SESSION_L.y + SESSION_L.h / 2;
+  // The hero push-in is tuned in 1920x1080 pixel math (the anchor fraction, the safe-margin
+  // clearance it was nudged for twice over two critique rounds); on the narrower social frames it
+  // is held off (push = 0 below) rather than re-risking the same right-edge clip on an untuned
+  // anchor, so those formats get the gentler universal breathing arc only.
+  const push = isWide ? hitPulse(f - CUE.pushInPeak, 20, 24) : 0;
+  const ax = mix(cardCX, SESSION_L.x + SESSION_L.w * 0.49, push);
+  const ay = mix(cardCY, rowCenterYV(ROW.constraint), push);
   // A slow breathing arc under the whole act (peaks mid-act, returns to 1 by the last frame), so
   // the long reading pauses between messages still drift instead of reading as a stalled player,
   // and the act both opens and closes at k = 1 to match its neighbours (Act 2's hold, Act 4's cut).
@@ -44,12 +49,12 @@ export const Act3: React.FC = () => {
   const k = (1 + 0.18 * push) * drift;
   // A pan carries the real measurable motion (a pure zoom around frame centre barely displaces
   // content that close to the anchor); same envelope, so it also returns to 0 by the act's end.
-  const cam = camera({ ax, ay, sx: W / 2 + 15 * denv, sy: H / 2, k });
+  const cam = camera({ ax, ay, sx: width / 2 + 15 * denv, sy: height / 2, k });
 
   return (
     <AbsoluteFill style={{ background: C.ink, overflow: 'hidden' }}>
       <div style={cam}>
-        <SessionCard />
+        <SessionCard session={SESSION_L} />
         <Thread
           frame={f}
           text={{
@@ -61,6 +66,12 @@ export const Act3: React.FC = () => {
           }}
           cue={CUE}
           showPayoffAvatar={false}
+          session={SESSION_L}
+          u={lay.u}
+          rowCenterYFn={rowCenterYV}
+          avatarCenterFn={isWide ? undefined : lay.avatarCenter}
+          bubbleLeftFn={isWide ? undefined : lay.bubbleLeft}
+          bubbleRightFn={isWide ? undefined : lay.bubbleRight}
         />
       </div>
     </AbsoluteFill>

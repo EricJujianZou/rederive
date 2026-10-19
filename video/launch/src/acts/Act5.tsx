@@ -1,14 +1,14 @@
 import React from 'react';
-import { AbsoluteFill, useCurrentFrame } from 'remotion';
+import { AbsoluteFill, useCurrentFrame, useVideoConfig } from 'remotion';
 import { Mark } from '../brand/Mark';
-import { C, FONT, TYPE, U, typeStyle } from '../brand/tokens';
+import { C, FONT, TYPE, typeStyle } from '../brand/tokens';
 import { E, hitPulse, lmix, mix, prog } from '../lib/anim';
 import { baselineOf, inkBox, measureTracked } from '../lib/measure';
 import { MaskRise } from '../fx/MaskRise';
-import { ACT, copy, CUE, f60, H, W } from '../timeline';
+import { ACT, copy, CUE, f60 } from '../timeline';
 import { Avatar } from '../ui/Chat';
 import { SessionCard, Thread } from '../ui/SessionPanel';
-import { avatarCenter, SESSION } from '../ui/layout';
+import { avatarCenter, layoutFor, SESSION } from '../ui/layout';
 
 // ACT 5 - LOCKUP. The thread clears, the session panel collapses into a slim pill around the
 // URL (le-clone-stack-morph, ban-safe: no echo trails, this film's own simplification), and the
@@ -23,6 +23,11 @@ const URL = copy('url');
 
 export const Act5: React.FC = () => {
   const f = useCurrentFrame() + ACT.lockup.from;
+  const { width, height } = useVideoConfig();
+  const lay = layoutFor(width, height);
+  const isWide = lay.fmt === 'wide';
+  const SESSION_L = isWide ? SESSION : lay.SESSION;
+  const u = lay.u;
 
   // --- the thread clears, the panel collapses ---------------------------------------------
   const contentOpacity = 1 - prog(f, CUE.shrinkStart2, CUE.shrinkTick1, E.smooth);
@@ -30,30 +35,30 @@ export const Act5: React.FC = () => {
 
   // --- the lockup geometry (mirrors Act2's own math: the mark as tall as the name's ascent) ---
   const disp = TYPE.display;
-  const nameSize = TYPE.display.size * 1.25 * U;
+  const nameSize = TYPE.display.size * 1.25 * u;
   const per100 = { w: measureTracked(NAME.text, 100, disp.weight, disp.track) / 100, asc: inkBox(NAME.text, 100, disp.weight).ascent / 100 };
   const nameW = per100.w * nameSize;
   const M1 = per100.asc * nameSize; // the mark's height
   const gap = 0.3 * M1;
   const lockW = M1 + gap + nameW;
-  const lockCY = H / 2 - 70 * U;
-  const markEnd = { x: (W - lockW) / 2, y: lockCY - M1 / 2 };
+  const lockCY = height / 2 - 70 * u;
+  const markEnd = { x: (width - lockW) / 2, y: lockCY - M1 / 2 };
   const nameEnd = { x: markEnd.x + M1 + gap, baseline: lockCY + M1 / 2 };
 
   // --- the URL pill: the panel's own collapse target ---------------------------------------
-  const urlSize = TYPE.mono.size * U;
+  const urlSize = TYPE.mono.size * u;
   // Measured in the face it actually renders in (typeStyle('mono', ...) below); the default
   // display face is narrower, which undersized the pill and let the URL poke past its right edge.
   const urlW = measureTracked(URL.text, urlSize, TYPE.mono.weight, TYPE.mono.track, FONT.mono);
-  const pillW = urlW + 64 * U;
-  const pillH = urlSize * TYPE.mono.lead + 30 * U;
+  const pillW = urlW + 64 * u;
+  const pillH = urlSize * TYPE.mono.lead + 30 * u;
   // 300 (was 250): the tagline block itself moved down 70 px (60 -> 130, see above) to clear the
   // wordmark's own ink on exit, so the pill has to move down with it or the tagline's second line
   // runs into the pill's own top edge instead (verified: pillH ~= 72 px, so the pill's real top
   // sits at pillCY - 36, not at pillCY itself).
-  const pillCY = lockCY + 300 * U;
-  const pillEnd = { x: (W - pillW) / 2, y: pillCY - pillH / 2, w: pillW, h: pillH, radius: pillH / 2 };
-  const start = { x: SESSION.x, y: SESSION.y, w: SESSION.w, h: SESSION.h, radius: SESSION.radius };
+  const pillCY = lockCY + 300 * u;
+  const pillEnd = { x: (width - pillW) / 2, y: pillCY - pillH / 2, w: pillW, h: pillH, radius: pillH / 2 };
+  const start = { x: SESSION_L.x, y: SESSION_L.y, w: SESSION_L.w, h: SESSION_L.h, radius: SESSION_L.radius };
   const rect = {
     x: mix(start.x, pillEnd.x, collapse),
     y: mix(start.y, pillEnd.y, collapse),
@@ -63,12 +68,12 @@ export const Act5: React.FC = () => {
   };
 
   // --- the avatar detaches and becomes the mark ---------------------------------------------
-  const pa = avatarCenter('payoff');
+  const pa = isWide ? avatarCenter('payoff') : lay.avatarCenter('payoff');
   const badgeOut = prog(f, CUE.detachStart, CUE.detachStart + f60(18), E.in);
   const travel = prog(f, CUE.detachStart + f60(8), CUE.lockupIrisStart - f60(10), E.inOut);
-  const mx = mix(pa.x - SESSION.avatar / 2, markEnd.x, travel);
-  const my = mix(pa.y - SESSION.avatar / 2, markEnd.y, travel);
-  const msize = lmix(SESSION.avatar, M1, travel);
+  const mx = mix(pa.x - SESSION_L.avatar / 2, markEnd.x, travel);
+  const my = mix(pa.y - SESSION_L.avatar / 2, markEnd.y, travel);
+  const msize = lmix(SESSION_L.avatar, M1, travel);
 
   // --- the one designed accent flood: the iris's third and final use ------------------------
   const floodT = f - CUE.lockupIrisStart;
@@ -97,9 +102,15 @@ export const Act5: React.FC = () => {
         cue={CUE}
         showPayoffAvatar={false}
         contentOpacity={contentOpacity}
+        session={SESSION_L}
+        u={u}
+        rowCenterYFn={isWide ? undefined : lay.rowCenterY}
+        avatarCenterFn={isWide ? undefined : lay.avatarCenter}
+        bubbleLeftFn={isWide ? undefined : lay.bubbleLeft}
+          bubbleRightFn={isWide ? undefined : lay.bubbleRight}
       />
 
-      {badgeOut < 1 && <Avatar x={pa.x} y={pa.y} size={SESSION.avatar} kind="rederive" opacity={1 - badgeOut} />}
+      {badgeOut < 1 && <Avatar x={pa.x} y={pa.y} size={SESSION_L.avatar} kind="rederive" opacity={1 - badgeOut} />}
       <Mark size={msize} color={C.paper} opacity={badgeOut} style={{ position: 'absolute', left: 0, top: 0, transform: `translate(${mx}px, ${my}px)` }} />
 
       {flood > 0.004 && <div style={{ position: 'absolute', inset: 0, background: C.accent, opacity: flood }} />}
@@ -122,12 +133,12 @@ export const Act5: React.FC = () => {
       )}
 
       {f >= CUE.taglineIn && (
-        // 96 * U (was 60): MaskRise's exit rises each word up through the top of its own clip on
+        // 96 * u (was 60): MaskRise's exit rises each word up through the top of its own clip on
         // E.in before it fades (depart()), so during taglineExitStart the departing glyphs travel
-        // up past this box's top edge. At 60 * U that travel crossed into the wordmark's own ink
+        // up past this box's top edge. At 60 * u that travel crossed into the wordmark's own ink
         // (verified at f1635-1640: "Learn" visibly touching the mark). The URL pill at
-        // lockCY + 250 * U still clears this with room to spare.
-        <div style={{ position: 'absolute', left: 0, top: 0, width: W, transform: `translate(0, ${lockCY + 130 * U}px)` }}>
+        // lockCY + 250 * u still clears this with room to spare.
+        <div style={{ position: 'absolute', left: 0, top: 0, width, transform: `translate(0, ${lockCY + 130 * u}px)` }}>
           <MaskRise
             text={TAGLINE.text}
             frame={f}
@@ -137,6 +148,7 @@ export const Act5: React.FC = () => {
             dur={f60(24)}
             by="word"
             role="secondary"
+            size={TYPE.secondary.size * u}
             align="center"
             style={{ color: C.mute, alignItems: 'center' }}
           />

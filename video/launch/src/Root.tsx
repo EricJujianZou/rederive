@@ -36,6 +36,11 @@ export const RemotionRoot: React.FC = () => (
   <>
     {/* The film. Render with scripts/render.sh (muted picture + ffmpeg mux + sync check). */}
     <Composition id="Film" component={Film} durationInFrames={TOTAL} fps={FPS} width={W} height={H} defaultProps={{ audit: false } as FilmProps} />
+    {/* Social re-layouts (formats.md §7): same component, same timeline and soundtrack, a
+        different width/height. Every act reads its own geometry from ui/layout.ts's layoutFor(),
+        keyed off useVideoConfig(), so no prop threading is needed here beyond the frame size. */}
+    <Composition id="Film9x16" component={Film} durationInFrames={TOTAL} fps={FPS} width={1080} height={1920} defaultProps={{ audit: false } as FilmProps} />
+    <Composition id="Film1x1" component={Film} durationInFrames={TOTAL} fps={FPS} width={1080} height={1080} defaultProps={{ audit: false } as FilmProps} />
     {/* The film as sub-frames for the motion-blurred master (render.sh --blur passes out/samples.json). */}
     <Composition
       id="FilmSub"

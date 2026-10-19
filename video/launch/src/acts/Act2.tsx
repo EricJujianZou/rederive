@@ -1,13 +1,13 @@
 import React from 'react';
-import { AbsoluteFill, useCurrentFrame } from 'remotion';
-import { C, TYPE, U, typeStyle } from '../brand/tokens';
+import { AbsoluteFill, useCurrentFrame, useVideoConfig } from 'remotion';
+import { C, TYPE, typeStyle } from '../brand/tokens';
 import { E, lmix, mix, prog } from '../lib/anim';
 import { camera } from '../lib/camera';
 import { Iris } from '../fx/Iris';
-import { ACT, copy, CUE, f60, H, W } from '../timeline';
+import { ACT, copy, CUE, f60 } from '../timeline';
 import { Avatar, Header, ReplyBox } from '../ui/Chat';
 import { SessionCard } from '../ui/SessionPanel';
-import { interviewAvatarCenter, interviewBubbleLeft, interviewRowCenterY, INTERVIEW, SESSION } from '../ui/layout';
+import { interviewAvatarCenter, interviewBubbleLeft, interviewRowCenterY, INTERVIEW, layoutFor, Panel, SESSION } from '../ui/layout';
 
 const LINE = copy('interviewer');
 
@@ -22,22 +22,28 @@ const LINE = copy('interviewer');
 const L = (abs: number) => abs - ACT.turn.from;
 
 const SHRINK_DUR = f60(40);
-const avatarPos = () => ({ x: SESSION.x + 13, y: SESSION.y + 32 });
 
-const Scene: React.FC<{ warm: boolean }> = ({ warm }) => (
+const Scene: React.FC<{ warm: boolean; session: Panel; u: number }> = ({ warm, session, u }) => (
   <div style={{ position: 'absolute', inset: 0, filter: warm ? undefined : 'saturate(0.55) brightness(0.82)' }}>
-    <SessionCard />
-    <Header x={SESSION.x} y={SESSION.y} label="rederive" kind="rederive" w={SESSION.w} />
+    <SessionCard session={session} />
+    <Header x={session.x} y={session.y} label="rederive" kind="rederive" w={session.w} u={u} />
   </div>
 );
 
 export const Act2: React.FC = () => {
   const f = useCurrentFrame();
+  const { width, height } = useVideoConfig();
+  const lay = layoutFor(width, height);
+  const isWide = lay.fmt === 'wide';
+  const INTERVIEW_L = isWide ? INTERVIEW : lay.INTERVIEW;
+  const SESSION_L = isWide ? SESSION : lay.SESSION;
+  const u = lay.u;
+  const avatarPos = () => ({ x: SESSION_L.x + 13 * u, y: SESSION_L.y + 32 * u });
 
   const shrink = prog(f, 0, SHRINK_DUR, E.contact);
   const s = lmix(1, 0.05, shrink);
   const op = 1 - prog(f, SHRINK_DUR - 6, SHRINK_DUR, E.linear);
-  const ia = interviewAvatarCenter();
+  const ia = isWide ? interviewAvatarCenter() : lay.interviewAvatarCenter();
   const avatar = avatarPos();
 
   // The cold session scene sits behind the interview panel for the whole act (the turn's own
@@ -48,10 +54,10 @@ export const Act2: React.FC = () => {
   // new versus Act1's last frame) and grows to the full session rect as the panel shrinks away, so
   // the reveal reads as uncovered, not switched on.
   const revealRect = {
-    x: mix(INTERVIEW.x, SESSION.x, shrink),
-    y: mix(INTERVIEW.y, SESSION.y, shrink),
-    w: lmix(INTERVIEW.w, SESSION.w, shrink),
-    h: lmix(INTERVIEW.h, SESSION.h, shrink),
+    x: mix(INTERVIEW_L.x, SESSION_L.x, shrink),
+    y: mix(INTERVIEW_L.y, SESSION_L.y, shrink),
+    w: lmix(INTERVIEW_L.w, SESSION_L.w, shrink),
+    h: lmix(INTERVIEW_L.h, SESSION_L.h, shrink),
   };
 
   // A slow breathing arc keeps the post-iris hold from reading as a dead, static frame (forensics'
@@ -67,7 +73,10 @@ export const Act2: React.FC = () => {
   const push = 1 + 0.06 * benv;
   // A pan carries the real measurable motion: a pure zoom centred on the frame barely displaces
   // content that close to the anchor.
-  const cam = camera({ ax: W / 2, ay: H / 2, sx: W / 2 + 14 * benv, sy: H / 2, k: push });
+  const cam = camera({ ax: width / 2, ay: height / 2, sx: width / 2 + 14 * benv, sy: height / 2, k: push });
+  const interviewBubbleLeftV = isWide ? interviewBubbleLeft() : lay.interviewBubbleLeft();
+  const interviewRow0V = isWide ? interviewRowCenterY(0) : lay.interviewRowCenterY(0);
+  const interviewRow1V = isWide ? interviewRowCenterY(1) : lay.interviewRowCenterY(1);
 
   return (
     <AbsoluteFill style={{ background: C.ink, overflow: 'hidden' }}>
@@ -76,7 +85,7 @@ export const Act2: React.FC = () => {
             revealRect so the cut frame shows nothing the interview panel didn't already cover. */}
         <div style={{ position: 'absolute', left: 0, top: 0, overflow: 'hidden', transform: `translate(${revealRect.x}px, ${revealRect.y}px)`, width: revealRect.w, height: revealRect.h }}>
           <div style={{ position: 'absolute', left: 0, top: 0, transform: `translate(${-revealRect.x}px, ${-revealRect.y}px)` }}>
-            <Scene warm={false} />
+            <Scene warm={false} session={SESSION_L} u={u} />
           </div>
         </div>
 
@@ -87,41 +96,41 @@ export const Act2: React.FC = () => {
               position: 'absolute',
               left: 0,
               top: 0,
-              width: INTERVIEW.w,
-              height: INTERVIEW.h,
+              width: INTERVIEW_L.w,
+              height: INTERVIEW_L.h,
               opacity: op,
               transformOrigin: '94% 88%',
-              transform: `translate(${INTERVIEW.x}px, ${INTERVIEW.y}px) scale(${s})`,
+              transform: `translate(${INTERVIEW_L.x}px, ${INTERVIEW_L.y}px) scale(${s})`,
             }}
           >
-            <div style={{ position: 'absolute', inset: 0, borderRadius: INTERVIEW.radius, background: C.ink2, boxShadow: '0 24px 80px rgba(0,0,0,0.22)', overflow: 'hidden' }}>
+            <div style={{ position: 'absolute', inset: 0, borderRadius: INTERVIEW_L.radius, background: C.ink2, boxShadow: '0 24px 80px rgba(0,0,0,0.22)', overflow: 'hidden' }}>
               <div style={{ position: 'absolute', left: 0, top: 0, width: '100%', height: 1.5, background: 'rgba(255,255,255,0.1)' }} />
             </div>
-            <Header x={0} y={0} label="interview" kind="generic" w={INTERVIEW.w} />
-            <Avatar x={ia.x - INTERVIEW.x} y={ia.y - INTERVIEW.y} size={INTERVIEW.avatar} kind="generic" />
+            <Header x={0} y={0} label="interview" kind="generic" w={INTERVIEW_L.w} u={u} />
+            <Avatar x={ia.x - INTERVIEW_L.x} y={ia.y - INTERVIEW_L.y} size={INTERVIEW_L.avatar} kind="generic" />
             {/* same markup, position and (frame, in) as Act1's copy, so nothing changes across the cut */}
             <div
               style={{
                 position: 'absolute',
                 left: 0,
                 top: 0,
-                maxWidth: 1040 * U,
-                padding: `${16 * U}px ${20 * U}px`,
-                borderRadius: 16 * U,
+                maxWidth: 1040 * u,
+                padding: `${16 * u}px ${20 * u}px`,
+                borderRadius: 16 * u,
                 background: C.ink2,
                 border: `1.5px solid ${C.line}`,
-                transform: `translate(${interviewBubbleLeft() - INTERVIEW.x}px, ${interviewRowCenterY(0) - INTERVIEW.y - (TYPE.ui.size * U * TYPE.ui.lead) / 2 - 16 * U}px)`,
+                transform: `translate(${interviewBubbleLeftV - INTERVIEW_L.x}px, ${interviewRow0V - INTERVIEW_L.y - (TYPE.ui.size * u * TYPE.ui.lead) / 2 - 16 * u}px)`,
               }}
             >
-              <span style={{ ...typeStyle('ui'), color: C.paper }}>{LINE.text}</span>
+              <span style={{ ...typeStyle('ui', TYPE.ui.size * u), color: C.paper }}>{LINE.text}</span>
             </div>
-            <ReplyBox frame={f + ACT.turn.from} in={CUE.hookResolved} x={INTERVIEW.w - INTERVIEW.pad} y={interviewRowCenterY(1) - INTERVIEW.y} />
+            <ReplyBox frame={f + ACT.turn.from} in={CUE.hookResolved} x={isWide ? INTERVIEW_L.w - INTERVIEW_L.pad : lay.interviewBubbleRight() - INTERVIEW_L.x} y={interviewRow1V - INTERVIEW_L.y} u={u} />
           </div>
         )}
 
         {/* the signature move: a circle grows from the avatar and swallows the frame in the true colour */}
         <Iris frame={f} start={L(CUE.irisSeed) - 1} x={avatar.x} y={avatar.y} ring ringColor={C.accent}>
-          <Scene warm />
+          <Scene warm session={SESSION_L} u={u} />
         </Iris>
       </div>
     </AbsoluteFill>
