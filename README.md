@@ -1,20 +1,35 @@
-# rederive
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="assets/banner-dark.png" />
+    <img src="assets/banner-light.png" alt="rederive: learn any codebase by re-designing it yourself from first principles" width="100%" />
+  </picture>
+</p>
 
-rederive is a skill for Claude Code and other coding agents that teaches you a codebase by having you design it yourself. It reads the repo's history and code, finds the design decisions that shaped it, and turns each one into a problem for you to solve. You start from the problem the project was built for. The tutor adds the real constraints one at a time until your design matches the original or improves on it.
+<p align="center">
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-24292f?style=flat" alt="MIT License" /></a>
+  &nbsp;
+  <a href="https://agentskills.io"><img src="https://img.shields.io/badge/Agent_Skills-compatible-24292f?style=flat" alt="Agent Skills compatible" /></a>
+  &nbsp;
+  <a href="#install"><img src="https://img.shields.io/badge/Claude_Code-plugin-24292f?style=flat" alt="Claude Code plugin" /></a>
+  &nbsp;
+  <a href="#other-agents"><img src="https://img.shields.io/badge/Codex_%2F_Cursor_%2F_Gemini-install-24292f?style=flat" alt="Codex, Cursor, Gemini CLI" /></a>
+</p>
 
-It works on your own projects and on any open source repo. Use it on a project you built with an AI agent and can't yet explain, before an interview where you have to walk through a project, or to learn how a well-known project like Express or Redis was designed.
+<p align="center"><sub><a href="#a-session">A session</a> · <a href="#install">Install</a> · <a href="#how-it-works">How it works</a> · <a href="#license">License</a></sub></p>
 
-## Example
+**rederive** is a skill for coding agents that teaches you a codebase by making you design it yourself. It finds the decisions that shaped the code and gives each one to you as a problem to solve, with the real constraints added one at a time. It never tells you the answer.
 
-An example of the start of a session on Express:
+Use it on a project you built with AI and can't explain yet, before an interview where you walk through your own work, or on a famous repo like Express or Redis.
+
+## A session
+
+The start of a session on Express (an example, shortened):
 
 ```
 > /rederive https://github.com/expressjs/express
 
-Finding the most challenging problems and rearranging them into logic chains. This will take a few mins
-
-We have this problem: Node gives you one function that receives every HTTP request. You want to
-build web apps where logging, parsing and auth are written once and reused. How would you solve it?
+We have this problem: Node gives you one function that receives every HTTP request. You want
+logging, parsing and auth written once and reused. How would you solve it?
 
 > one big handler with if statements for each url
 
@@ -23,10 +38,9 @@ check is a security hole. How would you change it?
 
 > put auth in a function and have every route call it first
 
-Now a team wants to add rate limiting before auth on some routes and not others. How does your
-design handle that?
+Now some routes need rate limiting before auth and others don't. How does your design handle that?
 
-> make a list of functions per route and run them in order, each one decides whether to continue
+> give each route a list of functions that run in order, each one decides whether to continue
 
 Yes, exactly, that's how a middleware chain works, you rederived it! It's a list of functions that
 each handle a request and pass it to the next one.
@@ -34,60 +48,65 @@ each handle a request and pass it to the next one.
 
 ## Install
 
-Claude Code:
+### Claude Code
 
 ```
 /plugin marketplace add EricJujianZou/rederive
 /plugin install rederive@rederive
 ```
 
-Codex, Cursor, Gemini CLI, GitHub Copilot, opencode, Amp and Goose all load the shared `.agents/skills/` folder. One command installs it for them:
+### Other agents
+
+Codex, Cursor, Gemini CLI, GitHub Copilot, opencode, Amp and Goose all read the shared `.agents/skills/` folder, so one command covers them:
 
 ```
 npx skills add EricJujianZou/rederive
 ```
 
-To copy it by hand, clone the repo and put `skills/rederive` in your agent's skills folder:
+<details>
+<summary>Install by hand</summary>
 
-| Agent | In a project | For every project |
-|---|---|---|
-| Codex | `.agents/skills/` | `~/.agents/skills/` |
-| Cursor | `.cursor/skills/` or `.agents/skills/` | `~/.cursor/skills/` |
-| Gemini CLI | `.gemini/skills/` or `.agents/skills/` | `~/.gemini/skills/` |
-| GitHub Copilot | `.github/skills/` | `~/.copilot/skills/` |
-| opencode | `.opencode/skills/` | `~/.config/opencode/skills/` |
-| Windsurf | `.windsurf/skills/` | `~/.codeium/windsurf/skills/` |
-| Amp | `.agents/skills/` | `~/.config/amp/skills/` |
-| Goose | `.agents/skills/` | `~/.agents/skills/` |
+Clone the repo and copy `skills/rederive` into your agent's skills folder.
 
 ```
 git clone https://github.com/EricJujianZou/rederive
 cp -r rederive/skills/rederive ~/.agents/skills/
 ```
 
-On agents without subagents, the tutor builds the map before the first question instead of in the background.
+| Agent | One project | Every project |
+|---|---|---|
+| Codex | `.agents/skills/` | `~/.agents/skills/` |
+| Cursor | `.cursor/skills/` | `~/.cursor/skills/` |
+| Gemini CLI | `.gemini/skills/` | `~/.gemini/skills/` |
+| GitHub Copilot | `.github/skills/` | `~/.copilot/skills/` |
+| opencode | `.opencode/skills/` | `~/.config/opencode/skills/` |
+| Windsurf | `.windsurf/skills/` | `~/.codeium/windsurf/skills/` |
+| Amp | `.agents/skills/` | `~/.config/amp/skills/` |
+| Goose | `.agents/skills/` | `~/.agents/skills/` |
+
+</details>
 
 It needs `git`, `bash` and `python3`.
 
 ## Use
 
 ```
-/rederive                                      # the repo you are in
-/rederive ~/code/myapp                         # a local repo
-/rederive https://github.com/expressjs/express # clones it into the current folder
+/rederive                                       # the repo you are in
+/rederive ~/code/myapp                          # a local repo
+/rederive https://github.com/expressjs/express  # clones it into the current folder
 ```
 
-Talk to it in plain words. You can say you're stuck, ask for a hint, skip a problem or say you want to start over. It never tells you the answer. When you are stuck it narrows the problem down to a few approaches for you to choose from. After two wrong answers in a row it offers to draw a sketch of the problem.
+Talk to it in plain words. Tell it you're stuck, ask to skip a problem, or say you want to start over.
 
 ## How it works
 
-The first session on a repo starts with why the project exists. On your own repo it asks you why you built it. On someone else's repo it works out the original problem from the README and the early commits and asks you how you would solve it.
+- **It starts from why the project exists.** On your own repo it asks you why you built it. On someone else's repo it works out the original problem and asks how you would solve it.
+- **A background agent maps the repo while you answer.** It reads the code, the import links between files and the commits where the design changed. It doesn't trust commit messages, so repos built with AI in a few big commits work too.
+- **The map holds 5 to 10 problems** in the order the system would be built, each with its constraints and the real design. It lives in `.rederive/map.md`. Don't open it until you're done, because it has the answers.
+- **When you're stuck,** it narrows the problem to a few approaches to choose from. After two wrong answers in a row it offers to sketch the problem for you.
+- **It keeps notes on how you did** in `.rederive/log.md`: where you struggled and what you worked out alone. Read it at the end to see what to practice.
 
-While you answer, a background agent builds a decision map in `.rederive/map.md`. It reads the code and the import links between files, and uses the commit history to find when the design changed. It does not rely on commit messages, so it also works on repos with a few large commits or poor messages, which is common for projects built with AI. The map holds 5 to 10 problems in the order the system would be built, each with its constraints and the real design. The map contains the answers, so don't open it until you're done.
-
-The tutor writes notes to `.rederive/log.md` after each problem, covering where you struggled and what you worked out without help. At the end it tells you where the log is so you can look for patterns in what to practice.
-
-Both files stay on your machine. The `.rederive/` folder is added to the repo's local git exclude list, so it never appears in your commits. rederive sends no telemetry.
+Everything stays on your machine. `.rederive/` goes in the repo's local git exclude list, so it never shows up in your commits. rederive sends no telemetry.
 
 ## License
 
