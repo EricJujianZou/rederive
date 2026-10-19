@@ -15,10 +15,7 @@
 
 <p align="center"><sub><a href="#install">Install</a> · <a href="#a-session">A session</a> · <a href="#how-it-works">How it works</a> · <a href="#license">License</a></sub></p>
 
-**rederive** is a skill for coding agents that teaches you a codebase by making you design it yourself. It finds the decisions that shaped the code and gives each one to you as a problem to solve, with the real constraints added one at a time. It never tells you the answer.
-
-Use it on a project you built with AI and can't explain yet, before an interview where you walk through your own work, or on a famous repo like Express or Redis.
-
+**rederive** is a skill for coding agents that teaches you a codebase by making you design it yourself from first principles. It only asks you questions to guide you to the right answer, and it won't explain things. We made this on purpose to aim for understanding through derivation, instead of memorizing what the agent says.
 ## Install
 
 ```
