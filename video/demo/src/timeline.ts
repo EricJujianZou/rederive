@@ -19,7 +19,7 @@ export const TAIL = FPS;
 // each half can be iterated alone; both render the same Session component on the absolute frame.
 export const ACT = {
   propose: { from: b(1), dur: b(6) - b(1) }, // problem, straight send dropped, relay lands
-  resolve: { from: b(6), dur: b(13) - b(6) }, // detour, address swap, direct path, ICE, next problems
+  resolve: { from: b(6), dur: b(13) - b(6) }, // detour, address swap, direct path, ICE
   lockup: { from: b(13), dur: b(15) + TAIL - b(13) }, // the iris from the avatar, the end card
 };
 
@@ -90,14 +90,9 @@ export const CUE = {
   iceIn: b(11, 0), // giant ICE punches in
   iceSwap: b(11, 1), // it blur-swaps into the bubble line
   payoffResolved: b(11, 2),
-  pullOut2: b(12, 0),
-  // bar 12: the promise. Four next problems around the diagram
-  chip1: b(12, 0),
-  chip2: b(12, 0, 2),
-  chip3: b(12, 1),
-  chip4: b(12, 1, 2),
+  pullOut2: b(12, 1), // the camera eases back under the held payoff line
   // bar 12.5 -> end: the lockup
-  dimOut: b(12, 2, 2), // the diagram and chips relax to mute: the eye goes to the avatar
+  dimOut: b(12, 2, 2), // the diagram relaxes to mute: the eye goes to the avatar
   seed: b(13, 0), // the iris seed appears on the avatar
   iris: b(13, 1), // the iris opens (20 f) and the music stops on this bar line
   markLand: b(13, 2), // the mark reaches its lockup size
@@ -109,7 +104,7 @@ export const CUE = {
   end: b(15),
 };
 
-/** The one designed near-still hold: the payoff line under the music's breakdown. */
+/** The one designed near-still hold: the payoff line under the music's breakdown, the camera easing back beneath it. */
 export const HOLD = { from: CUE.payoffResolved, to: CUE.pullOut2 };
 
 export type Copy = {
@@ -132,11 +127,7 @@ export const COPY: Copy[] = [
   { id: 'answer3', text: 'Use the server only to swap addresses, then send direct.', in: CUE.type3, resolved: CUE.type3Done, out: CUE.iceIn, kind: 'ui' },
   { id: 'chipA', text: '203.0.113.9', in: CUE.chipsFly, resolved: CUE.chipsLand, out: CUE.iris, kind: 'ui' },
   { id: 'chipB', text: '198.51.100.4', in: CUE.chipsFly, resolved: CUE.chipsLand, out: CUE.iris, kind: 'ui' },
-  { id: 'payoff', text: "That's ICE. Linphone does exactly this.", in: CUE.iceSwap, resolved: CUE.payoffResolved, out: CUE.iris, kind: 'ui' },
-  { id: 'next1', text: 'Packets arrive out of order', in: CUE.chip1, resolved: CUE.chip1 + f60(10), out: CUE.iris, kind: 'ui' },
-  { id: 'next2', text: 'Two codecs, pick one', in: CUE.chip2, resolved: CUE.chip2 + f60(10), out: CUE.iris, kind: 'ui' },
-  { id: 'next3', text: 'Keys over an open line', in: CUE.chip3, resolved: CUE.chip3 + f60(10), out: CUE.iris, kind: 'ui' },
-  { id: 'next4', text: 'Your own voice comes back', in: CUE.chip4, resolved: CUE.chip4 + f60(10), out: CUE.iris, kind: 'ui' },
+  { id: 'payoff', text: 'You successfully rederived ICE. Linphone does exactly this.', in: CUE.iceSwap, resolved: CUE.payoffResolved, out: CUE.iris, kind: 'ui' },
   { id: 'wordmark', text: 'rederive', in: CUE.markLand, resolved: CUE.nameLock, out: TOTAL },
   { id: 'tagline', text: 'Learn any codebase\nby re-designing it yourself.', in: CUE.tagline, resolved: CUE.tagline + f60(40), out: TOTAL },
   { id: 'url', text: 'github.com/EricJujianZou/rederive', in: CUE.url, resolved: CUE.url + f60(20), out: TOTAL, kind: 'ui' },

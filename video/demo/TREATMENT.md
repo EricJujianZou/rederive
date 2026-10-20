@@ -37,7 +37,6 @@
 | ty-blur-swap-rescale | 10 | giant "ICE" blurs out and re-forms as the start of the payoff bubble |
 | cl-specular-sweep | 9 | one sweep along the settled green direct line |
 | tr-iris-from-glyph | 12 | the ∂ avatar seeds the iris into the end card |
-| le-clone-stack-morph | 12-13 | ban-safe echoes as the mark scales into the lockup |
 | dn-answer-card-bars | 6 | the "+80 ms" detour label with a small bar, the one number in the film |
 | ui-clutter-pileup-strip | dropped | no overload story here |
 | ui-discard-into-bin | dropped | comic tone, and both landings are spent |
@@ -59,9 +58,9 @@ Device path: packet dropped at router (3) → packet detours via server (5-6) �
 | 7 | 12-14 | composer types the third answer, longer, with one pause | you: Use the server only to swap addresses, then send direct. | ticks |
 | 8 | 14-16 | send; two address chips fly from the server to the phones; the server fades out | chips: 203.0.113.9 / 198.51.100.4 | two soft lands |
 | 9 | 16-18 | both phones send at once; routers open; packets cross at centre and arrive (landing 2); the direct line turns green; sweep; camera pushes 1.3x | | the drop: kick on the arrival |
-| 10 | 18-20 | giant ICE punches in, blur-swaps into the payoff bubble, "ICE" green | ∂: That's ICE. Linphone does exactly this. | chime |
-| 11 | 20-22 | camera eases back; four chips of the next problems pop around the diagram | Packets arrive out of order / Two codecs, pick one / Keys over an open line / Your own voice comes back | four ticks |
-| 12 | 22-24 | the ∂ avatar's seed irises to white; mark scales up with echoes; wordmark locks | rederive | music stops on the bar, one resolved note |
+| 10 | 18-20 | giant ICE punches in, blur-swaps into the payoff bubble, "rederived" bold, "ICE" green | ∂: You successfully rederived ICE. Linphone does exactly this. | chime |
+| 11 | 20-22 | camera eases back under the payoff line; the drawing relaxes to mute | | breakdown |
+| 12 | 22-24 | the ∂ avatar's seed irises to white; mark scales up; wordmark locks | rederive | music stops on the bar, one resolved note |
 | 13-14 | 24-28 | tagline and URL in; slow push; tail | Learn any codebase by re-designing it yourself. / github.com/EricJujianZou/rederive | tail |
 
 Copy budget: 8 budgeted words (tagline + name). Bubble text, chips, header and URL are product strings (kind ui): 75 words.

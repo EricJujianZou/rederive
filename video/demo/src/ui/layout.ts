@@ -28,20 +28,6 @@ export const layoutFor = (W: number, H: number) => {
     composer: { x: (W - bubbleW) / 2, y: bottom - (tall ? 130 : 110) * u, w: bubbleW },
     // where a sent line docks: its right edge and centre
     sent: { right: (W + bubbleW) / 2, y: bottom - (tall ? 130 : 110) * u },
-    // the four next-problem chips, around the drawing (world offsets from the diagram centre, in drawing units)
-    chips: tall
-      ? [
-          { x: -215, y: -400 },
-          { x: 215, y: -400 },
-          { x: -215, y: 330 },
-          { x: 215, y: 330 },
-        ]
-      : [
-          { x: -560, y: -310 },
-          { x: 560, y: -310 },
-          { x: -560, y: 300 },
-          { x: 560, y: 300 },
-        ],
     // the end card
     end: { markSize: (tall ? 150 : 180) * u, cy: H / 2 - (tall ? 60 : 50) * u },
   };

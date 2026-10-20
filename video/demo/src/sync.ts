@@ -82,8 +82,6 @@ export default function cues(): SoundEvent[] {
   // Bar 11: ICE punches in (hit), re-forms as the line (nothing: the words tick)
   ev.push({ f: CUE.iceIn + 2, kind: 'hit', weight: 1.0, pan: 0, id: 'ice' });
   ev.push({ f: CUE.payoffResolved, kind: 'bell', weight: 0.9, pan: -0.2, variant: 'motif', id: 'payoff-bell' });
-  // Bar 12: the four chips pop
-  [CUE.chip1, CUE.chip2, CUE.chip3, CUE.chip4].forEach((f, i) => ev.push({ f: hit(f, SPR.micro, 0.5), kind: 'pop', weight: 0.6, pan: i % 2 === 0 ? -0.4 : 0.4, id: `chip${i + 1}` }));
 
   // Lockup: the seed swells, the iris swallows (suck into the cut), the mark lands, the name locks, the tagline settles
   ev.push({ f: CUE.seed, kind: 'swell', weight: 0.6, pan: -0.3, dur: CUE.iris - CUE.seed, id: 'seed' });

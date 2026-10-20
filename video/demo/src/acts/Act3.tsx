@@ -54,7 +54,6 @@ export const Act3: React.FC = () => {
   const up = prog(frame, CUE.url, CUE.url + f60(22), E.out);
   // the slow push through the hold, on the whole card
   const push = lmix(1, 1.16, prog(frame, CUE.url - f60(20), TOTAL, E.linear)); // a 16% push over the hold (past 1.3 s a creep is too slow to read), still moving on the last frame
-  const echoes = [0.72, 0.5].map((o, i) => ({ o: o * (1 - np) * mp * 0.5, s: 1 + 0.14 * (i + 1) * (1 - mp) }));
   const markT = (sx: number) => `translate(${(mx - (markW * sx) / 2).toFixed(2)} ${(my - (markSize * sx) / 2).toFixed(2)}) scale(${((markSize * sx) / GLYPH.h).toFixed(4)})`;
   return (
     <>
@@ -62,10 +61,6 @@ export const Act3: React.FC = () => {
       <div style={{ position: 'absolute', inset: 0, clipPath: `circle(${r.toFixed(2)}px at ${ix.toFixed(2)}px ${iy.toFixed(2)}px)`, background: C.ink }}>
         <svg width={L.W} height={L.H} viewBox={`0 0 ${L.W} ${L.H}`} style={{ position: 'absolute', left: 0, top: 0 }}>
           <g transform={`translate(${L.W / 2} ${(L.end.cy + 40 * u).toFixed(2)}) scale(${push.toFixed(4)}) translate(${-L.W / 2} ${(-(L.end.cy + 40 * u)).toFixed(2)})`}>
-            {/* ban-safe echoes: plain stroked copies, one tonal step, fading as the mark lands */}
-            {echoes.map((e, i) => (
-              <path key={i} d={GLYPH.d} fill="none" stroke={C.mute} strokeWidth={1.5 / ((markSize * e.s) / GLYPH.h)} opacity={e.o} transform={markT(e.s)} fillRule="evenodd" />
-            ))}
             <path d={GLYPH.d} fill={C.paper} fillRule="evenodd" transform={markT(1)} />
             <path d={OUTLINE.name.d} fill={C.paper} opacity={nameO} transform={`translate(${nameX.toFixed(2)} ${(L.end.cy + nameSize * 0.36).toFixed(2)}) scale(${nameK.toFixed(4)})`} />
             {[OUTLINE.tag0, OUTLINE.tag1].map((o, li) => {

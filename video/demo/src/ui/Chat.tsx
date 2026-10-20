@@ -58,30 +58,28 @@ export const Typed: React.FC<{
   caret?: boolean;
   caretOut?: number;
   accent?: string; // a phrase set in the accent once shown
+  bold?: string; // a phrase set heavy in the text colour
   size: number;
   width?: number;
   id: string;
-}> = ({ s, frame, color, caret = false, caretOut, accent, size, width, id }) => {
+}> = ({ s, frame, color, caret = false, caretOut, accent, bold, size, width, id }) => {
   const units = s.mode === 'word' ? s.text.split(' ') : s.text.split('');
   const n = shownAt(s, frame);
   const F = fd(frame);
   const typing = n > 0 && n < units.length;
   const blinkOn = typing || Math.floor(Math.abs(F - s.end) / f60(30)) % 2 === 0;
   const showCaret = caret && F >= s.start - f60(6) && (caretOut === undefined || F < caretOut);
-  let accentFrom = -1;
-  let accentTo = -1;
-  if (accent) {
-    const i = s.text.indexOf(accent);
-    if (i >= 0) {
-      if (s.mode === 'char') {
-        accentFrom = i;
-        accentTo = i + accent.length;
-      } else {
-        accentFrom = s.text.slice(0, i).split(' ').length - 1;
-        accentTo = accentFrom + accent.split(' ').length;
-      }
-    }
-  }
+  // a phrase's unit range in the text, in chars or words per the schedule's mode
+  const range = (phrase?: string): [number, number] => {
+    if (!phrase) return [-1, -1];
+    const i = s.text.indexOf(phrase);
+    if (i < 0) return [-1, -1];
+    if (s.mode === 'char') return [i, i + phrase.length];
+    const from = s.text.slice(0, i).split(' ').length - 1;
+    return [from, from + phrase.split(' ').length];
+  };
+  const [accentFrom, accentTo] = range(accent);
+  const [boldFrom, boldTo] = range(bold);
   return (
     <span data-text={id} style={{ ...typeStyle('ui', size), whiteSpace: 'pre-wrap', display: 'block', width, color }}>
       {units.map((t, i) => {
@@ -89,10 +87,11 @@ export const Typed: React.FC<{
         const age = shown ? F - unitFrame(s, i) : 0;
         const o = shown ? clamp((age + 1) / 4) : 0;
         const inAccent = i >= accentFrom && i < accentTo;
+        const inBold = inAccent || (i >= boldFrom && i < boldTo);
         return (
           <React.Fragment key={i}>
             {i === n && showCaret && <Caret color={color} size={size} on={blinkOn} />}
-            <span style={{ opacity: o, color: inAccent ? C.accent : undefined, fontWeight: inAccent ? 650 : undefined }}>{t}</span>
+            <span style={{ opacity: o, color: inAccent ? C.accent : undefined, fontWeight: inBold ? 650 : undefined }}>{t}</span>
             {s.mode === 'word' && i < units.length - 1 ? <span style={{ opacity: o }}> </span> : null}
           </React.Fragment>
         );
@@ -131,8 +130,9 @@ export const AssistantBubble: React.FC<{
   u: number;
   out?: number;
   accent?: string;
+  bold?: string;
   id: string;
-}> = ({ s, frame, x, y, maxW, u, out, accent, id }) => {
+}> = ({ s, frame, x, y, maxW, u, out, accent, bold, id }) => {
   const start = s.start - f60(8);
   const p = spr(frame, start, SPR.firm);
   const q = out === undefined ? 0 : prog(frame, out, out + f60(14), E.exit);
@@ -155,7 +155,7 @@ export const AssistantBubble: React.FC<{
         transform: `translate(${x}px, ${(y - (size * TYPE.ui.lead) / 2 - pad + (1 - p) * 10 * u - q * 60 * u).toFixed(2)}px)`,
       }}
     >
-      <Typed s={s} frame={frame} color={C.ink} size={size} accent={accent} id={id} width={maxW - 48 * u} />
+      <Typed s={s} frame={frame} color={C.ink} size={size} accent={accent} bold={bold} id={id} width={maxW - 48 * u} />
     </div>
   );
 };

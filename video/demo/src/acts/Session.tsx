@@ -4,7 +4,7 @@ import { C, TYPE, typeStyle } from '../brand/tokens';
 import { blurIn, blurOut, clamp, E, lmix, prog, spr, SPR } from '../lib/anim';
 import { camera, Shot } from '../lib/camera';
 import { copy, CUE, f60 } from '../timeline';
-import { AssistantBubble, Avatar, Chip, Composer, HeaderPill, ThinkingRing } from '../ui/Chat';
+import { AssistantBubble, Avatar, Composer, HeaderPill, ThinkingRing } from '../ui/Chat';
 import { Diagram } from '../ui/Diagram';
 import { D, layoutFor } from '../ui/layout';
 import { SCHEDULES } from '../ui/typing';
@@ -20,7 +20,7 @@ export const shotAt = (frame: number, L: ReturnType<typeof layoutFor>): Shot => 
   // push 1: on router B as the packet drops; back out as the constraint is read
   const p1 = prog(frame, CUE.pushIn - f60(6), CUE.pushIn + f60(44), E.cam);
   const r1 = prog(frame, CUE.pullOut, CUE.pullOut + f60(40), E.cam);
-  // push 2: on the green line as the packets land; back out for the chips
+  // push 2: on the green line as the packets land; back out under the payoff
   const p2 = prog(frame, CUE.pushIn2 - f60(4), CUE.pushIn2 + f60(36), E.cam);
   const r2 = prog(frame, CUE.pullOut2, CUE.pullOut2 + f60(40), E.cam);
   const z1 = p1 * (1 - r1);
@@ -65,11 +65,11 @@ export const Session: React.FC<{ frame: number }> = ({ frame }) => {
         <AssistantBubble s={SCHEDULES.problem} frame={frame} x={A.bx} y={A.ay} maxW={A.maxW} u={u} out={CUE.ring2 - f60(6)} id="problem" />
         <AssistantBubble s={SCHEDULES.constraint1} frame={frame} x={A.bx} y={A.ay} maxW={A.maxW} u={u} out={CUE.ring3 - f60(6)} id="constraint1" />
         <AssistantBubble s={SCHEDULES.constraint2} frame={frame} x={A.bx} y={A.ay} maxW={A.maxW} u={u} out={CUE.iceIn - f60(10)} id="constraint2" />
-        <AssistantBubble s={SCHEDULES.payoff} frame={frame} x={A.bx} y={A.ay} maxW={A.maxW} u={u} accent="ICE" id="payoff" />
+        <AssistantBubble s={SCHEDULES.payoff} frame={frame} x={A.bx} y={A.ay} maxW={A.maxW} u={u} accent="ICE" bold="rederived" id="payoff" />
         {/* the human side: the composer, typed and sent */}
         <Composer s={SCHEDULES.answer1} frame={frame} x={L.composer.x} y={L.composer.y} w={L.composer.w} u={u} send={CUE.send1} out={CUE.type2 - f60(32)} id="answer1" />
         <Composer s={SCHEDULES.answer2} frame={frame} x={L.composer.x} y={L.composer.y} w={L.composer.w} u={u} send={CUE.send2} out={CUE.type3 - f60(32)} id="answer2" />
-        <Composer s={SCHEDULES.answer3} frame={frame} x={L.composer.x} y={L.composer.y} w={L.composer.w} u={u} send={CUE.send3} out={CUE.chip1 - f60(10)} id="answer3" />
+        <Composer s={SCHEDULES.answer3} frame={frame} x={L.composer.x} y={L.composer.y} w={L.composer.w} u={u} send={CUE.send3} out={CUE.pullOut2 - f60(10)} id="answer3" />
         {/* the giant word */}
         {iceOn && (
           <div
@@ -90,12 +90,6 @@ export const Session: React.FC<{ frame: number }> = ({ frame }) => {
             ICE
           </div>
         )}
-        {/* the next problems, around the drawing */}
-        {(['next1', 'next2', 'next3', 'next4'] as const).map((id, i) => {
-          const at = [CUE.chip1, CUE.chip2, CUE.chip3, CUE.chip4][i];
-          const o = L.chips[i];
-          return <Chip key={id} text={copy(id).text} x={L.diagram.cx + o.x * L.diagram.k} y={L.diagram.cy + o.y * L.diagram.k} frame={frame} start={at} u={u} id={id} />;
-        })}
       </div>
       {/* the iris seed: the accent dot grows on the avatar before the lockup act takes over */}
       {frame >= CUE.seed && frame < CUE.iris && <Avatar x={A.ax} y={A.ay} size={44 * u} opacity={prog(frame, CUE.seed, CUE.seed + f60(8), E.smooth)} ring={spr(frame, CUE.seed, SPR.firm)} />}
