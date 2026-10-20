@@ -1,0 +1,1483 @@
+{
+ "lufs": -14.01,
+ "true_peak_db": -2.27,
+ "sample_peak_db": -2.28,
+ "lra": 7.37,
+ "momentary_max": -8.49,
+ "momentary_max_t": 19.2,
+ "tail_50ms_db": -118.7,
+ "last_480_zero": true,
+ "seconds": 29.0,
+ "limiter_max_gr_db": 0.04,
+ "limiter_hot": [],
+ "payoff": {
+  "t": 19.0,
+  "momentary_max": -8.49,
+  "limiter_gr_db": 0.04,
+  "over_median_lu": 7.3
+ },
+ "hook": {
+  "opening_lufs_m": -22.35,
+  "median_lufs_m": -15.79,
+  "below_median_db": 6.56
+ },
+ "loudest_frac": 0.66,
+ "out": "public/audio/soundtrack.wav",
+ "bpm": 120.0,
+ "key": "A major",
+ "bars": 15,
+ "events": {
+  "count": 217,
+  "by_kind": {
+   "land": 5,
+   "tick": 51,
+   "key": 137,
+   "click": 3,
+   "snap": 4,
+   "hit": 4,
+   "whoosh": 2,
+   "pop": 5,
+   "suck": 2,
+   "drop": 1,
+   "bell": 2,
+   "swell": 1
+  },
+  "skipped": [
+   {
+    "i": 15,
+    "f": 152.0,
+    "kind": "key",
+    "why": "typing \"word\": one blip per word, on its first key"
+   },
+   {
+    "i": 16,
+    "f": 153.0,
+    "kind": "key",
+    "why": "typing \"word\": one blip per word, on its first key"
+   },
+   {
+    "i": 17,
+    "f": 154.0,
+    "kind": "key",
+    "why": "typing \"word\": one blip per word, on its first key"
+   },
+   {
+    "i": 18,
+    "f": 155.0,
+    "kind": "key",
+    "why": "67 ms after the previous word blip (merged)"
+   },
+   {
+    "i": 19,
+    "f": 156.0,
+    "kind": "key",
+    "why": "typing \"word\": one blip per word, on its first key"
+   },
+   {
+    "i": 20,
+    "f": 157.0,
+    "kind": "key",
+    "why": "typing \"word\": one blip per word, on its first key"
+   },
+   {
+    "i": 21,
+    "f": 158.0,
+    "kind": "key",
+    "why": "typing \"word\": one blip per word, on its first key"
+   },
+   {
+    "i": 23,
+    "f": 160.0,
+    "kind": "key",
+    "why": "typing \"word\": one blip per word, on its first key"
+   },
+   {
+    "i": 24,
+    "f": 161.0,
+    "kind": "key",
+    "why": "typing \"word\": one blip per word, on its first key"
+   },
+   {
+    "i": 25,
+    "f": 162.0,
+    "kind": "key",
+    "why": "typing \"word\": one blip per word, on its first key"
+   },
+   {
+    "i": 26,
+    "f": 163.0,
+    "kind": "key",
+    "why": "typing \"word\": one blip per word, on its first key"
+   },
+   {
+    "i": 27,
+    "f": 165.0,
+    "kind": "key",
+    "why": "typing \"word\": one blip per word, on its first key"
+   },
+   {
+    "i": 28,
+    "f": 166.0,
+    "kind": "key",
+    "why": "typing \"word\": one blip per word, on its first key"
+   },
+   {
+    "i": 29,
+    "f": 167.0,
+    "kind": "key",
+    "why": "typing \"word\": one blip per word, on its first key"
+   },
+   {
+    "i": 31,
+    "f": 170.0,
+    "kind": "key",
+    "why": "typing \"word\": one blip per word, on its first key"
+   },
+   {
+    "i": 32,
+    "f": 171.0,
+    "kind": "key",
+    "why": "typing \"word\": one blip per word, on its first key"
+   },
+   {
+    "i": 33,
+    "f": 172.0,
+    "kind": "key",
+    "why": "typing \"word\": one blip per word, on its first key"
+   },
+   {
+    "i": 34,
+    "f": 173.0,
+    "kind": "key",
+    "why": "typing \"word\": one blip per word, on its first key"
+   },
+   {
+    "i": 35,
+    "f": 175.0,
+    "kind": "key",
+    "why": "typing \"word\": one blip per word, on its first key"
+   },
+   {
+    "i": 36,
+    "f": 176.0,
+    "kind": "key",
+    "why": "typing \"word\": one blip per word, on its first key"
+   },
+   {
+    "i": 37,
+    "f": 178.0,
+    "kind": "key",
+    "why": "typing \"word\": one blip per word, on its first key"
+   },
+   {
+    "i": 38,
+    "f": 179.0,
+    "kind": "key",
+    "why": "typing \"word\": one blip per word, on its first key"
+   },
+   {
+    "i": 40,
+    "f": 182.0,
+    "kind": "key",
+    "why": "typing \"word\": one blip per word, on its first key"
+   },
+   {
+    "i": 41,
+    "f": 184.0,
+    "kind": "key",
+    "why": "typing \"word\": one blip per word, on its first key"
+   },
+   {
+    "i": 42,
+    "f": 185.0,
+    "kind": "key",
+    "why": "67 ms after the previous word blip (merged)"
+   },
+   {
+    "i": 43,
+    "f": 187.0,
+    "kind": "key",
+    "why": "typing \"word\": one blip per word, on its first key"
+   },
+   {
+    "i": 44,
+    "f": 189.0,
+    "kind": "key",
+    "why": "typing \"word\": one blip per word, on its first key"
+   },
+   {
+    "i": 45,
+    "f": 190.0,
+    "kind": "key",
+    "why": "typing \"word\": one blip per word, on its first key"
+   },
+   {
+    "i": 47,
+    "f": 194.0,
+    "kind": "key",
+    "why": "typing \"word\": one blip per word, on its first key"
+   },
+   {
+    "i": 48,
+    "f": 196.0,
+    "kind": "key",
+    "why": "typing \"word\": one blip per word, on its first key"
+   },
+   {
+    "i": 49,
+    "f": 198.0,
+    "kind": "key",
+    "why": "typing \"word\": one blip per word, on its first key"
+   },
+   {
+    "i": 50,
+    "f": 200.0,
+    "kind": "key",
+    "why": "typing \"word\": one blip per word, on its first key"
+   },
+   {
+    "i": 51,
+    "f": 203.0,
+    "kind": "key",
+    "why": "typing \"word\": one blip per word, on its first key"
+   },
+   {
+    "i": 53,
+    "f": 208.0,
+    "kind": "key",
+    "why": "typing \"word\": one blip per word, on its first key"
+   },
+   {
+    "i": 54,
+    "f": 210.0,
+    "kind": "key",
+    "why": "typing \"word\": one blip per word, on its first key"
+   },
+   {
+    "i": 55,
+    "f": 214.0,
+    "kind": "key",
+    "why": "typing \"word\": one blip per word, on its first key"
+   },
+   {
+    "i": 56,
+    "f": 217.0,
+    "kind": "key",
+    "why": "typing \"word\": one blip per word, on its first key"
+   },
+   {
+    "i": 57,
+    "f": 221.0,
+    "kind": "key",
+    "why": "typing \"word\": one blip per word, on its first key"
+   },
+   {
+    "i": 58,
+    "f": 227.0,
+    "kind": "key",
+    "why": "typing \"word\": one blip per word, on its first key"
+   },
+   {
+    "i": 75,
+    "f": 512.0,
+    "kind": "key",
+    "why": "typing \"word\": one blip per word, on its first key"
+   },
+   {
+    "i": 76,
+    "f": 513.0,
+    "kind": "key",
+    "why": "typing \"word\": one blip per word, on its first key"
+   },
+   {
+    "i": 77,
+    "f": 514.0,
+    "kind": "key",
+    "why": "typing \"word\": one blip per word, on its first key"
+   },
+   {
+    "i": 78,
+    "f": 516.0,
+    "kind": "key",
+    "why": "typing \"word\": one blip per word, on its first key"
+   },
+   {
+    "i": 80,
+    "f": 518.0,
+    "kind": "key",
+    "why": "typing \"word\": one blip per word, on its first key"
+   },
+   {
+    "i": 81,
+    "f": 520.0,
+    "kind": "key",
+    "why": "typing \"word\": one blip per word, on its first key"
+   },
+   {
+    "i": 82,
+    "f": 521.0,
+    "kind": "key",
+    "why": "typing \"word\": one blip per word, on its first key"
+   },
+   {
+    "i": 83,
+    "f": 523.0,
+    "kind": "key",
+    "why": "typing \"word\": one blip per word, on its first key"
+   },
+   {
+    "i": 84,
+    "f": 524.0,
+    "kind": "key",
+    "why": "typing \"word\": one blip per word, on its first key"
+   },
+   {
+    "i": 86,
+    "f": 527.0,
+    "kind": "key",
+    "why": "typing \"word\": one blip per word, on its first key"
+   },
+   {
+    "i": 87,
+    "f": 529.0,
+    "kind": "key",
+    "why": "typing \"word\": one blip per word, on its first key"
+   },
+   {
+    "i": 88,
+    "f": 530.0,
+    "kind": "key",
+    "why": "typing \"word\": one blip per word, on its first key"
+   },
+   {
+    "i": 89,
+    "f": 532.0,
+    "kind": "key",
+    "why": "typing \"word\": one blip per word, on its first key"
+   },
+   {
+    "i": 90,
+    "f": 533.0,
+    "kind": "key",
+    "why": "typing \"word\": one blip per word, on its first key"
+   },
+   {
+    "i": 91,
+    "f": 535.0,
+    "kind": "key",
+    "why": "typing \"word\": one blip per word, on its first key"
+   },
+   {
+    "i": 93,
+    "f": 539.0,
+    "kind": "key",
+    "why": "typing \"word\": one blip per word, on its first key"
+   },
+   {
+    "i": 94,
+    "f": 541.0,
+    "kind": "key",
+    "why": "typing \"word\": one blip per word, on its first key"
+   },
+   {
+    "i": 95,
+    "f": 543.0,
+    "kind": "key",
+    "why": "typing \"word\": one blip per word, on its first key"
+   },
+   {
+    "i": 96,
+    "f": 544.0,
+    "kind": "key",
+    "why": "typing \"word\": one blip per word, on its first key"
+   },
+   {
+    "i": 97,
+    "f": 547.0,
+    "kind": "key",
+    "why": "typing \"word\": one blip per word, on its first key"
+   },
+   {
+    "i": 98,
+    "f": 549.0,
+    "kind": "key",
+    "why": "typing \"word\": one blip per word, on its first key"
+   },
+   {
+    "i": 99,
+    "f": 551.0,
+    "kind": "key",
+    "why": "typing \"word\": one blip per word, on its first key"
+   },
+   {
+    "i": 101,
+    "f": 556.0,
+    "kind": "key",
+    "why": "typing \"word\": one blip per word, on its first key"
+   },
+   {
+    "i": 103,
+    "f": 561.0,
+    "kind": "key",
+    "why": "typing \"word\": one blip per word, on its first key"
+   },
+   {
+    "i": 104,
+    "f": 564.0,
+    "kind": "key",
+    "why": "typing \"word\": one blip per word, on its first key"
+   },
+   {
+    "i": 105,
+    "f": 567.0,
+    "kind": "key",
+    "why": "typing \"word\": one blip per word, on its first key"
+   },
+   {
+    "i": 106,
+    "f": 570.0,
+    "kind": "key",
+    "why": "typing \"word\": one blip per word, on its first key"
+   },
+   {
+    "i": 107,
+    "f": 574.0,
+    "kind": "key",
+    "why": "typing \"word\": one blip per word, on its first key"
+   },
+   {
+    "i": 108,
+    "f": 579.0,
+    "kind": "key",
+    "why": "typing \"word\": one blip per word, on its first key"
+   },
+   {
+    "i": 109,
+    "f": 585.0,
+    "kind": "key",
+    "why": "typing \"word\": one blip per word, on its first key"
+   },
+   {
+    "i": 132,
+    "f": 871.0,
+    "kind": "key",
+    "why": "typing \"word\": one blip per word, on its first key"
+   },
+   {
+    "i": 133,
+    "f": 872.0,
+    "kind": "key",
+    "why": "typing \"word\": one blip per word, on its first key"
+   },
+   {
+    "i": 134,
+    "f": 873.0,
+    "kind": "key",
+    "why": "33 ms after the previous word blip (merged)"
+   },
+   {
+    "i": 135,
+    "f": 874.0,
+    "kind": "key",
+    "why": "typing \"word\": one blip per word, on its first key"
+   },
+   {
+    "i": 136,
+    "f": 875.0,
+    "kind": "key",
+    "why": "typing \"word\": one blip per word, on its first key"
+   },
+   {
+    "i": 137,
+    "f": 875.0,
+    "kind": "key",
+    "why": "typing \"word\": one blip per word, on its first key"
+   },
+   {
+    "i": 139,
+    "f": 877.0,
+    "kind": "key",
+    "why": "typing \"word\": one blip per word, on its first key"
+   },
+   {
+    "i": 140,
+    "f": 878.0,
+    "kind": "key",
+    "why": "typing \"word\": one blip per word, on its first key"
+   },
+   {
+    "i": 141,
+    "f": 879.0,
+    "kind": "key",
+    "why": "typing \"word\": one blip per word, on its first key"
+   },
+   {
+    "i": 142,
+    "f": 880.0,
+    "kind": "key",
+    "why": "typing \"word\": one blip per word, on its first key"
+   },
+   {
+    "i": 143,
+    "f": 881.0,
+    "kind": "key",
+    "why": "typing \"word\": one blip per word, on its first key"
+   },
+   {
+    "i": 144,
+    "f": 882.0,
+    "kind": "key",
+    "why": "typing \"word\": one blip per word, on its first key"
+   },
+   {
+    "i": 146,
+    "f": 884.0,
+    "kind": "key",
+    "why": "typing \"word\": one blip per word, on its first key"
+   },
+   {
+    "i": 147,
+    "f": 884.0,
+    "kind": "key",
+    "why": "typing \"word\": one blip per word, on its first key"
+   },
+   {
+    "i": 148,
+    "f": 885.0,
+    "kind": "key",
+    "why": "typing \"word\": one blip per word, on its first key"
+   },
+   {
+    "i": 150,
+    "f": 886.0,
+    "kind": "key",
+    "why": "typing \"word\": one blip per word, on its first key"
+   },
+   {
+    "i": 151,
+    "f": 887.0,
+    "kind": "key",
+    "why": "67 ms after the previous word blip (merged)"
+   },
+   {
+    "i": 152,
+    "f": 888.0,
+    "kind": "key",
+    "why": "typing \"word\": one blip per word, on its first key"
+   },
+   {
+    "i": 153,
+    "f": 889.0,
+    "kind": "key",
+    "why": "typing \"word\": one blip per word, on its first key"
+   },
+   {
+    "i": 155,
+    "f": 891.0,
+    "kind": "key",
+    "why": "typing \"word\": one blip per word, on its first key"
+   },
+   {
+    "i": 156,
+    "f": 893.0,
+    "kind": "key",
+    "why": "typing \"word\": one blip per word, on its first key"
+   },
+   {
+    "i": 157,
+    "f": 894.0,
+    "kind": "key",
+    "why": "typing \"word\": one blip per word, on its first key"
+   },
+   {
+    "i": 158,
+    "f": 895.0,
+    "kind": "key",
+    "why": "typing \"word\": one blip per word, on its first key"
+   },
+   {
+    "i": 160,
+    "f": 897.0,
+    "kind": "key",
+    "why": "typing \"word\": one blip per word, on its first key"
+   },
+   {
+    "i": 161,
+    "f": 898.0,
+    "kind": "key",
+    "why": "typing \"word\": one blip per word, on its first key"
+   },
+   {
+    "i": 162,
+    "f": 899.0,
+    "kind": "key",
+    "why": "typing \"word\": one blip per word, on its first key"
+   },
+   {
+    "i": 163,
+    "f": 900.0,
+    "kind": "key",
+    "why": "typing \"word\": one blip per word, on its first key"
+   },
+   {
+    "i": 164,
+    "f": 902.0,
+    "kind": "key",
+    "why": "typing \"word\": one blip per word, on its first key"
+   },
+   {
+    "i": 165,
+    "f": 903.0,
+    "kind": "key",
+    "why": "typing \"word\": one blip per word, on its first key"
+   },
+   {
+    "i": 166,
+    "f": 904.0,
+    "kind": "key",
+    "why": "typing \"word\": one blip per word, on its first key"
+   },
+   {
+    "i": 167,
+    "f": 906.0,
+    "kind": "key",
+    "why": "typing \"word\": one blip per word, on its first key"
+   },
+   {
+    "i": 168,
+    "f": 907.0,
+    "kind": "key",
+    "why": "typing \"word\": one blip per word, on its first key"
+   },
+   {
+    "i": 169,
+    "f": 908.0,
+    "kind": "key",
+    "why": "typing \"word\": one blip per word, on its first key"
+   },
+   {
+    "i": 171,
+    "f": 911.0,
+    "kind": "key",
+    "why": "typing \"word\": one blip per word, on its first key"
+   },
+   {
+    "i": 172,
+    "f": 913.0,
+    "kind": "key",
+    "why": "typing \"word\": one blip per word, on its first key"
+   },
+   {
+    "i": 173,
+    "f": 914.0,
+    "kind": "key",
+    "why": "typing \"word\": one blip per word, on its first key"
+   },
+   {
+    "i": 175,
+    "f": 916.0,
+    "kind": "key",
+    "why": "typing \"word\": one blip per word, on its first key"
+   },
+   {
+    "i": 177,
+    "f": 919.0,
+    "kind": "key",
+    "why": "typing \"word\": one blip per word, on its first key"
+   },
+   {
+    "i": 178,
+    "f": 921.0,
+    "kind": "key",
+    "why": "typing \"word\": one blip per word, on its first key"
+   },
+   {
+    "i": 179,
+    "f": 923.0,
+    "kind": "key",
+    "why": "typing \"word\": one blip per word, on its first key"
+   },
+   {
+    "i": 180,
+    "f": 924.0,
+    "kind": "key",
+    "why": "typing \"word\": one blip per word, on its first key"
+   },
+   {
+    "i": 182,
+    "f": 929.0,
+    "kind": "key",
+    "why": "typing \"word\": one blip per word, on its first key"
+   },
+   {
+    "i": 185,
+    "f": 963.0,
+    "kind": "key",
+    "why": "33 ms after the previous sounded key (thinned)"
+   },
+   {
+    "i": 187,
+    "f": 969.0,
+    "kind": "key",
+    "why": "50 ms after the previous sounded key (thinned)"
+   }
+  ],
+  "masked": [
+   {
+    "f": 23.0,
+    "kind": "land",
+    "id": "propose:phones-land",
+    "band_hz": 1000,
+    "snr_db": 3.0
+   },
+   {
+    "f": 270.0,
+    "kind": "click",
+    "id": "propose:send1",
+    "band_hz": 1000,
+    "snr_db": 5.5
+   },
+   {
+    "f": 368.0,
+    "kind": "whoosh",
+    "id": "propose:push1",
+    "band_hz": 1000,
+    "snr_db": 5.7
+   },
+   {
+    "f": 421.0,
+    "kind": "tick",
+    "id": "propose:constraint1-w0",
+    "band_hz": 4000,
+    "snr_db": -20.6
+   },
+   {
+    "f": 431.0,
+    "kind": "tick",
+    "id": "propose:constraint1-w1",
+    "band_hz": 4000,
+    "snr_db": -7.6
+   },
+   {
+    "f": 451.0,
+    "kind": "tick",
+    "id": "propose:constraint1-w3",
+    "band_hz": 4000,
+    "snr_db": -2.0
+   },
+   {
+    "f": 481.0,
+    "kind": "tick",
+    "id": "propose:constraint1-w6",
+    "band_hz": 4000,
+    "snr_db": -0.0
+   },
+   {
+    "f": 491.0,
+    "kind": "tick",
+    "id": "propose:constraint1-w7",
+    "band_hz": 4000,
+    "snr_db": -2.7
+   },
+   {
+    "f": 630.0,
+    "kind": "click",
+    "id": "resolve:send2",
+    "band_hz": 1000,
+    "snr_db": 3.1
+   },
+   {
+    "f": 660.0,
+    "kind": "land",
+    "id": "resolve:server-land",
+    "band_hz": 1000,
+    "snr_db": -3.6
+   },
+   {
+    "f": 705.0,
+    "kind": "tick",
+    "id": "resolve:relay0",
+    "band_hz": 2000,
+    "snr_db": 1.6
+   },
+   {
+    "f": 735.0,
+    "kind": "tick",
+    "id": "resolve:relay1",
+    "band_hz": 2000,
+    "snr_db": 3.7
+   },
+   {
+    "f": 759.0,
+    "kind": "pop",
+    "id": "resolve:detour",
+    "band_hz": 1000,
+    "snr_db": 4.0
+   },
+   {
+    "f": 853.0,
+    "kind": "tick",
+    "id": "resolve:constraint2-w8",
+    "band_hz": 4000,
+    "snr_db": -0.0
+   },
+   {
+    "f": 855.0,
+    "kind": "tick",
+    "id": "resolve:relay5",
+    "band_hz": 2000,
+    "snr_db": 1.2
+   },
+   {
+    "f": 885.0,
+    "kind": "tick",
+    "id": "resolve:relay6",
+    "band_hz": 2000,
+    "snr_db": 4.9
+   },
+   {
+    "f": 915.0,
+    "kind": "tick",
+    "id": "resolve:relay7",
+    "band_hz": 2000,
+    "snr_db": 5.4
+   },
+   {
+    "f": 945.0,
+    "kind": "tick",
+    "id": "resolve:relay8",
+    "band_hz": 2000,
+    "snr_db": 4.7
+   },
+   {
+    "f": 1005.0,
+    "kind": "tick",
+    "id": "resolve:relay10",
+    "band_hz": 2000,
+    "snr_db": 5.6
+   },
+   {
+    "f": 1050.0,
+    "kind": "land",
+    "id": "resolve:chipA-land",
+    "band_hz": 125,
+    "snr_db": -1.8
+   },
+   {
+    "f": 1051.0,
+    "kind": "land",
+    "id": "resolve:chipB-land",
+    "band_hz": 2000,
+    "snr_db": -3.5
+   },
+   {
+    "f": 1088.0,
+    "kind": "suck",
+    "id": "resolve:server-out",
+    "band_hz": 1000,
+    "snr_db": -1.0
+   },
+   {
+    "f": 1103.0,
+    "kind": "snap",
+    "id": "resolve:gateA-open",
+    "band_hz": 250,
+    "snr_db": -1.6
+   },
+   {
+    "f": 1104.0,
+    "kind": "snap",
+    "id": "resolve:gateB-open",
+    "band_hz": 250,
+    "snr_db": -1.4
+   },
+   {
+    "f": 1110.0,
+    "kind": "whoosh",
+    "id": "resolve:cross",
+    "band_hz": 1000,
+    "snr_db": 5.5
+   },
+   {
+    "f": 1339.0,
+    "kind": "pop",
+    "id": "resolve:chip2",
+    "band_hz": 1000,
+    "snr_db": 2.1
+   }
+  ],
+  "tuned": [
+   {
+    "f": 23.0,
+    "kind": "land",
+    "id": "propose:phones-land",
+    "note": "Db6",
+    "in_key": true
+   },
+   {
+    "f": 151.0,
+    "kind": "key",
+    "id": "propose:answer1-k0",
+    "note": "A4",
+    "in_key": true
+   },
+   {
+    "f": 159.0,
+    "kind": "key",
+    "id": "propose:answer1-k8",
+    "note": "B4",
+    "in_key": true
+   },
+   {
+    "f": 168.0,
+    "kind": "key",
+    "id": "propose:answer1-k16",
+    "note": "Db5",
+    "in_key": true
+   },
+   {
+    "f": 181.0,
+    "kind": "key",
+    "id": "propose:answer1-k25",
+    "note": "E5",
+    "in_key": true
+   },
+   {
+    "f": 192.0,
+    "kind": "key",
+    "id": "propose:answer1-k32",
+    "note": "A5",
+    "in_key": true
+   },
+   {
+    "f": 205.0,
+    "kind": "key",
+    "id": "propose:answer1-k38",
+    "note": "E5",
+    "in_key": true
+   },
+   {
+    "f": 270.0,
+    "kind": "click",
+    "id": "propose:send1",
+    "note": "E6",
+    "in_key": true
+   },
+   {
+    "f": 338.0,
+    "kind": "snap",
+    "id": "propose:gateA",
+    "note": "Gb1",
+    "in_key": true
+   },
+   {
+    "f": 360.0,
+    "kind": "hit",
+    "id": "propose:drop0",
+    "note": "D2",
+    "in_key": true
+   },
+   {
+    "f": 368.0,
+    "kind": "hit",
+    "id": "propose:drop1",
+    "note": "D2",
+    "in_key": true
+   },
+   {
+    "f": 376.0,
+    "kind": "hit",
+    "id": "propose:drop2",
+    "note": "D2",
+    "in_key": true
+   },
+   {
+    "f": 511.0,
+    "kind": "key",
+    "id": "propose:answer2-k0",
+    "note": "A4",
+    "in_key": true
+   },
+   {
+    "f": 517.0,
+    "kind": "key",
+    "id": "propose:answer2-k5",
+    "note": "B4",
+    "in_key": true
+   },
+   {
+    "f": 526.0,
+    "kind": "key",
+    "id": "propose:answer2-k11",
+    "note": "Db5",
+    "in_key": true
+   },
+   {
+    "f": 537.0,
+    "kind": "key",
+    "id": "propose:answer2-k18",
+    "note": "E5",
+    "in_key": true
+   },
+   {
+    "f": 553.0,
+    "kind": "key",
+    "id": "propose:answer2-k26",
+    "note": "A5",
+    "in_key": true
+   },
+   {
+    "f": 558.0,
+    "kind": "key",
+    "id": "propose:answer2-k28",
+    "note": "E5",
+    "in_key": true
+   },
+   {
+    "f": 630.0,
+    "kind": "click",
+    "id": "resolve:send2",
+    "note": "Gb6",
+    "in_key": true
+   },
+   {
+    "f": 660.0,
+    "kind": "land",
+    "id": "resolve:server-land",
+    "note": "E1",
+    "in_key": true
+   },
+   {
+    "f": 698.0,
+    "kind": "tick",
+    "id": "resolve:relay-drawn",
+    "note": "A6",
+    "in_key": true
+   },
+   {
+    "f": 705.0,
+    "kind": "tick",
+    "id": "resolve:relay0",
+    "note": "A6",
+    "in_key": true
+   },
+   {
+    "f": 735.0,
+    "kind": "tick",
+    "id": "resolve:relay1",
+    "note": "A6",
+    "in_key": true
+   },
+   {
+    "f": 759.0,
+    "kind": "pop",
+    "id": "resolve:detour",
+    "note": "Db6",
+    "in_key": true
+   },
+   {
+    "f": 765.0,
+    "kind": "tick",
+    "id": "resolve:relay2",
+    "note": "A6",
+    "in_key": true
+   },
+   {
+    "f": 795.0,
+    "kind": "tick",
+    "id": "resolve:relay3",
+    "note": "A6",
+    "in_key": true
+   },
+   {
+    "f": 825.0,
+    "kind": "tick",
+    "id": "resolve:relay4",
+    "note": "A6",
+    "in_key": true
+   },
+   {
+    "f": 855.0,
+    "kind": "tick",
+    "id": "resolve:relay5",
+    "note": "A6",
+    "in_key": true
+   },
+   {
+    "f": 871.0,
+    "kind": "key",
+    "id": "resolve:answer3-k0",
+    "note": "A4",
+    "in_key": true
+   },
+   {
+    "f": 876.0,
+    "kind": "key",
+    "id": "resolve:answer3-k7",
+    "note": "Db5",
+    "in_key": true
+   },
+   {
+    "f": 883.0,
+    "kind": "key",
+    "id": "resolve:answer3-k14",
+    "note": "D5",
+    "in_key": true
+   },
+   {
+    "f": 885.0,
+    "kind": "tick",
+    "id": "resolve:relay6",
+    "note": "A6",
+    "in_key": true
+   },
+   {
+    "f": 890.0,
+    "kind": "key",
+    "id": "resolve:answer3-k22",
+    "note": "E5",
+    "in_key": true
+   },
+   {
+    "f": 896.0,
+    "kind": "key",
+    "id": "resolve:answer3-k27",
+    "note": "Gb5",
+    "in_key": true
+   },
+   {
+    "f": 910.0,
+    "kind": "key",
+    "id": "resolve:answer3-k38",
+    "note": "E5",
+    "in_key": true
+   },
+   {
+    "f": 915.0,
+    "kind": "tick",
+    "id": "resolve:relay7",
+    "note": "A6",
+    "in_key": true
+   },
+   {
+    "f": 917.0,
+    "kind": "key",
+    "id": "resolve:answer3-k43",
+    "note": "D5",
+    "in_key": true
+   },
+   {
+    "f": 927.0,
+    "kind": "key",
+    "id": "resolve:answer3-k48",
+    "note": "Db5",
+    "in_key": true
+   },
+   {
+    "f": 945.0,
+    "kind": "tick",
+    "id": "resolve:relay8",
+    "note": "A6",
+    "in_key": true
+   },
+   {
+    "f": 975.0,
+    "kind": "tick",
+    "id": "resolve:relay9",
+    "note": "A6",
+    "in_key": true
+   },
+   {
+    "f": 1005.0,
+    "kind": "tick",
+    "id": "resolve:relay10",
+    "note": "A6",
+    "in_key": true
+   },
+   {
+    "f": 1020.0,
+    "kind": "click",
+    "id": "resolve:send3",
+    "note": "Ab6",
+    "in_key": true
+   },
+   {
+    "f": 1050.0,
+    "kind": "land",
+    "id": "resolve:chipA-land",
+    "note": "E6",
+    "in_key": true
+   },
+   {
+    "f": 1051.0,
+    "kind": "land",
+    "id": "resolve:chipB-land",
+    "note": "Ab6",
+    "in_key": true
+   },
+   {
+    "f": 1103.0,
+    "kind": "snap",
+    "id": "resolve:gateA-open",
+    "note": "A1",
+    "in_key": true
+   },
+   {
+    "f": 1104.0,
+    "kind": "snap",
+    "id": "resolve:gateB-open",
+    "note": "A1",
+    "in_key": true
+   },
+   {
+    "f": 1140.0,
+    "kind": "drop",
+    "id": "resolve:direct-land",
+    "note": "A1",
+    "in_key": true
+   },
+   {
+    "f": 1202.0,
+    "kind": "hit",
+    "id": "resolve:ice",
+    "note": "A1",
+    "in_key": true
+   },
+   {
+    "f": 1324.0,
+    "kind": "pop",
+    "id": "resolve:chip1",
+    "note": "Db6",
+    "in_key": true
+   },
+   {
+    "f": 1339.0,
+    "kind": "pop",
+    "id": "resolve:chip2",
+    "note": "E6",
+    "in_key": true
+   },
+   {
+    "f": 1354.0,
+    "kind": "pop",
+    "id": "resolve:chip3",
+    "note": "Gb6",
+    "in_key": true
+   },
+   {
+    "f": 1369.0,
+    "kind": "pop",
+    "id": "resolve:chip4",
+    "note": "A6",
+    "in_key": true
+   },
+   {
+    "f": 1440.0,
+    "kind": "swell",
+    "id": "lockup:seed",
+    "note": "Db4",
+    "in_key": true
+   },
+   {
+    "f": 1490.0,
+    "kind": "land",
+    "id": "lockup:iris-full",
+    "note": "A1",
+    "in_key": true
+   },
+   {
+    "f": 1514.0,
+    "kind": "snap",
+    "id": "lockup:name-lock",
+    "note": "A1",
+    "in_key": true
+   }
+  ]
+ },
+ "chords": [
+  {
+   "t": 0.0,
+   "chord": "Aadd9"
+  },
+  {
+   "t": 4.0,
+   "chord": "F#m9"
+  },
+  {
+   "t": 6.0,
+   "chord": "Dmaj9"
+  },
+  {
+   "t": 8.0,
+   "chord": "Aadd9"
+  },
+  {
+   "t": 10.0,
+   "chord": "E7sus4"
+  },
+  {
+   "t": 12.0,
+   "chord": "F#m9"
+  },
+  {
+   "t": 14.0,
+   "chord": "Dmaj9"
+  },
+  {
+   "t": 16.0,
+   "chord": "Esus4"
+  },
+  {
+   "t": 17.0,
+   "chord": "E"
+  },
+  {
+   "t": 18.0,
+   "chord": "Aadd9"
+  },
+  {
+   "t": 22.0,
+   "chord": "Dmaj9"
+  },
+  {
+   "t": 24.0,
+   "chord": "Aadd9"
+  }
+ ],
+ "warnings": [
+  "typing at 16.02-16.3s (soft, 18 chars/s) sits 11 dB A under the ducked music (want about 2-8): the music is too dense to level against; raise mix.typing_duck_db, thin the section, or \"muted\""
+ ],
+ "fails": [],
+ "progress": {
+  "match": "send",
+  "events": 3,
+  "rungs": [
+   {
+    "f": 270,
+    "id": "propose:send1",
+    "kind": "click",
+    "note": "E6"
+   },
+   {
+    "f": 630,
+    "id": "resolve:send2",
+    "kind": "click",
+    "note": "Gb6"
+   },
+   {
+    "f": 1020,
+    "id": "resolve:send3",
+    "kind": "click",
+    "note": "Ab6"
+   }
+  ],
+  "resolve": {
+   "t": 19.0,
+   "note": "A6"
+  }
+ },
+ "typing": {
+  "style": "auto",
+  "styles": [
+   "soft",
+   "word"
+  ],
+  "keys": 137,
+  "sounded": 24,
+  "thinned": 113,
+  "duck_db": 14.0,
+  "runs": [
+   {
+    "t": [
+     2.52,
+     3.78
+    ],
+    "style": "word",
+    "chars_per_s": 34.7,
+    "keys": 45,
+    "sounded": 6,
+    "rate_max": 0.0,
+    "duck_db": 0.0,
+    "level_db": -12.0,
+    "vs_music_A_db": -3.1,
+    "key_vs_music_db": 2.3,
+    "band_2k_5k_db": -14.5,
+    "band_5k_10k_db": -2.9,
+    "share_2k_5k_A_pct": 0.0,
+    "bed_top_A_pct": 0.2
+   },
+   {
+    "t": [
+     8.52,
+     9.75
+    ],
+    "style": "word",
+    "chars_per_s": 28.4,
+    "keys": 36,
+    "sounded": 6,
+    "rate_max": 0.0,
+    "duck_db": 0.0,
+    "level_db": -3.0,
+    "vs_music_A_db": -2.7,
+    "key_vs_music_db": -0.0,
+    "band_2k_5k_db": -58.8,
+    "band_5k_10k_db": -69.7,
+    "share_2k_5k_A_pct": 0.0,
+    "bed_top_A_pct": 15.9
+   },
+   {
+    "t": [
+     14.52,
+     15.48
+    ],
+    "style": "word",
+    "chars_per_s": 50.7,
+    "keys": 50,
+    "sounded": 8,
+    "rate_max": 0.0,
+    "duck_db": 0.0,
+    "level_db": -12.0,
+    "vs_music_A_db": -8.0,
+    "key_vs_music_db": 0.9,
+    "band_2k_5k_db": -61.6,
+    "band_5k_10k_db": -58.4,
+    "share_2k_5k_A_pct": 0.0,
+    "bed_top_A_pct": 4.3
+   },
+   {
+    "t": [
+     16.02,
+     16.3
+    ],
+    "style": "soft",
+    "chars_per_s": 17.6,
+    "keys": 6,
+    "sounded": 4,
+    "rate_max": 8.0,
+    "duck_db": 14.0,
+    "level_db": -6.6,
+    "vs_music_A_db": -11.3,
+    "key_vs_music_db": -10.0,
+    "band_2k_5k_db": -6.4,
+    "band_5k_10k_db": -17.1,
+    "share_2k_5k_A_pct": 15.8,
+    "bed_top_A_pct": 5.3
+   }
+  ]
+ },
+ "sfx_levels": {
+  "click": {
+   "count": 3,
+   "level_db": -9.5,
+   "vs_music_db": -3.9,
+   "target_db": -3.9
+  },
+  "crisp": {
+   "count": 39,
+   "level_db": -12.0,
+   "vs_music_db": -16.4,
+   "target_db": -17.1
+  }
+ },
+ "pass": true
+}
