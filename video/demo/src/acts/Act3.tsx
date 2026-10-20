@@ -1,10 +1,9 @@
 import React from 'react';
 import { useCurrentFrame, useVideoConfig } from 'remotion';
-import { Mark } from '../brand/Mark';
-import { Words } from '../fx/Words';
-import { C, FONT, TYPE, typeStyle } from '../brand/tokens';
-import { arrive, clamp, E, lmix, prog, spr, SPR } from '../lib/anim';
-import { measureTracked } from '../lib/measure';
+import { GLYPH } from '../brand/Mark';
+import { OUTLINE } from '../brand/outlines';
+import { C, TYPE } from '../brand/tokens';
+import { clamp, E, lmix, prog, spr, SPR } from '../lib/anim';
 import { ACT, copy, CUE, f60, TOTAL } from '../timeline';
 import { layoutFor } from '../ui/layout';
 import { Session } from './Session';
@@ -12,6 +11,8 @@ import { Session } from './Session';
 /** Bars 13-14 + tail: the iris from the avatar, the lockup on ink, the tagline and the URL. */
 export const IRIS = { from: CUE.iris, dur: f60(20) };
 
+// The end card is one SVG: its type is geometry, so the slow push through the hold re-rasterises
+// smoothly every frame instead of stepping the way a scaled HTML text layer does.
 export const Act3: React.FC = () => {
   const frame = useCurrentFrame() + ACT.lockup.from;
   const { width, height } = useVideoConfig();
@@ -28,97 +29,53 @@ export const Act3: React.FC = () => {
   // the mark: grows from the avatar's glyph to the lockup size, lands on markLand
   const mp = frame < IRIS.from ? 0 : spr(frame, IRIS.from, SPR.soft);
   const markSize = lmix(24 * u, L.end.markSize, mp);
-  const mx = A.ax + (L.W / 2 - A.ax) * mp;
-  const my = A.ay + (L.end.cy - A.ay) * mp;
-  // the wordmark slides out from behind the mark and locks
-  const name = copy('wordmark').text;
+  const markW = markSize * (GLYPH.w / GLYPH.h);
+  // the wordmark slides out from behind the mark and locks; the pair is centred as one object
+  copy('wordmark'); // the name is set in outline (src/brand/outlines.ts); the COPY entry keeps the budget true
   const nameSize = TYPE.display.size * (L.tall ? 0.8 : 1) * u;
-  const nameW = measureTracked(name, nameSize, TYPE.display.weight, TYPE.display.track);
-  const markW = L.end.markSize * 0.57;
+  const nameK = nameSize / OUTLINE.name.size;
+  const nameW = OUTLINE.name.w * nameK;
   const gap = 28 * u;
-  const totalW = markW + gap + nameW;
-  const np = frame < CUE.markLand ? 0 : spr(frame, CUE.markLand, SPR.word);
-  const npc = Math.min(1, np);
-  // once the name arrives the pair re-centres: the mark slides left by half the name's width
-  const lockX = L.W / 2 - totalW / 2 + markW / 2;
-  const markX = lmix(mx, lockX, 1) * (1 - npc) + lockX * npc;
-  const finalMarkX = mp < 0.999 ? markX : lockX;
-  const nameX = lockX + markW / 2 + gap;
+  const lockMarkW = L.end.markSize * (GLYPH.w / GLYPH.h);
+  const totalW = lockMarkW + gap + nameW;
+  const np = frame < CUE.markLand ? 0 : Math.min(1, spr(frame, CUE.markLand, SPR.word));
+  const lockX = L.W / 2 - totalW / 2 + lockMarkW / 2; // the mark's centre once the name has arrived
+  const mx = (A.ax + (L.W / 2 - A.ax) * mp) * (1 - np) + lockX * np;
+  const my = A.ay + (L.end.cy - A.ay) * mp;
+  const nameX = lockX + lockMarkW / 2 + gap - (1 - np) * 40 * u;
   const nameO = clamp(np * 1.6);
-  // tagline and URL rise in
+  // tagline lines and the URL rise in one after another
   const tagSize = TYPE.secondary.size * (L.tall ? 0.9 : 1) * u;
   const tagLines = copy('tagline').text.split('\n');
-  const tagW = Math.max(...tagLines.map((l) => measureTracked(l, tagSize, TYPE.secondary.weight, TYPE.secondary.track))) + 4;
+  copy('url');
+  const tagY0 = L.end.cy + L.end.markSize * 0.62 + 20 * u + tagSize;
   const urlSize = TYPE.mono.size * u;
-  const urlW = measureTracked(copy('url').text, urlSize, TYPE.mono.weight, TYPE.mono.track, FONT.mono) + 4;
-  const up = prog(frame, CUE.url, CUE.url + f60(20), E.out);
-  // the slow push through the hold
-  // the mark alone creeps through the hold (a path: no type re-raster steps); the words arrive one by one
-  const creep = 1 + 0.06 * prog(frame, CUE.markLand + f60(10), TOTAL, E.dolly);
-  const echoes = [0.72, 0.5].map((o, i) => ({ o: o * (1 - npc) * mp, s: 1 + 0.14 * (i + 1) * (1 - mp) }));
+  const urlY = tagY0 + (tagLines.length - 1) * tagSize * 1.35 + 36 * u + urlSize;
+  const up = prog(frame, CUE.url, CUE.url + f60(22), E.out);
+  // the slow push through the hold, on the whole card
+  const push = lmix(1, 1.09, prog(frame, CUE.nameLock, TOTAL, E.dolly));
+  const echoes = [0.72, 0.5].map((o, i) => ({ o: o * (1 - np) * mp * 0.5, s: 1 + 0.14 * (i + 1) * (1 - mp) }));
+  const markT = (sx: number) => `translate(${(mx - (markW * sx) / 2).toFixed(2)} ${(my - (markSize * sx) / 2).toFixed(2)}) scale(${((markSize * sx) / GLYPH.h).toFixed(4)})`;
   return (
     <>
       {frame < IRIS.from + IRIS.dur + 2 && <Session frame={frame} />}
       <div style={{ position: 'absolute', inset: 0, clipPath: `circle(${r.toFixed(2)}px at ${ix.toFixed(2)}px ${iy.toFixed(2)}px)`, background: C.ink }}>
-        <div style={{ position: 'absolute', inset: 0 }}>
-          {/* ban-safe echoes: plain 1.5 px stroked copies, one tonal step, fading as the mark lands */}
-          {echoes.map((e, i) => (
-            <div key={i} style={{ position: 'absolute', left: 0, top: 0, opacity: e.o, transform: `translate(${(finalMarkX - (markSize * 0.57) / 2).toFixed(2)}px, ${(my - markSize / 2).toFixed(2)}px) scale(${e.s.toFixed(3)})`, transformOrigin: '50% 56%' }}>
-              <Mark size={markSize} color={C.mute} opacity={0.5} />
-            </div>
-          ))}
-          <div style={{ position: 'absolute', left: 0, top: 0, transformOrigin: '50% 56%', transform: `translate(${(finalMarkX - (markSize * 0.57) / 2).toFixed(2)}px, ${(my - markSize / 2).toFixed(2)}px) scale(${creep.toFixed(4)})` }}>
-            <Mark size={markSize} color={C.paper} />
-          </div>
-          <div
-            data-text="wordmark"
-            style={{
-              ...typeStyle('display', nameSize),
-              position: 'absolute',
-              left: 0,
-              top: 0,
-              color: C.paper,
-              opacity: nameO,
-              transform: `translate(${(nameX - (1 - arrive(npc)) * 40 * u).toFixed(2)}px, ${(L.end.cy - nameSize * 0.56).toFixed(2)}px)`,
-            }}
-          >
-            {name}
-          </div>
-          {tagLines.map((line, li) => (
-            <div
-              key={li}
-              style={{
-                ...typeStyle('secondary', tagSize),
-                position: 'absolute',
-                left: 0,
-                top: 0,
-                width: tagW,
-                display: 'flex',
-                justifyContent: 'center',
-                color: C.paper,
-                transform: `translate(${((L.W - tagW) / 2).toFixed(2)}px, ${(L.end.cy + L.end.markSize * 0.62 + 20 * u + li * tagSize * TYPE.secondary.lead).toFixed(2)}px)`,
-              }}
-            >
-              <Words text={line} frame={frame} start={CUE.tagline + li * f60(24)} stagger={f60(7)} dur={f60(22)} rise={0.3} blur={6} id={`tagline${li}`} />
-            </div>
-          ))}
-          <div
-            data-text="url"
-            style={{
-              ...typeStyle('mono', urlSize),
-              position: 'absolute',
-              left: 0,
-              top: 0,
-              width: urlW,
-              textAlign: 'center',
-              color: C.mute,
-              opacity: up,
-              transform: `translate(${((L.W - urlW) / 2).toFixed(2)}px, ${(L.end.cy + L.end.markSize * 0.62 + 20 * u + TYPE.secondary.size * 2.4 * u + 36 * u + (1 - arrive(up)) * 12 * u).toFixed(2)}px)`,
-            }}
-          >
-            {copy('url').text}
-          </div>
-        </div>
+        <svg width={L.W} height={L.H} viewBox={`0 0 ${L.W} ${L.H}`} style={{ position: 'absolute', left: 0, top: 0 }}>
+          <g transform={`translate(${L.W / 2} ${(L.end.cy + 40 * u).toFixed(2)}) scale(${push.toFixed(4)}) translate(${-L.W / 2} ${(-(L.end.cy + 40 * u)).toFixed(2)})`}>
+            {/* ban-safe echoes: plain stroked copies, one tonal step, fading as the mark lands */}
+            {echoes.map((e, i) => (
+              <path key={i} d={GLYPH.d} fill="none" stroke={C.mute} strokeWidth={1.5 / ((markSize * e.s) / GLYPH.h)} opacity={e.o} transform={markT(e.s)} fillRule="evenodd" />
+            ))}
+            <path d={GLYPH.d} fill={C.paper} fillRule="evenodd" transform={markT(1)} />
+            <path d={OUTLINE.name.d} fill={C.paper} opacity={nameO} transform={`translate(${nameX.toFixed(2)} ${(L.end.cy + nameSize * 0.36).toFixed(2)}) scale(${nameK.toFixed(4)})`} />
+            {[OUTLINE.tag0, OUTLINE.tag1].map((o, li) => {
+              const p = prog(frame, CUE.tagline + li * f60(14), CUE.tagline + li * f60(14) + f60(26), E.out);
+              const k = tagSize / o.size;
+              return <path key={li} d={o.d} fill={C.paper} opacity={p} transform={`translate(${(L.W / 2 - (o.w * k) / 2).toFixed(2)} ${(tagY0 + li * tagSize * 1.35 + (1 - p) * 18 * u).toFixed(2)}) scale(${k.toFixed(4)})`} />;
+            })}
+            <path d={OUTLINE.url.d} fill={C.mute} opacity={up} transform={`translate(${(L.W / 2 - (OUTLINE.url.w * (urlSize / OUTLINE.url.size)) / 2).toFixed(2)} ${(urlY + (1 - up) * 14 * u).toFixed(2)}) scale(${(urlSize / OUTLINE.url.size).toFixed(4)})`} />
+          </g>
+        </svg>
       </div>
     </>
   );
