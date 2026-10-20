@@ -1,0 +1,33 @@
+{
+  "name": "demo",
+  "version": "0.1.0",
+  "private": true,
+  "description": "A film built from code: one beat-locked timeline drives picture and sound.",
+  "scripts": {
+    "studio": "remotion studio",
+    "stills": "remotion still Mark16 out/stills/mark-16.png --log=error && remotion still MarkSizes out/stills/mark-sizes.png --log=error && remotion still MarkLarge out/stills/mark-large.png --log=error",
+    "check": "tsc --noEmit && node scripts/lint-film.mjs src && tsx scripts/grid-check.ts src/timeline.ts",
+    "cues": "tsx scripts/export-cues.ts",
+    "audio": "python3 scripts/audio/score.py --cues out/cues.json --score audio/score.json --out public/audio/soundtrack.wav --stems out/stems --json out/qa/score.json",
+    "render": "bash scripts/render.sh Film out/film.mp4 --blur --audio public/audio/soundtrack.wav",
+    "render:preview": "bash scripts/render.sh Film out/preview.mp4 --preview --audio public/audio/soundtrack.wav",
+    "qa": "mkdir -p out/qa && python3 scripts/probe.py out/film.mp4 --spec 1920x1080@60 && python3 scripts/forensics.py out/film.mp4 --cues out/cues.json --json out/qa/forensics.json && python3 scripts/av-audit.py out/film.mp4 --cues out/cues.json --stems out/stems --json out/qa/av.json && python3 scripts/sheet.py out/film.mp4 --out out/qa/sheet.png"
+  },
+  "dependencies": {
+    "@fontsource-variable/geist": "^5.3.0",
+    "@fontsource-variable/geist-mono": "^5.3.0",
+    "@remotion/cli": "4.0.529",
+    "@remotion/layout-utils": "4.0.529",
+    "@remotion/noise": "4.0.529",
+    "@remotion/paths": "4.0.529",
+    "@remotion/shapes": "4.0.529",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "remotion": "4.0.529"
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.6.0 || ^7.0.0"
+  }
+}
