@@ -3,7 +3,7 @@
  "files": [
   {
    "file": "Film1x1.mp4",
-   "mb": 5.782,
+   "mb": 5.759,
    "codec": "h264",
    "size": "1080x1080",
    "pix_fmt": "yuv420p",
@@ -13,7 +13,7 @@
   },
   {
    "file": "Film9x16.mp4",
-   "mb": 5.922,
+   "mb": 5.88,
    "codec": "h264",
    "size": "1080x1920",
    "pix_fmt": "yuv420p",
