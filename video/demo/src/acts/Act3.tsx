@@ -48,20 +48,20 @@ export const Act3: React.FC = () => {
   const tp = prog(frame, CUE.tagline, CUE.tagline + f60(24), E.out);
   const up = prog(frame, CUE.url, CUE.url + f60(20), E.out);
   // the slow push through the hold
-  const creep = 1 + 0.05 * prog(frame, CUE.creep, CUE.settle + f60(30), E.dolly);
+  const creep = 1 + 0.04 * prog(frame, CUE.creep, CUE.settle + f60(30), E.dolly);
   const echoes = [0.72, 0.5].map((o, i) => ({ o: o * (1 - npc) * mp, s: 1 + 0.14 * (i + 1) * (1 - mp) }));
   return (
     <>
       {frame < IRIS.from + IRIS.dur + 2 && <Session frame={frame} />}
       <div style={{ position: 'absolute', inset: 0, clipPath: `circle(${r.toFixed(2)}px at ${ix.toFixed(2)}px ${iy.toFixed(2)}px)`, background: C.ink }}>
-        <div style={{ position: 'absolute', inset: 0, transformOrigin: `${L.W / 2}px ${L.end.cy}px`, transform: `scale(${creep.toFixed(4)})` }}>
+        <div style={{ position: 'absolute', inset: 0 }}>
           {/* ban-safe echoes: plain 1.5 px stroked copies, one tonal step, fading as the mark lands */}
           {echoes.map((e, i) => (
             <div key={i} style={{ position: 'absolute', left: 0, top: 0, opacity: e.o, transform: `translate(${(finalMarkX - (markSize * 0.57) / 2).toFixed(2)}px, ${(my - markSize / 2).toFixed(2)}px) scale(${e.s.toFixed(3)})`, transformOrigin: '50% 56%' }}>
               <Mark size={markSize} color={C.mute} opacity={0.5} />
             </div>
           ))}
-          <div style={{ position: 'absolute', left: 0, top: 0, transform: `translate(${(finalMarkX - (markSize * 0.57) / 2).toFixed(2)}px, ${(my - markSize / 2).toFixed(2)}px)` }}>
+          <div style={{ position: 'absolute', left: 0, top: 0, transformOrigin: '50% 56%', transform: `translate(${(finalMarkX - (markSize * 0.57) / 2).toFixed(2)}px, ${(my - markSize / 2).toFixed(2)}px) scale(${creep.toFixed(4)})` }}>
             <Mark size={markSize} color={C.paper} />
           </div>
           <div

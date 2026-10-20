@@ -11,7 +11,8 @@ export const layoutFor = (W: number, H: number) => {
   const box = safeBox(undefined, W, H); // the clear band: feed zones excluded in 9:16
   const top = box.y;
   const bottom = box.y + box.h;
-  const k = tall ? 0.78 : square ? 0.8 : 1.22; // the drawing's scale
+  const k = tall ? 0.95 : square ? 0.82 : 1.22; // the drawing's scale
+  const sx = tall ? 0.8 : 1; // how far apart the phones sit, horizontally (tight in 9:16)
   const bubbleW = Math.min(1100 * u, W - 2 * box.x);
   return {
     u,
@@ -22,7 +23,7 @@ export const layoutFor = (W: number, H: number) => {
     // the rederive bubble: avatar centre and the bubble's left edge
     assistant: { ax: (W - bubbleW) / 2 + 24 * u, ay: top + (tall ? 190 : 150) * u, bx: (W - bubbleW) / 2 + 72 * u, maxW: bubbleW - 72 * u },
     // the drawing: centre, scale, and the server's rest offset above the phone line
-    diagram: { cx: W / 2, cy: tall ? H * 0.5 + 10 * u : H * 0.585, k, serverY: -215, serverFar: -265 },
+    diagram: { cx: W / 2, cy: tall ? H * 0.5 + 10 * u : H * 0.585, k, sx, serverY: -215, serverFar: -265 },
     // the composer: left edge, vertical centre, width
     composer: { x: (W - bubbleW) / 2, y: bottom - (tall ? 130 : 110) * u, w: bubbleW },
     // where a sent line docks: its right edge and centre
@@ -30,10 +31,10 @@ export const layoutFor = (W: number, H: number) => {
     // the four next-problem chips, around the drawing (world offsets from the diagram centre, in drawing units)
     chips: tall
       ? [
-          { x: -230, y: -480 },
-          { x: 230, y: -480 },
-          { x: -230, y: 300 },
-          { x: 230, y: 300 },
+          { x: -215, y: -400 },
+          { x: 215, y: -400 },
+          { x: -215, y: 330 },
+          { x: 215, y: 330 },
         ]
       : [
           { x: -600, y: -310 },

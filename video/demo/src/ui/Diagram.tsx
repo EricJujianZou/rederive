@@ -56,10 +56,9 @@ const Phone: React.FC<{ x: number; frame: number; slideFrom: number; addr?: stri
 
 /** A home router: a box with a slot. The slot opens (splits) once an outbound packet has passed. */
 const Router: React.FC<{ x: number; frame: number; openAt: number; openAgainAt: number; hitAt?: number }> = ({ x, frame, openAt, openAgainAt, hitAt }) => {
-  const draw = prog(frame, CUE.phonesLand, CUE.phonesLand + f60(20), E.out);
+  const draw = frame < CUE.phonesLand - f60(6) ? 0 : Math.min(1, spr(frame, CUE.phonesLand - f60(6), SPR.snap));
   const w = D.routerW;
   const h = D.routerH;
-  const per = 2 * (w + h);
   // open for its own packet (bar 3), closes again when the attempt is abandoned, opens for good at bar 10
   const o1 = prog(frame, openAt, openAt + f60(10), E.out) * (1 - prog(frame, CUE.send2, CUE.send2 + f60(10), E.smooth));
   const o2 = prog(frame, openAgainAt, openAgainAt + f60(10), E.out);
@@ -67,8 +66,8 @@ const Router: React.FC<{ x: number; frame: number; openAt: number; openAgainAt: 
   const gap = 18 * open;
   const hitK = hitAt !== undefined ? hitPulse(frame - hitAt, 1, 4) : 0;
   return (
-    <g transform={`translate(${x} 0) scale(${(1 + 0.05 * hitK).toFixed(4)})`}>
-      <rect x={-w / 2} y={-h / 2} width={w} height={h} rx={10} fill={C.paper} stroke={C.ink} strokeWidth={STROKE} strokeDasharray={per} strokeDashoffset={per * (1 - draw)} />
+    <g transform={`translate(${x} 0) scale(${((1 + 0.05 * hitK) * Math.max(0.001, draw)).toFixed(4)})`}>
+      <rect x={-w / 2} y={-h / 2} width={w} height={h} rx={10} fill={C.paper} stroke={C.ink} strokeWidth={STROKE} />
       {/* the slot: two halves that part when open */}
       <line x1={0} y1={-h / 2 + 16} x2={0} y2={-gap / 2 - 1} stroke={C.ink} strokeWidth={STROKE} strokeLinecap="round" opacity={draw} />
       <line x1={0} y1={gap / 2 + 1} x2={0} y2={h / 2 - 16} stroke={C.ink} strokeWidth={STROKE} strokeLinecap="round" opacity={draw} />
@@ -127,9 +126,11 @@ const relayPulse = (frame: number) => {
 };
 
 /** A packet: one ink dot, the story device. */
-const Dot: React.FC<{ x: number; y: number; color?: string; opacity?: number; sx?: number; sy?: number }> = ({ x, y, color = C.ink, opacity = 1, sx = 1, sy = 1 }) => (
-  <circle r={D.packet / 2} fill={color} opacity={opacity} transform={`translate(${x.toFixed(2)} ${y.toFixed(2)}) scale(${sx.toFixed(3)} ${sy.toFixed(3)})`} />
-);
+const Spread = React.createContext(1);
+const Dot: React.FC<{ x: number; y: number; color?: string; opacity?: number; sx?: number; sy?: number }> = ({ x, y, color = C.ink, opacity = 1, sx = 1, sy = 1 }) => {
+  const sp = React.useContext(Spread);
+  return <circle r={D.packet / 2} fill={color} opacity={opacity} transform={`translate(${x.toFixed(2)} ${y.toFixed(2)}) scale(${(sx / sp).toFixed(3)} ${sy.toFixed(3)})`} />;
+};
 
 /** Bar 3: three packets fly straight at router B and drop. */
 const StraightPackets: React.FC<{ frame: number }> = ({ frame }) => {
@@ -217,13 +218,13 @@ const Sweep: React.FC<{ frame: number }> = ({ frame }) => {
 };
 
 /** The "+80 ms" label with a small bar, on the lengthened detour (dn-answer-card-bars, one number). */
-const Detour: React.FC<{ frame: number; serverY: number }> = ({ frame, serverY }) => {
+const Detour: React.FC<{ frame: number; serverY: number; sx: number }> = ({ frame, serverY, sx }) => {
   if (frame < CUE.detour || frame > CUE.send3 + f60(14)) return null;
   const p = spr(frame, CUE.detour, SPR.firm);
   const bar = prog(frame, CUE.detour + f60(6), CUE.detour + f60(30), E.out);
   const tick = hitPulse(frame - CUE.detourPulse, 2, 5);
   const fade = 1 - prog(frame, CUE.send3, CUE.send3 + f60(14), E.smooth);
-  const x = 250;
+  const x = 250 * sx;
   const y = serverY / 2 - 40;
   return (
     <g opacity={clamp(p * 1.5) * fade} transform={`translate(${x} ${(y + (1 - p) * 8).toFixed(2)}) scale(${(1 + 0.04 * tick).toFixed(4)})`}>
@@ -238,15 +239,15 @@ const Detour: React.FC<{ frame: number; serverY: number }> = ({ frame, serverY }
 };
 
 /** The two address chips flying from the server to the phones. */
-const AddressChips: React.FC<{ frame: number; serverY: number; addrA: string; addrB: string }> = ({ frame, serverY, addrA, addrB }) => {
+const AddressChips: React.FC<{ frame: number; serverY: number; sx: number; addrA: string; addrB: string }> = ({ frame, serverY, sx, addrA, addrB }) => {
   if (frame < CHIP.from || frame >= CHIP.to) return null;
   const p = prog(frame, CHIP.from, CHIP.to, E.inOut);
   const S = { x: 0, y: serverY };
   return (
     <>
       {[
-        { to: { x: D.phoneA.x, y: -D.phoneH / 2 + 40 }, text: addrA, id: 'chipA' },
-        { to: { x: D.phoneB.x, y: -D.phoneH / 2 + 40 }, text: addrB, id: 'chipB' },
+        { to: { x: D.phoneA.x * sx, y: -D.phoneH / 2 + 40 }, text: addrA, id: 'chipA' },
+        { to: { x: D.phoneB.x * sx, y: -D.phoneH / 2 + 40 }, text: addrB, id: 'chipB' },
       ].map(({ to, text, id }) => (
         <g key={id} transform={`translate(${mix(S.x, to.x, p).toFixed(2)} ${mix(S.y, to.y, p).toFixed(2)})`}>
           <rect x={-62} y={-16} width={124} height={32} rx={16} fill={C.ink} />
@@ -260,7 +261,7 @@ const AddressChips: React.FC<{ frame: number; serverY: number; addrA: string; ad
 };
 
 export const Diagram: React.FC<{ frame: number; L: Layout }> = ({ frame, L }) => {
-  const { cx, cy, k } = L.diagram;
+  const { cx, cy, k, sx } = L.diagram;
   const slide = 1300 / k;
   // the server sits at serverY, then slides up to serverFar on the detour beat
   const far = prog(frame, CUE.detour, CUE.detour + f60(24), E.smooth);
@@ -282,7 +283,9 @@ export const Diagram: React.FC<{ frame: number; L: Layout }> = ({ frame, L }) =>
   return (
     <svg width={L.W} height={L.H} viewBox={`0 0 ${L.W} ${L.H}`} style={{ position: 'absolute', left: 0, top: 0 }}>
       <g transform={`translate(${cx} ${cy}) scale(${k})`}>
-        {/* lines sit under everything */}
+        <Spread.Provider value={sx}>
+        {/* lines and packets sit under everything, in a group squeezed to the phones' spread */}
+        <g transform={`scale(${sx} 1)`}>
         {line1Visible && (
           <g>
             <line
@@ -311,23 +314,25 @@ export const Diagram: React.FC<{ frame: number; L: Layout }> = ({ frame, L }) =>
         )}
         {F >= DIRECT.from && <DirectPackets frame={frame} />}
         <Sweep frame={frame} />
-        <Wifi x={D.routerA.x} frame={frame} />
-        <Wifi x={D.routerB.x} frame={frame} />
-        <Router x={D.routerA.x} frame={frame} openAt={CUE.gateAOpen} openAgainAt={CUE.gatesOpen} />
-        <Router x={D.routerB.x} frame={frame} openAt={1e9} openAgainAt={CUE.gatesOpen} hitAt={CUE.dropHit} />
-        <Server frame={frame} y={serverY} />
-        <Detour frame={frame} serverY={serverY} />
         <StraightPackets frame={frame} />
         <RelayPackets frame={frame} serverY={serverY} />
-        <AddressChips frame={frame} serverY={serverY} addrA="198.51.100.4" addrB="203.0.113.9" />
-        <Phone x={D.phoneA.x} frame={frame} slideFrom={D.phoneA.x - slide} addr="198.51.100.4" addrAt={CUE.chipsLand} side="A" />
-        <Phone x={D.phoneB.x} frame={frame} slideFrom={D.phoneB.x + slide} addr="203.0.113.9" addrAt={CUE.chipsLand} side="B" />
-        <g opacity={labels}>
-          <text data-text="labelA" x={D.phoneA.x} y={D.phoneH / 2 + 38} textAnchor="middle" style={label()}>phone A</text>
-          <text data-text="labelB" x={D.phoneB.x} y={D.phoneH / 2 + 38} textAnchor="middle" style={label()}>phone B</text>
-          <text data-text="labelRA" x={D.routerA.x} y={D.routerH / 2 + 38} textAnchor="middle" style={label()}>router</text>
-          <text data-text="labelRB" x={D.routerB.x} y={D.routerH / 2 + 38} textAnchor="middle" style={label()}>router</text>
         </g>
+        <Wifi x={D.routerA.x * sx} frame={frame} />
+        <Wifi x={D.routerB.x * sx} frame={frame} />
+        <Router x={D.routerA.x * sx} frame={frame} openAt={CUE.gateAOpen} openAgainAt={CUE.gatesOpen} />
+        <Router x={D.routerB.x * sx} frame={frame} openAt={1e9} openAgainAt={CUE.gatesOpen} hitAt={CUE.dropHit} />
+        <Server frame={frame} y={serverY} />
+        <Detour frame={frame} serverY={serverY} sx={sx} />
+        <AddressChips frame={frame} serverY={serverY} sx={sx} addrA="198.51.100.4" addrB="203.0.113.9" />
+        <Phone x={D.phoneA.x * sx} frame={frame} slideFrom={D.phoneA.x * sx - slide} addr="198.51.100.4" addrAt={CUE.chipsLand} side="A" />
+        <Phone x={D.phoneB.x * sx} frame={frame} slideFrom={D.phoneB.x * sx + slide} addr="203.0.113.9" addrAt={CUE.chipsLand} side="B" />
+        <g opacity={labels}>
+          <text data-text="labelA" x={D.phoneA.x * sx} y={D.phoneH / 2 + 38} textAnchor="middle" style={label()}>phone A</text>
+          <text data-text="labelB" x={D.phoneB.x * sx} y={D.phoneH / 2 + 38} textAnchor="middle" style={label()}>phone B</text>
+          <text data-text="labelRA" x={D.routerA.x * sx} y={D.routerH / 2 + 38} textAnchor="middle" style={label()}>router</text>
+          <text data-text="labelRB" x={D.routerB.x * sx} y={D.routerH / 2 + 38} textAnchor="middle" style={label()}>router</text>
+        </g>
+        </Spread.Provider>
       </g>
     </svg>
   );

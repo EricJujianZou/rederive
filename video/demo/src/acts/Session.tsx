@@ -25,8 +25,10 @@ export const shotAt = (frame: number, L: ReturnType<typeof layoutFor>): Shot => 
   const r2 = prog(frame, CUE.pullOut2, CUE.pullOut2 + f60(40), E.cam);
   const z1 = p1 * (1 - r1);
   const z2 = p2 * (1 - r2);
-  const breath = 1 + 0.015 * Math.sin((frame / 60) * 0.9);
-  const k1 = lmix(1, 1.4, z1) * lmix(1, 1.18, z2) * breath;
+  const breath = 1 + 0.02 * Math.sin((frame / 60) * 0.9);
+  // the hook settles: the canvas opens a touch wide and eases to rest over bar 1 (frame 0 already moves)
+  const settle = lmix(1.08, 1, prog(frame, 0, CUE.problemResolved, E.cam));
+  const k1 = lmix(1, 1.4, z1) * lmix(1, 1.18, z2) * breath * settle;
   // the anchor blends toward router B during push 1 (screen point stays where router B sits, shifted toward centre)
   const ax = cx + (routerB.x - cx) * z1;
   const sx = cx + (routerB.x - cx) * z1 * 0.55;
@@ -96,7 +98,7 @@ export const Session: React.FC<{ frame: number }> = ({ frame }) => {
         })}
       </div>
       {/* the iris seed: the accent dot grows on the avatar before the lockup act takes over */}
-      {frame >= CUE.seed && frame < CUE.iris && <Avatar x={A.ax} y={A.ay} size={44 * u} ring={spr(frame, CUE.seed, SPR.firm)} />}
+      {frame >= CUE.seed && frame < CUE.iris && <Avatar x={A.ax} y={A.ay} size={44 * u} opacity={prog(frame, CUE.seed, CUE.seed + f60(8), E.smooth)} ring={spr(frame, CUE.seed, SPR.firm)} />}
     </>
   );
 };
