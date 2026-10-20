@@ -240,7 +240,7 @@ export const Chip: React.FC<{ text: string; x: number; y: number; frame: number;
     <div
       style={{
         position: 'absolute',
-        left: anchor === 'centre' ? '50%' : 0,
+        left: 0,
         top: 0,
         height: h,
         display: 'flex',

@@ -2,6 +2,7 @@ import React from 'react';
 import { Composition, Folder, Still } from 'remotion';
 import { Act1 } from './acts/Act1';
 import { Act2 } from './acts/Act2';
+import { Act3 } from './acts/Act3';
 import { C, U } from './brand/tokens';
 import { Film, FilmProps } from './Film';
 import { FilmSub, subMetadata } from './FilmSub';
@@ -25,11 +26,14 @@ const solo = (Act: React.FC) => {
 };
 const Act1Solo = solo(Act1);
 const Act2Solo = solo(Act2);
+const Act3Solo = solo(Act3);
 
 export const RemotionRoot: React.FC = () => (
   <>
     {/* The film. Render with scripts/render.sh (muted picture + ffmpeg mux + sync check). */}
     <Composition id="Film" component={Film} durationInFrames={TOTAL} fps={FPS} width={W} height={H} defaultProps={{ audit: false } as FilmProps} />
+    <Composition id="Film9x16" component={Film} durationInFrames={TOTAL} fps={FPS} width={1080} height={1920} defaultProps={{ audit: false } as FilmProps} />
+    <Composition id="Film1x1" component={Film} durationInFrames={TOTAL} fps={FPS} width={1080} height={1080} defaultProps={{ audit: false } as FilmProps} />
     {/* The film as sub-frames for the motion-blurred master (render.sh --blur passes out/samples.json). */}
     <Composition
       id="FilmSub"
@@ -43,8 +47,9 @@ export const RemotionRoot: React.FC = () => (
     />
 
     <Folder name="Acts">
-      <Composition id="Act1" component={Act1Solo} durationInFrames={ACT.statement.dur} fps={FPS} width={W} height={H} defaultProps={{ audit: false } as FilmProps} />
-      <Composition id="Act2" component={Act2Solo} durationInFrames={ACT.mark.dur} fps={FPS} width={W} height={H} defaultProps={{ audit: false } as FilmProps} />
+      <Composition id="Act1" component={Act1Solo} durationInFrames={ACT.propose.dur} fps={FPS} width={W} height={H} defaultProps={{ audit: false } as FilmProps} />
+      <Composition id="Act2" component={Act2Solo} durationInFrames={ACT.resolve.dur} fps={FPS} width={W} height={H} defaultProps={{ audit: false } as FilmProps} />
+      <Composition id="Act3" component={Act3Solo} durationInFrames={ACT.lockup.dur} fps={FPS} width={W} height={H} defaultProps={{ audit: false } as FilmProps} />
     </Folder>
 
     <Folder name="Stills">

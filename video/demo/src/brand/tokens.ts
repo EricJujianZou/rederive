@@ -39,8 +39,8 @@ export const U = Math.min(W, H) / 1080;
 export const TYPE = {
   display: { size: 128, weight: 650, track: -0.03, lead: 1.0 }, // the wordmark and the giant ICE
   secondary: { size: 46, weight: 500, track: -0.01, lead: 1.2 }, // the end-card tagline
-  ui: { size: 34, weight: 500, track: -0.01, lead: 1.3 }, // the bubbles and the composer
-  label: { size: 24, weight: 500, track: 0.0, lead: 1.2 }, // diagram labels, chips, the header pill
+  ui: { size: 40, weight: 500, track: -0.01, lead: 1.3 }, // the bubbles and the composer
+  label: { size: 26, weight: 500, track: 0.0, lead: 1.2 }, // diagram labels, chips, the header pill
   mono: { size: 30, weight: 450, track: 0.0, lead: 1.4 }, // the URL
 };
 
