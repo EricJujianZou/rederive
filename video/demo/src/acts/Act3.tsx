@@ -53,7 +53,7 @@ export const Act3: React.FC = () => {
   const urlY = tagY0 + (tagLines.length - 1) * tagSize * 1.35 + 36 * u + urlSize;
   const up = prog(frame, CUE.url, CUE.url + f60(22), E.out);
   // the slow push through the hold, on the whole card
-  const push = lmix(1, 1.09, prog(frame, CUE.nameLock, TOTAL, E.dolly));
+  const push = lmix(1, 1.16, prog(frame, CUE.url - f60(20), TOTAL, E.linear)); // a 16% push over the hold (past 1.3 s a creep is too slow to read), still moving on the last frame
   const echoes = [0.72, 0.5].map((o, i) => ({ o: o * (1 - np) * mp * 0.5, s: 1 + 0.14 * (i + 1) * (1 - mp) }));
   const markT = (sx: number) => `translate(${(mx - (markW * sx) / 2).toFixed(2)} ${(my - (markSize * sx) / 2).toFixed(2)}) scale(${((markSize * sx) / GLYPH.h).toFixed(4)})`;
   return (

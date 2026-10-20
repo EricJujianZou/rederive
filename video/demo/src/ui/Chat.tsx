@@ -180,7 +180,7 @@ export const Composer: React.FC<{
   const q = out === undefined ? 0 : prog(frame, out, out + f60(14), E.exit);
   const o = p * (1 - q);
   if (o <= 0.002 || frame < start) return null;
-  const sent = prog(frame, send, send + f60(14), E.ui);
+  const sent = prog(frame, send, send + f60(6), E.ui); // the field fills ink in 6 f: a long cross-mix reads as a grey smear
   const size = TYPE.ui.size * u;
   const pad = 18 * u;
   const bg = mixColor(C.paper, C.ink, sent);
