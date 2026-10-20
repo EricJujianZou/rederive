@@ -19,7 +19,7 @@ export const layoutFor = (W: number, H: number) => {
     W,
     H,
     tall,
-    header: { x: box.x, y: top + (tall ? 0 : -8 * u), h: 44 * u },
+    header: { x: box.x, y: top, h: 44 * u },
     // the rederive bubble: avatar centre and the bubble's left edge
     assistant: { ax: (W - bubbleW) / 2 + 24 * u, ay: top + (tall ? 190 : 150) * u, bx: (W - bubbleW) / 2 + 72 * u, maxW: bubbleW - 72 * u },
     // the drawing: centre, scale, and the server's rest offset above the phone line
@@ -37,10 +37,10 @@ export const layoutFor = (W: number, H: number) => {
           { x: 215, y: 330 },
         ]
       : [
-          { x: -600, y: -310 },
-          { x: 600, y: -310 },
-          { x: -600, y: 300 },
-          { x: 600, y: 300 },
+          { x: -560, y: -310 },
+          { x: 560, y: -310 },
+          { x: -560, y: 300 },
+          { x: 560, y: 300 },
         ],
     // the end card
     end: { markSize: (tall ? 150 : 180) * u, cy: H / 2 - (tall ? 60 : 50) * u },
@@ -53,7 +53,7 @@ export const D = {
   routerA: { x: -270, y: 0 },
   routerB: { x: 270, y: 0 },
   phoneB: { x: 540, y: 0 },
-  phoneW: 150,
+  phoneW: 170,
   phoneH: 270,
   routerW: 140,
   routerH: 78,

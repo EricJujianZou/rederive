@@ -11,7 +11,6 @@ import { Schedule, shownAt } from './typing';
 
 export const Avatar: React.FC<{ x: number; y: number; size: number; opacity?: number; ring?: number }> = ({ x, y, size, opacity = 1, ring = 0 }) => (
   <div
-    data-text="avatar"
     style={{
       position: 'absolute',
       left: 0,

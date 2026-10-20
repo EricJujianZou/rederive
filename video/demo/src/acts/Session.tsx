@@ -28,7 +28,7 @@ export const shotAt = (frame: number, L: ReturnType<typeof layoutFor>): Shot => 
   const breath = 1 + 0.02 * Math.sin((frame / 60) * 0.9);
   // the hook settles: the canvas opens a touch wide and eases to rest over bar 1 (frame 0 already moves)
   const settle = lmix(1.08, 1, prog(frame, 0, CUE.problemResolved, E.cam));
-  const k1 = lmix(1, 1.4, z1) * lmix(1, 1.18, z2) * breath * settle;
+  const k1 = lmix(1, 1.4, z1) * lmix(1, 1.12, z2) * breath * settle;
   // the anchor blends toward router B during push 1 (screen point stays where router B sits, shifted toward centre)
   const ax = cx + (routerB.x - cx) * z1;
   const sx = cx + (routerB.x - cx) * z1 * 0.55;
@@ -79,12 +79,12 @@ export const Session: React.FC<{ frame: number }> = ({ frame }) => {
               position: 'absolute',
               left: 0,
               top: 0,
-              width: L.W,
+              width: 600 * u,
               textAlign: 'center',
               color: C.accent,
               opacity: clamp(iceP * 2) * (1 - iceQ),
               filter: `blur(${(blurIn(iceP, 10) + blurOut(iceQ, 12)).toFixed(2)}px)`,
-              transform: `translate(0px, ${(iceY - iceSize / 2).toFixed(2)}px) scale(${(lmix(1.25, 1, iceP) * lmix(1, 0.85, iceQ)).toFixed(4)})`,
+              transform: `translate(${(L.W / 2 - 300 * u).toFixed(2)}px, ${(iceY - iceSize / 2).toFixed(2)}px) scale(${(lmix(1.25, 1, iceP) * lmix(1, 0.85, iceQ)).toFixed(4)})`,
             }}
           >
             ICE

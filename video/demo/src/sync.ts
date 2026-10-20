@@ -52,7 +52,7 @@ export default function cues(): SoundEvent[] {
 
   // Bar 3: router A opens for its own packet (a small snap), the packets drop at router B (thuds).
   ev.push({ f: GATE_A_FRAME, kind: 'snap', weight: 0.5, pan: dx(D.routerA.x), id: 'gateA' });
-  for (let i = 0; i < STRAIGHT.n; i++) ev.push({ f: straightHit(i), kind: 'hit', weight: i === 0 ? 1.1 : 0.7, pan: dx(D.routerB.x), id: `drop${i}` });
+  for (let i = 0; i < STRAIGHT.n; i++) ev.push({ f: straightHit(i), kind: 'hit', weight: i === 0 ? 0.8 : 0.45, pan: dx(D.routerB.x), id: `drop${i}` });
   // the push-in on router B: a whoosh with its apex on the camera's velocity peak
   const push1 = { from: CUE.pushIn - 6, to: CUE.pushIn + 44 };
   ev.push({ f: peak(push1.from, push1.to, E.cam), kind: 'whoosh', weight: 0.6, pan: dx(D.routerB.x) * 0.5, dur: push1.to - push1.from, apexFrac: (peak(push1.from, push1.to, E.cam) - push1.from) / (push1.to - push1.from), id: 'push1' });
@@ -71,12 +71,12 @@ export default function cues(): SoundEvent[] {
 
   // Bar 9: the address chips land on the phones, the server leaves (a soft suck)
   ev.push({ f: CUE.chipsLand, kind: 'land', weight: 0.6, pan: dx(D.phoneA.x), variant: 'light', id: 'chipA-land' });
-  ev.push({ f: CUE.chipsLand, kind: 'land', weight: 0.6, pan: dx(D.phoneB.x), variant: 'light', id: 'chipB-land' });
+  ev.push({ f: CUE.chipsLand + 1, kind: 'land', weight: 0.6, pan: dx(D.phoneB.x), variant: 'light', id: 'chipB-land' });
   ev.push({ f: CUE.serverOut + 8, kind: 'suck', weight: 0.5, pan: 0, dur: 16, apexFrac: 0.5, id: 'server-out' });
 
   // Bar 10: the routers open (snaps), the packets cross (a whoosh apex), the arrival is the drop
-  ev.push({ f: GATE_DIRECT_FRAME, kind: 'snap', weight: 0.8, pan: dx(D.routerA.x), id: 'gateA-open' });
-  ev.push({ f: GATE_DIRECT_FRAME, kind: 'snap', weight: 0.8, pan: dx(D.routerB.x), id: 'gateB-open' });
+  ev.push({ f: GATE_DIRECT_FRAME, kind: 'snap', weight: 0.5, pan: dx(D.routerA.x), id: 'gateA-open' });
+  ev.push({ f: GATE_DIRECT_FRAME + 1, kind: 'snap', weight: 0.5, pan: dx(D.routerB.x), id: 'gateB-open' });
   ev.push({ f: CROSS_FRAME, kind: 'whoosh', weight: 0.7, pan: 0, dur: CUE.directLand - CUE.bothSend, apexFrac: (CROSS_FRAME - CUE.bothSend) / (CUE.directLand - CUE.bothSend), id: 'cross' });
   ev.push({ f: hit(SCREEN_LAND_START, SPR.land, 1), kind: 'drop', weight: 1.3, pan: 0, id: 'direct-land' });
   // Bar 11: ICE punches in (hit), re-forms as the line (nothing: the words tick)
@@ -87,7 +87,8 @@ export default function cues(): SoundEvent[] {
 
   // Lockup: the seed swells, the iris swallows (suck into the cut), the mark lands, the name locks, the tagline settles
   ev.push({ f: CUE.seed, kind: 'swell', weight: 0.6, pan: -0.3, dur: CUE.iris - CUE.seed, id: 'seed' });
-  ev.push({ f: IRIS.from + IRIS.dur, kind: 'suck', weight: 1.0, pan: 0, dur: IRIS.dur + 10, apexFrac: 0.7, id: 'iris' });
+  ev.push({ f: IRIS.from + IRIS.dur, kind: 'suck', weight: 1.0, pan: 0, dur: IRIS.dur + 10, apexFrac: 0.85, id: 'iris' });
+  ev.push({ f: IRIS.from + IRIS.dur, kind: 'land', weight: 0.7, pan: 0, id: 'iris-full' });
   ev.push({ f: hit(CUE.markLand, SPR.word, 0.92), kind: 'snap', weight: 0.8, pan: -0.1, id: 'name-lock' });
   ev.push({ f: settleOf(CUE.tagline, CUE.tagline + 24, E.out), kind: 'bell', weight: 0.7, pan: 0, variant: 'motif', id: 'tagline' });
 

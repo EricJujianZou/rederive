@@ -103,8 +103,8 @@ export const CUE = {
   markLand: b(13, 2), // the mark reaches its lockup size
   nameLock: b(13, 3), // the wordmark locks beside it
   creep: b(14, 0), // the end card's slow push starts
-  tagline: b(14, 0, 2),
-  url: b(14, 1),
+  tagline: b(13, 3, 2),
+  url: b(14, 1, 2),
   settle: b(14, 3), // the push settles
   end: b(15),
 };
@@ -138,7 +138,7 @@ export const COPY: Copy[] = [
   { id: 'next3', text: 'Keys over an open line', in: CUE.chip3, resolved: CUE.chip3 + f60(10), out: CUE.iris, kind: 'ui' },
   { id: 'next4', text: 'Your own voice comes back', in: CUE.chip4, resolved: CUE.chip4 + f60(10), out: CUE.iris, kind: 'ui' },
   { id: 'wordmark', text: 'rederive', in: CUE.markLand, resolved: CUE.nameLock, out: TOTAL },
-  { id: 'tagline', text: 'Learn any codebase\nby re-designing it yourself.', in: CUE.tagline, resolved: CUE.tagline + f60(24), out: TOTAL },
+  { id: 'tagline', text: 'Learn any codebase\nby re-designing it yourself.', in: CUE.tagline, resolved: CUE.tagline + f60(24 + 4 * 7 + 22), out: TOTAL },
   { id: 'url', text: 'github.com/EricJujianZou/rederive', in: CUE.url, resolved: CUE.url + f60(20), out: TOTAL, kind: 'ui' },
 ];
 

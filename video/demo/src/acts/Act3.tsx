@@ -1,10 +1,11 @@
 import React from 'react';
 import { useCurrentFrame, useVideoConfig } from 'remotion';
 import { Mark } from '../brand/Mark';
-import { C, TYPE, typeStyle } from '../brand/tokens';
+import { Words } from '../fx/Words';
+import { C, FONT, TYPE, typeStyle } from '../brand/tokens';
 import { arrive, clamp, E, lmix, prog, spr, SPR } from '../lib/anim';
 import { measureTracked } from '../lib/measure';
-import { ACT, copy, CUE, f60 } from '../timeline';
+import { ACT, copy, CUE, f60, TOTAL } from '../timeline';
 import { layoutFor } from '../ui/layout';
 import { Session } from './Session';
 
@@ -45,10 +46,15 @@ export const Act3: React.FC = () => {
   const nameX = lockX + markW / 2 + gap;
   const nameO = clamp(np * 1.6);
   // tagline and URL rise in
-  const tp = prog(frame, CUE.tagline, CUE.tagline + f60(24), E.out);
+  const tagSize = TYPE.secondary.size * (L.tall ? 0.9 : 1) * u;
+  const tagLines = copy('tagline').text.split('\n');
+  const tagW = Math.max(...tagLines.map((l) => measureTracked(l, tagSize, TYPE.secondary.weight, TYPE.secondary.track))) + 4;
+  const urlSize = TYPE.mono.size * u;
+  const urlW = measureTracked(copy('url').text, urlSize, TYPE.mono.weight, TYPE.mono.track, FONT.mono) + 4;
   const up = prog(frame, CUE.url, CUE.url + f60(20), E.out);
   // the slow push through the hold
-  const creep = 1 + 0.04 * prog(frame, CUE.creep, CUE.settle + f60(30), E.dolly);
+  // the mark alone creeps through the hold (a path: no type re-raster steps); the words arrive one by one
+  const creep = 1 + 0.06 * prog(frame, CUE.markLand + f60(10), TOTAL, E.dolly);
   const echoes = [0.72, 0.5].map((o, i) => ({ o: o * (1 - npc) * mp, s: 1 + 0.14 * (i + 1) * (1 - mp) }));
   return (
     <>
@@ -78,34 +84,36 @@ export const Act3: React.FC = () => {
           >
             {name}
           </div>
-          <div
-            data-text="tagline"
-            style={{
-              ...typeStyle('secondary', TYPE.secondary.size * (L.tall ? 0.9 : 1) * u),
-              position: 'absolute',
-              left: 0,
-              top: 0,
-              width: L.W,
-              textAlign: 'center',
-              color: C.paper,
-              opacity: tp,
-              transform: `translate(0px, ${(L.end.cy + L.end.markSize * 0.62 + 20 * u + (1 - arrive(tp)) * 16 * u).toFixed(2)}px)`,
-            }}
-          >
-            {copy('tagline').text}
-          </div>
+          {tagLines.map((line, li) => (
+            <div
+              key={li}
+              style={{
+                ...typeStyle('secondary', tagSize),
+                position: 'absolute',
+                left: 0,
+                top: 0,
+                width: tagW,
+                display: 'flex',
+                justifyContent: 'center',
+                color: C.paper,
+                transform: `translate(${((L.W - tagW) / 2).toFixed(2)}px, ${(L.end.cy + L.end.markSize * 0.62 + 20 * u + li * tagSize * TYPE.secondary.lead).toFixed(2)}px)`,
+              }}
+            >
+              <Words text={line} frame={frame} start={CUE.tagline + li * f60(24)} stagger={f60(7)} dur={f60(22)} rise={0.3} blur={6} id={`tagline${li}`} />
+            </div>
+          ))}
           <div
             data-text="url"
             style={{
-              ...typeStyle('mono', TYPE.mono.size * u),
+              ...typeStyle('mono', urlSize),
               position: 'absolute',
               left: 0,
               top: 0,
-              width: L.W,
+              width: urlW,
               textAlign: 'center',
               color: C.mute,
               opacity: up,
-              transform: `translate(0px, ${(L.end.cy + L.end.markSize * 0.62 + 20 * u + TYPE.secondary.size * 2.4 * u + 36 * u + (1 - arrive(up)) * 12 * u).toFixed(2)}px)`,
+              transform: `translate(${((L.W - urlW) / 2).toFixed(2)}px, ${(L.end.cy + L.end.markSize * 0.62 + 20 * u + TYPE.secondary.size * 2.4 * u + 36 * u + (1 - arrive(up)) * 12 * u).toFixed(2)}px)`,
             }}
           >
             {copy('url').text}

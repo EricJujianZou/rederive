@@ -37,8 +37,8 @@ const Phone: React.FC<{ x: number; frame: number; slideFrom: number; addr?: stri
       {/* the other phone's address, learned from the server */}
       {addr && chipIn > 0.01 && (
         <g opacity={clamp(chipIn * 1.5)} transform={`translate(0 ${(-h / 2 + 40 + (1 - chipIn) * 8).toFixed(2)})`}>
-          <rect x={-62} y={-16} width={124} height={32} rx={16} fill={C.ink} />
-          <text data-text={`addr${side}`} x={0} y={6} textAnchor="middle" style={{ fontFamily: FONT.mono, fontSize: 17, fontWeight: 450, fill: C.paper }}>
+          <rect x={-72} y={-18} width={144} height={36} rx={18} fill={C.ink} />
+          <text data-text={`addr${side}`} x={0} y={7} textAnchor="middle" style={{ fontFamily: FONT.mono, fontSize: 19, fontWeight: 450, fill: C.paper }}>
             {addr}
           </text>
         </g>
@@ -66,7 +66,7 @@ const Router: React.FC<{ x: number; frame: number; openAt: number; openAgainAt: 
   const gap = 18 * open;
   const hitK = hitAt !== undefined ? hitPulse(frame - hitAt, 1, 4) : 0;
   return (
-    <g transform={`translate(${x} 0) scale(${((1 + 0.05 * hitK) * Math.max(0.001, draw)).toFixed(4)})`}>
+    <g transform={`translate(${x} 0) scale(${((1 + 0.09 * hitK) * Math.max(0.001, draw)).toFixed(4)})`}>
       <rect x={-w / 2} y={-h / 2} width={w} height={h} rx={10} fill={C.paper} stroke={C.ink} strokeWidth={STROKE} />
       {/* the slot: two halves that part when open */}
       <line x1={0} y1={-h / 2 + 16} x2={0} y2={-gap / 2 - 1} stroke={C.ink} strokeWidth={STROKE} strokeLinecap="round" opacity={draw} />
@@ -95,11 +95,12 @@ const Server: React.FC<{ frame: number; y: number }> = ({ frame, y }) => {
   const drop = mix(-220, 0, Math.min(s, 1)); // clamp: the overshoot squashes instead of sinking through the line
   const sq = s > 1 ? 1 + (s - 1) * 1.2 : 1;
   const out = prog(frame, CUE.serverOut, CUE.serverOut + f60(16), E.smooth);
+  const fadeIn = prog(frame, SERVER_DROP_START, SERVER_DROP_START + f60(6), E.smooth);
   const pulse = relayPulse(frame);
   const w = D.serverW;
   const h = D.serverH;
   return (
-    <g opacity={1 - out} transform={`translate(0 ${(y + drop - out * 30).toFixed(2)}) scale(${(sq * (1 + 0.03 * pulse)).toFixed(4)} ${((1 / sq) * (1 + 0.03 * pulse)).toFixed(4)})`}>
+    <g opacity={(1 - out) * fadeIn} transform={`translate(0 ${(y + drop - out * 30).toFixed(2)}) scale(${(sq * (1 + 0.03 * pulse)).toFixed(4)} ${((1 / sq) * (1 + 0.03 * pulse)).toFixed(4)})`}>
       <rect x={-w / 2} y={-h / 2} width={w} height={h} rx={14} fill={C.ink} />
       {[0, 1, 2].map((i) => (
         <g key={i}>
@@ -107,7 +108,7 @@ const Server: React.FC<{ frame: number; y: number }> = ({ frame, y }) => {
           <circle cx={w / 2 - 28} cy={-h / 2 + 23 + i * 22} r={3} fill={i === 1 ? C.accent : C.mute} />
         </g>
       ))}
-      <text data-text="server" x={0} y={-h / 2 - 22} textAnchor="middle" style={label()}>
+      <text data-text="server" x={w / 2 + 18} y={h / 2 - 2} textAnchor="start" style={label()}>
         server
       </text>
     </g>
@@ -185,10 +186,12 @@ const DirectPackets: React.FC<{ frame: number }> = ({ frame }) => {
   const xb = -xa; // the B packet, moving left
   const landed = frame >= CUE.directLand;
   const fade = landed ? 1 - prog(frame, CUE.directLand, CUE.directLand + f60(10), E.smooth) : 1;
+  // on the landing the line thickens with a pulse and settles heavier than it was drawn
+  const thick = STROKE + 2.5 * prog(frame, CUE.directLand, CUE.directLand + f60(12), E.out) + 5 * hitPulse(frame - CUE.directLand, 2, 6);
   return (
     <>
-      <line x1={EDGE_A} y1={0} x2={xa} y2={0} stroke={C.accent} strokeWidth={STROKE} strokeLinecap="round" />
-      <line x1={EDGE_B} y1={0} x2={xb} y2={0} stroke={C.accent} strokeWidth={STROKE} strokeLinecap="round" />
+      <line x1={EDGE_A} y1={0} x2={xa} y2={0} stroke={C.accent} strokeWidth={thick} strokeLinecap="round" />
+      <line x1={EDGE_B} y1={0} x2={xb} y2={0} stroke={C.accent} strokeWidth={thick} strokeLinecap="round" />
       {fade > 0 && <Dot x={xa} y={0} color={C.accent} opacity={fade} />}
       {fade > 0 && <Dot x={xb} y={0} color={C.accent} opacity={fade} />}
     </>
@@ -250,8 +253,8 @@ const AddressChips: React.FC<{ frame: number; serverY: number; sx: number; addrA
         { to: { x: D.phoneB.x * sx, y: -D.phoneH / 2 + 40 }, text: addrB, id: 'chipB' },
       ].map(({ to, text, id }) => (
         <g key={id} transform={`translate(${mix(S.x, to.x, p).toFixed(2)} ${mix(S.y, to.y, p).toFixed(2)})`}>
-          <rect x={-62} y={-16} width={124} height={32} rx={16} fill={C.ink} />
-          <text data-text={id} x={0} y={6} textAnchor="middle" style={{ fontFamily: FONT.mono, fontSize: 17, fontWeight: 450, fill: C.paper }}>
+          <rect x={-72} y={-18} width={144} height={36} rx={18} fill={C.ink} />
+          <text data-text={id} x={0} y={7} textAnchor="middle" style={{ fontFamily: FONT.mono, fontSize: 19, fontWeight: 450, fill: C.paper }}>
             {text}
           </text>
         </g>
@@ -275,7 +278,9 @@ export const Diagram: React.FC<{ frame: number; L: Layout }> = ({ frame, L }) =>
   const draw2 = prog(frame, CUE.relayDrawn, CUE.relayDrawn + f60(16), E.out);
   const relayFade = 1 - prog(frame, CUE.send3, CUE.send3 + f60(14), E.smooth);
   const relayVisible = F >= CUE.relayDrawn && relayFade > 0;
-  const labels = prog(frame, CUE.labels, CUE.labels + f60(14), E.smooth);
+  const push1 = prog(frame, CUE.pushIn - f60(6), CUE.pushIn + f60(14), E.smooth) * (1 - prog(frame, CUE.pullOut + f60(10), CUE.pullOut + f60(40), E.smooth));
+  const push2 = prog(frame, CUE.pushIn2 - f60(4), CUE.pushIn2 + f60(14), E.smooth) * (1 - prog(frame, CUE.pullOut2 + f60(10), CUE.pullOut2 + f60(40), E.smooth));
+  const labels = prog(frame, CUE.labels, CUE.labels + f60(14), E.smooth) * (1 - Math.max(push1, push2));
   const xMark = prog(frame, CUE.dropHit, CUE.dropHit + f60(6), E.out);
   const S = { x: 0, y: serverY + D.serverH / 2 };
   const legA = Math.hypot(S.x - EDGE_A, S.y);
