@@ -61,14 +61,10 @@ export const Act3: React.FC = () => {
       <div style={{ position: 'absolute', inset: 0, clipPath: `circle(${r.toFixed(2)}px at ${ix.toFixed(2)}px ${iy.toFixed(2)}px)`, background: C.ink }}>
         <svg width={L.W} height={L.H} viewBox={`0 0 ${L.W} ${L.H}`} style={{ position: 'absolute', left: 0, top: 0 }}>
           <g transform={`translate(${L.W / 2} ${(L.end.cy + 40 * u).toFixed(2)}) scale(${push.toFixed(4)}) translate(${-L.W / 2} ${(-(L.end.cy + 40 * u)).toFixed(2)})`}>
-            {/* the name slides out from behind the mark (ty-occlusion-spill-from-mark): clipped to the mark's right until it locks */}
-            <clipPath id="nameClip">
-              <rect x={(mx + markW / 2 - 6).toFixed(2)} y={0} width={L.W} height={L.H} />
-            </clipPath>
-            {/* the clip sits on a plain group, so its rect is in the card's space, not the scaled name's */}
-            <g clipPath="url(#nameClip)">
-              <path d={OUTLINE.name.d} fill={C.paper} opacity={nameO} transform={`translate(${nameX.toFixed(2)} ${(L.end.cy + nameSize * 0.36).toFixed(2)}) scale(${nameK.toFixed(4)})`} />
-            </g>
+            {/* the name slides out from behind the mark (ty-occlusion-spill-from-mark). An ink rect, not an SVG clipPath, hides
+                the part still "behind" it: Chromium draws a clipPath nested inside the iris's CSS clip-path twice, 290 px apart. */}
+            <path d={OUTLINE.name.d} fill={C.paper} opacity={nameO} transform={`translate(${nameX.toFixed(2)} ${(L.end.cy + nameSize * 0.36).toFixed(2)}) scale(${nameK.toFixed(4)})`} />
+            <rect x={0} y={(L.end.cy - nameSize).toFixed(2)} width={Math.max(0, mx + markW / 2 - 6).toFixed(2)} height={(nameSize * 2).toFixed(2)} fill={C.ink} />
             <path d={GLYPH.d} fill={C.paper} fillRule="evenodd" transform={markT(1)} />
             {[OUTLINE.tag0, OUTLINE.tag1, OUTLINE.tag2].map((o, li) => {
               const p = prog(frame, CUE.tagline + li * f60(14), CUE.tagline + li * f60(14) + f60(26), E.out);
