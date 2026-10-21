@@ -1,0 +1,13 @@
+av-audit: out/film.mp4  PASS  (0 fail, 6 warn)
+  sync: 143/143 onsets within +-2 f (sfx stem), median offset +0.16 f, p90 |offset| 0.4 f; apex 6/6
+  picture: 13/13 clear visual peaks aligned; 0 of the 3 biggest picture changes with no audio onset within +-3 f
+  loudness: I -14.0 LUFS (target -14), LRA 8.2 LU, TP -1.1 dBTP, max momentary -8.4 at 30.4 s
+  head: first 5 ms peak -32.3 dBFS; tail: last 50 ms -140.6 dBFS, last 10 ms peak -240.0 dBFS; clicks 0 (+14 attacks); clipped samples 0
+  note: 140 key events are thinned by score.py (typing plan) and not expected to sound
+  warn sync    : 13 effect onsets have no event within 6 f (first at f801.4): a sound with no picture reason, or an event missing from cues.json
+  warn visual   f1140: land : the picture stopped moving about 49 f before this sound, so it lands on nothing and the arrival goes unsounded. Cue a landing where the eye reads it: the contact frame of a spring or E.contact, settleOf() (about the 97% frame) of an E.out, never the tween's last frame
+  warn visual   f2086: snap : the picture stopped moving about 26 f before this sound, so it lands on nothing and the arrival goes unsounded. Cue a landing where the eye reads it: the contact frame of a spring or E.contact, settleOf() (about the 97% frame) of an E.out, never the tween's last frame
+  warn visual   f2113: bell : the picture stopped moving about 53 f before this sound, so it lands on nothing and the arrival goes unsounded. Cue a landing where the eye reads it: the contact frame of a spring or E.contact, settleOf() (about the 97% frame) of an E.out, never the tween's last frame
+  warn loudness: loudness range 8.2 LU outside 3-8: too wide for a short film
+  warn head     f0: the audio starts at level: first 5 ms peak -32.3 dBFS (> -40), sample 0 at -69.7 dBFS: a sound already in progress at frame 0 (a riser, pad or reverb begun before the film) cuts in mid-action; start from silence, or on the attack of a hit designed for frame 0
+  report: out/qa/master/av.json
