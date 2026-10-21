@@ -39,8 +39,8 @@ export default function cues(): SoundEvent[] {
     const human = s.mode === 'char';
     const pan = human ? 0.15 : -0.25;
     frames.forEach((F, i) => {
-      if (human) ev.push({ f: F, kind: 'key', weight: 0.5, pan, variant: isWordFrame(s, F) ? 'word' : undefined, id: `${id}-k${i}` });
-      else ev.push({ f: F, kind: 'tick', weight: 0.3, pan, variant: 'crisp', role: 'tick.crisp', id: `${id}-w${i}` });
+      if (human) ev.push({ f: F, kind: 'key', weight: id === 'cmd' ? 0.3 : 0.9, pan, variant: isWordFrame(s, F) ? 'word' : undefined, id: `${id}-k${i}` });
+      else ev.push({ f: F, kind: 'tick', weight: 0.45, pan, variant: 'crisp', role: 'tick.crisp', id: `${id}-w${i}` });
     });
   }
 
@@ -75,7 +75,7 @@ export default function cues(): SoundEvent[] {
   ev.push({ f: CUE.breachHit, kind: 'hit', weight: 1.0, pan: dx(SV.handlerX) * 0.5, role: 'hit', id: 'breach' });
 
   // Bar 10-11: the locks stream into the gate (landing 1 of 2), a request passes it, one bounces off
-  ev.push({ f: CUE.locksMid, kind: 'whoosh', weight: 0.6, pan: dx(GATE.x) * 0.5, dur: CUE.gateLand - CUE.locksLift, apexFrac: 0.5, role: 'whoosh.short', id: 'locks-lift' });
+  ev.push({ f: CUE.locksMid, kind: 'whoosh', weight: 0.4, pan: dx(GATE.x) * 0.5, dur: CUE.gateLand - CUE.locksLift, apexFrac: 0.5, role: 'whoosh.short', id: 'locks-lift' });
   ev.push({ f: hit(GATE_DROP_START, SPR.land, 1), kind: 'land', weight: 1.0, pan: dx(GATE.x), role: 'land', id: 'gate-land' });
   ev.push({ f: CUE.gatePass, kind: 'tick', weight: 0.7, pan: dx(GATE.x), role: 'tick', id: 'gate-pass' });
   ev.push({ f: CUE.handler2, kind: 'land', weight: 0.6, pan: dx(SV.handlerX), variant: 'light', role: 'land.light', id: 'handler2' });
@@ -92,8 +92,8 @@ export default function cues(): SoundEvent[] {
   ([[CUE.chain1, 'E5'], [CUE.chain2, 'F#5'], [CUE.chain3, 'A5'], [CUE.chain4, 'B5']] as const).forEach(([f, pitch], i) =>
     ev.push({ f, kind: 'bell', weight: 0.8, pan: dx(D.chainX[i]), pitch, role: 'bell', id: `chain${i + 1}` }),
   );
-  ev.push({ f: hit(CHAIN_LAND_START, SPR.land, 1), kind: 'land', weight: 1.2, pan: dx(SV.handlerX) * 0.5, role: 'land', id: 'chain-land' });
-  ev.push({ f: CUE.chainLand, kind: 'bell', weight: 0.9, pan: 0, pitch: 'D6', role: 'bell', id: 'chain-tonic' });
+  ev.push({ f: hit(CHAIN_LAND_START, SPR.land, 1), kind: 'land', weight: 1.4, pan: dx(SV.handlerX) * 0.5, role: 'land', id: 'chain-land' });
+  ev.push({ f: CUE.chainLand, kind: 'bell', weight: 1.1, pan: 0, pitch: 'D6', role: 'bell', id: 'chain-tonic' });
   // the giant word punches in; the payoff line resolves on the motif
   ev.push({ f: CUE.mwIn + 2, kind: 'hit', weight: 0.9, pan: 0, role: 'hit', id: 'middleware' });
   ev.push({ f: CUE.payoffResolved, kind: 'bell', weight: 0.9, pan: -0.2, variant: 'motif', role: 'bell', id: 'payoff-bell' });

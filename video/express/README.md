@@ -1,20 +1,22 @@
-# rederive demo film
+# rederive demo film: Express
 
-A 28 s product video on a white canvas: rederive walks a user through Linphone's NAT traversal by making them design it. The problem appears in a bubble, the user types a design, the drawing beneath draws it live, a constraint breaks it, the user revises, and when the direct path works the tool names it (ICE). One continuous take; the only cut is the iris from the ∂ avatar into the end card.
+A 38 s product video on a white canvas. It opens on the one-line proposition, the user runs `/rederive express`, and rederive walks them through where Express puts the login check by making them design it. Each turn is a numbered problem that ends in a question; the user types an answer, the drawing beneath draws it, a constraint breaks it ("But here's the problem:", "That could work, but consider this new problem:"), and when the third design matches the real one the tool names it: the middleware chain. One continuous take; the only cut is the iris from the ∂ avatar into the end card.
 
-- Idea: you design the code yourself, it breaks, you fix it, then it gets its name.
-- Device: the packet, one ink dot. Dropped at the router (bar 3), detoured through the server (bars 5-8), direct and green (bar 10).
-- Grid: 1920x1080 at 60 fps, 120 BPM, 14 bars plus a 60 f tail (`src/timeline.ts`).
-- Re-layouts: `Film9x16` and `Film1x1` share the timeline; `src/ui/layout.ts` places everything per frame size.
+- Idea: you design it, it breaks, you fix it, then it gets its name.
+- Device: the request, one ink dot. It passes a lock (bar 6), slips into the unguarded route (bar 7), passes the gate (bar 10), bounces without a token (bar 11), steps through the chain and lands green (bar 16).
+- Grid: 1920x1080 at 60 fps, 120 BPM, 18.5 bars plus a 60 f tail (`src/timeline.ts`).
+- Sound: the bed is `scripts/audio/score.py`'s synth in D major, climbing a scale degree on each answer and flat under each constraint; every physical sound is a take from an earshot kit (`audio/kit.json`, rendered to `audio/kit/`), placed on its measured onset. `score.json`'s `kit` block switches that on; an event's `role` picks the kit voice.
+- 16:9 only: no 1:1, and 9:16 only when asked.
 
 ## Render
 
 ```
 npm run check                 # tsc, lint, grid
+npm run kit                   # audio/kit/ from audio/kit.json (earshot)
 npm run cues && npm run audio # out/cues.json, public/audio/soundtrack.wav
 bash scripts/render.sh Film out/preview.mp4 --preview --audio public/audio/soundtrack.wav
 bash scripts/render.sh Film out/film.mp4 --blur --audio public/audio/soundtrack.wav
-bash scripts/deliver.sh out/film.mp4   # 16:9 only; no 1:1, and 9:16 only when asked
+bash scripts/deliver.sh out/film.mp4
 ```
 
-Deliverables land in `deliver/`: `Film.mp4` (16:9), `Film9x16.mp4`, `Film1x1.mp4`, `poster.png`, with QA in `deliver/qa/`.
+Deliverables land in `deliver/`: `Film.mp4` (16:9) and `poster.png`, with QA in `deliver/qa/`.

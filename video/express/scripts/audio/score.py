@@ -299,6 +299,11 @@ class Song:
         if bed:  # a supplied music track: it replaces nothing, it joins the music bus
             bed = {'file': bed} if isinstance(bed, str) else bed
             self.bed = dict(file=bed['file'], at=self.T(bed.get('at', 0)), gain_db=float(bed.get('gain_db', 0)))
+        kit = score.get('kit')
+        self.kit = None
+        if kit:  # an earshot kit (kit.json rendered to a folder): its takes voice the events whose role it has
+            kit = {'dir': kit} if isinstance(kit, str) else kit
+            self.kit = dict(dir=kit['dir'], gain_db=float(kit.get('gain_db', -8.0)), roles=dict(kit.get('roles', {})))
         mas = score.get('master', {})
         self.lufs = float(mas.get('lufs', -14.0))
         self.ceiling = float(mas.get('ceiling', 0.77))
@@ -869,6 +874,57 @@ def build_sfx(song, n, events, plan=None, thinned=None):
             continue
         if in_silence(song, t, 'all') and kind != 'suck':
             song.warnings.append(f'{kind} at f={f} falls inside a silence and is muted')
+        K = getattr(song, 'kit_data', None)
+        role = kit_role(K, e, plan.get(i), fps) if K else None
+        R = K['roles'].get(role) if role else None
+        if R:  # the kit voices it: a take aligned on its measured onset (or peak), at the role's level
+            if kind == 'key':
+                if i not in plan:
+                    skipped.append(dict(i=i, f=f, kind=kind, why=thinned.get(i, 'thinned')))
+                    continue
+                k = plan[i]
+                tk = kit_take(R, None, k['strike'])
+                x = tk['x']
+                mono = x if x.ndim == 1 else x.mean(axis=1)
+                w6 = max(1, S.ns(0.006))
+                ref = KEY_RMS_REF.get(k['style'], KEY_RMS_REF['soft'])
+                x = x * (k['level'] * ref / (np.sqrt(np.convolve(mono ** 2, np.ones(w6) / w6, 'same')).max() + 1e-12))
+                g = BASE['key'] * w * k['gain']
+                start = k['t'] - tk['onset']
+                pan = float(np.clip(k['pan'], -SFX_PAN, SFX_PAN))
+                S.place(keys, x, start, g, pan)
+                placed.append(dict(i=i, f=f, kind=kind, role=role, id=e.get('id', ''), t=t, start=start, x=x, g=g, pan=pan, midi=k['midi']))
+                continue
+            kg = R['level'] * K['gain'] * w
+            if kind == 'bell' and e.get('variant') == 'motif':
+                for k_, (mm, r_) in enumerate(zip(song.motif, song.rhythm)):
+                    tk = kit_take(R, mm, seed + k_)
+                    S.place(fx, tk['x'], t + r_ * beat - tk['onset'], kg * (1.2 - 0.15 * k_), pan)
+                    placed.append(dict(i=i, f=f, kind=kind, role=role, id=e.get('id', ''), t=t + r_ * beat, start=t + r_ * beat - tk['onset'], x=tk['x'], g=kg, pan=pan, midi=mm))
+                continue
+            want = pitch
+            if kind == 'bell' and want is None:
+                want = S.nearest(pcs, 80)
+            tk = kit_take(R, want, seed)
+            x = tk['x']
+            start = t - tk['peak'] if (R['align'] == 'peak' or kind == 'suck') else t - tk['onset']
+            if kind in ('hit', 'drop'):
+                ducks.append((t, w))
+            elif kind == 'snap':
+                ducks.append((t, w * 0.7))
+            elif role == 'land':
+                if last_heavy is not None and abs(f - last_heavy) < 1:
+                    skipped.append(dict(i=i, f=f, kind=kind, why='second heavy landing on one frame'))
+                    continue
+                last_heavy = f
+                ducks.append((t, w * 0.6))
+            bus = clicks if kind == 'click' else crisp if role == 'tick.crisp' else ui if kind in UI_KINDS else fx
+            if x.ndim == 2 and pan:
+                x = balance(x, pan)
+                pan = 0.0
+            S.place(bus, x, start, kg, pan)
+            placed.append(dict(i=i, f=f, kind=kind, variant=e.get('variant'), role=role, id=e.get('id', ''), t=t, start=start, x=x, g=kg, pan=pan, midi=tk['midi']))
+            continue
         if kind == 'tick' and e.get('variant') == 'crisp':  # counters locking, list rows, build ticks
             x = S.crisp_tick(seed, 0.05, S.mtof(pitch) if pitch else None)
             m, g = pitch, BASE['crisp'] * w
@@ -1175,10 +1231,73 @@ def load_bed(song, n, base_dir):
     return out
 
 
+def load_kit(song, base_dir):
+    """The earshot kit (score.json "kit"): kit.lock.json plus every take, resampled to 48 kHz,
+    with the measured onset and peak the mixer aligns on the cue frame."""
+    import soundfile as sf
+    from math import gcd
+    d = song.kit['dir']
+    tries = [d, os.path.join(base_dir, d), os.path.join(base_dir, '..', d)]
+    path = next((p for p in tries if os.path.exists(os.path.join(p, 'kit.lock.json'))), None)
+    if path is None:
+        raise ScoreError(f'kit not rendered: no kit.lock.json in {d} (run: earshot kit render audio/kit.json --out {d})')
+    with open(os.path.join(path, 'kit.lock.json')) as fh:
+        lock = json.load(fh)
+    roles = {}
+    for name, r in (lock.get('roles') or {}).items():
+        if not r or not r.get('takes'):
+            continue
+        takes = []
+        for tk in r['takes']:
+            x, sr = sf.read(os.path.join(path, tk['file']), always_2d=True, dtype='float64')
+            if sr != SR:
+                from scipy import signal
+                g = gcd(SR, sr)
+                x = signal.resample_poly(x, SR // g, sr // g, axis=0)
+            x = x[:, 0] if x.shape[1] == 1 or np.allclose(x[:, 0], x[:, 1]) else x[:, :2]
+            takes.append(dict(file=tk['file'], x=x, onset=float(tk.get('onset_s') or 0.0), peak=float(tk.get('peak_s') or 0.0),
+                              midi=S.midi(tk['pitch']) if tk.get('pitch') else None))
+        roles[name] = dict(align=r.get('align', 'onset'), level=10 ** (float(r.get('level_db', 0.0)) / 20), takes=takes)
+    return dict(gain=10 ** (song.kit['gain_db'] / 20), roles=roles, map=song.kit['roles'], path=path)
+
+
+def kit_role(K, e, k, fps):
+    """The kit role an event asks for: its `role` field, else by kind and variant (the key's kind from its plan)."""
+    kind, v = e['kind'], e.get('variant')
+    if e.get('role'):
+        role = str(e['role'])
+    elif kind == 'key':
+        role = {'space': 'key.space', 'return': 'key.return'}.get((k or {}).get('kind'), 'key')
+    elif kind == 'tick':
+        role = 'tick.crisp' if v == 'crisp' else 'tick'
+    elif kind == 'land':
+        role = 'land.light' if (v == 'light' or float(e.get('weight', 1.0)) < 0.6) else 'land'
+    elif kind == 'click':
+        role = 'click.confirm' if v == 'confirm' else 'click'
+    elif kind == 'whoosh':
+        role = 'whoosh.long' if float(e.get('dur', 0.0)) / fps > 0.8 else 'whoosh.short'
+    else:
+        role = kind
+    return K['map'].get(role, role)
+
+
+def kit_take(R, midi, seed):
+    """A take of the role: the one tuned nearest `midi` when the role is pitched, else one by the seed."""
+    takes = R['takes']
+    cands = [t for t in takes if t['midi'] is not None]
+    if midi is not None and cands:
+        best = min(abs(t['midi'] - midi) for t in cands)
+        cands = [t for t in cands if abs(t['midi'] - midi) == best]
+    else:
+        cands = takes
+    return cands[int(S.rng(seed).integers(len(cands)))]
+
+
 def render(song, events, stems_dir=None, base_dir='.'):
     n_out = int(round(song.dur * SR))
     n = n_out + 4 * SR
     plan, thinned, runs = plan_typing(song, events)
+    song.kit_data = load_kit(song, base_dir) if song.kit else None
     stems, kicks = build_music(song, n, events, plan)
     if song.bed:
         stems['bed'] = load_bed(song, n, base_dir)
