@@ -38,11 +38,11 @@ export const Act3: React.FC = () => {
   const gap = 28 * u;
   const lockMarkW = L.end.markSize * (GLYPH.w / GLYPH.h);
   const totalW = lockMarkW + gap + nameW;
-  const np = prog(frame, CUE.markLand, CUE.markLand + f60(22), E.out); // an eased lock, no overshoot: a clamped spring stops, holds and moves again
+  const np = prog(frame, CUE.markLand, CUE.markLand + f60(30), E.outSoft); // a quint-out lock over 30 f: no overshoot, and its first frames stay under 80 px/f
   const lockX = L.W / 2 - totalW / 2 + lockMarkW / 2; // the mark's centre once the name has arrived
   const mx = (A.ax + (L.W / 2 - A.ax) * mp) * (1 - np) + lockX * np;
   const my = A.ay + (L.end.cy - A.ay) * mp;
-  const nameX = lockX + lockMarkW / 2 + gap - (1 - np) * nameW * 0.55; // starts mostly behind the mark and spills out
+  const nameX = lockX + lockMarkW / 2 + gap - (1 - np) * nameW * 0.45; // starts mostly behind the mark and spills out
   const nameO = clamp(np * 3);
   // tagline lines and the URL rise in one after another
   const tagSize = TYPE.secondary.size * (L.tall ? 0.9 : 1) * u;
