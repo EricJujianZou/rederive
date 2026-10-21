@@ -14,7 +14,7 @@ npm run check                 # tsc, lint, grid
 npm run cues && npm run audio # out/cues.json, public/audio/soundtrack.wav
 bash scripts/render.sh Film out/preview.mp4 --preview --audio public/audio/soundtrack.wav
 bash scripts/render.sh Film out/film.mp4 --blur --audio public/audio/soundtrack.wav
-bash scripts/deliver.sh out/film.mp4 --variants Film9x16,Film1x1
+bash scripts/deliver.sh out/film.mp4   # 16:9 only; no 1:1, and 9:16 only when asked
 ```
 
 Deliverables land in `deliver/`: `Film.mp4` (16:9), `Film9x16.mp4`, `Film1x1.mp4`, `poster.png`, with QA in `deliver/qa/`.
