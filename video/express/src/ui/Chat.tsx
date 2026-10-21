@@ -288,7 +288,7 @@ export const RepoCard: React.FC<{
   const sq = 1;
   const arrive = 1 + 0.02 * (1 - s); // a hair of scale while it moves, so the text never sits on an identity transform mid-move
   const fadeIn = prog(frame, dropStart, dropStart + f60(6), E.smooth);
-  const m = prog(frame, shrink, shrinkDone, E.inOut);
+  const m = prog(frame, shrink, shrinkDone, E.smooth); // cubic, not expo: the far edge of the card moves 900 px and must stay under the blur ceiling
   if (m >= 1) return null;
   const content = 1 - prog(frame, shrinkDone - f60(8), shrinkDone - f60(2), E.smooth); // the words ride the box into the pill, then hand over
   const x = box.cx - box.w / 2 + (pill.x - (box.cx - box.w / 2)) * m;

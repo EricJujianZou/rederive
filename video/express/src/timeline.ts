@@ -47,7 +47,7 @@ export const CUE = {
   routesIn: b(3, 1, 2), // the five route rows outline and fill, 6 f apart
   cardShrink: b(3, 1), // the card flies into the header pill as the drawing arrives
   labelsIn: b(3, 2), // "browser" and "server" fade in under the drawing
-  headerIn: b(3, 2), // the pill reads "rederive · express"
+  headerIn: b(3, 2, 2), // the pill reads "rederive · express": the card's flight takes 45 f, so its fastest frames stay under 80 px/f
   label1: b(3, 2, 2), // the step line pops: Problem 1 of 3
   ring1: b(3, 2, 2), // the thinking ring spins beside the avatar
   problemIn: b(4, 0),

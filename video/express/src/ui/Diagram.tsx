@@ -53,8 +53,8 @@ const Row: React.FC<{ i: number; frame: number; y: number }> = ({ i, frame, y })
   const sp = text.indexOf(' ');
   // the first five rows outline, then fill, 6 f apart (ui-outline-led-reveal); the rest are simply there
   const t0 = CUE.routesIn + f60(6) * Math.min(i, 4);
-  const draw = i < D.rowsVisible ? prog(frame, t0, t0 + f60(14), E.out) : 1;
-  const fill = i < D.rowsVisible ? prog(frame, t0 + f60(8), t0 + f60(18), E.smooth) : 1;
+  const draw = i < D.rowsVisible ? prog(frame, t0, t0 + f60(26), E.smooth) : 1; // the outline's tip runs the row's perimeter under 80 px/f
+  const fill = i < D.rowsVisible ? prog(frame, t0 + f60(12), t0 + f60(26), E.smooth) : 1;
   if (draw <= 0) return null;
   const w = SV.rowRight - SV.rowLeft;
   // the lock: snaps on at locksIn (6 f apart on the visible rows), lifts away on locksLift

@@ -34,7 +34,7 @@
   "routesIn": 285,
   "cardShrink": 270,
   "labelsIn": 300,
-  "headerIn": 300,
+  "headerIn": 315,
   "label1": 315,
   "ring1": 315,
   "problemIn": 360,
@@ -345,14 +345,6 @@
    "id": "propose:row0"
   },
   {
-   "f": 300,
-   "kind": "land",
-   "weight": 0.4,
-   "pan": -0.5,
-   "variant": "light",
-   "id": "propose:header"
-  },
-  {
    "f": 301,
    "kind": "tick",
    "weight": 0.3,
@@ -375,6 +367,14 @@
    "pan": 0.366,
    "variant": "crisp",
    "id": "propose:row3"
+  },
+  {
+   "f": 315,
+   "kind": "land",
+   "weight": 0.4,
+   "pan": -0.5,
+   "variant": "light",
+   "id": "propose:header"
   },
   {
    "f": 319,
