@@ -57,13 +57,13 @@ const Intro: React.FC<{ frame: number; L: ReturnType<typeof layoutFor> }> = ({ f
   // frame 0 is already inside the draw: the outline is a third of the way round, the ink sweeps up from f2 (ui-outline-led-reveal)
   const draw = prog(frame, CUE.markIn - f60(18), CUE.markIn + f60(12), E.out);
   const fill = prog(frame, CUE.markIn + f60(2), CUE.markIn + f60(26), E.smooth);
-  const settle = lmix(1.16, 1, prog(frame, CUE.markIn - f60(12), CUE.introResolved + f60(30), E.cam)); // the block eases to rest
+  // only the mark (vector) eases to rest from a touch large: a slowly scaled HTML line re-rasterises in visible steps
+  const settle = lmix(1.2, 1, prog(frame, CUE.markIn - f60(12), CUE.introResolved + f60(30), E.cam));
   const lineW = 1500 * u;
   const lineSize = L.intro.lineSize;
-  const oy = L.intro.markY + 90 * u; // the block scales about a point between the mark and the line
   return (
-    <div style={{ position: 'absolute', inset: 0, opacity: 1 - out, transformOrigin: `${L.W / 2}px ${oy.toFixed(2)}px`, transform: `translateY(${(-30 * u * out).toFixed(2)}px) scale(${(settle * (1 - 0.03 * out)).toFixed(4)})` }}>
-      <svg width={w} height={size} viewBox={`0 0 ${GLYPH.w} ${GLYPH.h}`} style={{ position: 'absolute', left: 0, top: 0, overflow: 'visible', transform: `translate(${(L.W / 2 - w / 2).toFixed(2)}px, ${(L.intro.markY - size / 2).toFixed(2)}px)` }}>
+    <div style={{ position: 'absolute', inset: 0, opacity: 1 - out, transform: `translateY(${(-30 * u * out).toFixed(2)}px)` }}>
+      <svg width={w} height={size} viewBox={`0 0 ${GLYPH.w} ${GLYPH.h}`} style={{ position: 'absolute', left: 0, top: 0, overflow: 'visible', transformOrigin: `${(w / 2).toFixed(2)}px ${(size * 0.56).toFixed(2)}px`, transform: `translate(${(L.W / 2 - w / 2).toFixed(2)}px, ${(L.intro.markY - size / 2).toFixed(2)}px) scale(${settle.toFixed(4)})` }}>
         <clipPath id="introFill">
           <rect x={-10} y={GLYPH.h * (1 - fill)} width={GLYPH.w + 20} height={GLYPH.h * fill + 2} />
         </clipPath>

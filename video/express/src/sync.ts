@@ -102,7 +102,7 @@ export default function cues(): SoundEvent[] {
   ev.push({ f: CUE.seed, kind: 'swell', weight: 0.6, pan: -0.3, dur: CUE.iris - CUE.seed, id: 'seed' });
   ev.push({ f: IRIS.from + IRIS.dur, kind: 'suck', weight: 1.0, pan: 0, dur: IRIS.dur + 10, apexFrac: 0.85, role: 'suck', id: 'iris' });
   ev.push({ f: IRIS.from + IRIS.dur, kind: 'land', weight: 0.7, pan: 0, role: 'land', id: 'iris-full' });
-  ev.push({ f: hit(CUE.markLand, SPR.word, 0.92), kind: 'snap', weight: 0.8, pan: -0.1, role: 'snap', id: 'name-lock' });
+  ev.push({ f: settleOf(CUE.markLand, CUE.markLand + f60(22), E.out), kind: 'snap', weight: 0.8, pan: -0.1, role: 'snap', id: 'name-lock' });
   ev.push({ f: settleOf(CUE.tagline, CUE.tagline + 26, E.out), kind: 'bell', weight: 0.7, pan: 0, pitch: 'D5', role: 'bell', id: 'tagline' });
 
   void BROWSER_EXIT;
