@@ -32,7 +32,7 @@ const Lock: React.FC<{ x: number; y: number; scale?: number; opacity?: number; c
 const Browser: React.FC<{ frame: number }> = ({ frame }) => {
   const s = frame < CUE.drawIn ? 0 : spr(frame, CUE.drawIn, SPR.soft);
   const { x, w, h } = D.browser;
-  const px = mix(x - 1300 / 1.22, x, s);
+  const px = mix(x - 560, x, s); // from just outside the frame edge, so the soft spring peaks under 80 px/f (clean blur)
   return (
     <g transform={`translate(${px.toFixed(2)} 0)`}>
       <rect x={-w / 2} y={-h / 2} width={w} height={h} rx={16} fill={C.paper} stroke={C.ink} strokeWidth={STROKE} />
@@ -172,7 +172,7 @@ const Counter: React.FC<{ frame: number }> = ({ frame }) => {
 const Server: React.FC<{ frame: number }> = ({ frame }) => {
   const s = frame < CUE.drawIn ? 0 : spr(frame, CUE.drawIn, SPR.soft);
   const { x, w, h } = D.server;
-  const px = mix(x + 1300 / 1.22, x, s);
+  const px = mix(x + 560, x, s);
   const scroll = scrollAt(frame);
   const rows = Array.from({ length: D.routes }, (_, i) => i).filter((i) => {
     const y = SV.rowY(i, scroll);
