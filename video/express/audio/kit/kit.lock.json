@@ -476,7 +476,7 @@
   "land": {
    "sound": "pro_pop_in/knock",
    "align": "onset",
-   "level_db": -2.0,
+   "level_db": 0.0,
    "max_s": null,
    "takes": [
     {
@@ -983,6 +983,70 @@
   "riser": null,
   "drop": null,
   "swell": null,
-  "text": null
+  "text": null,
+  "bell.short": {
+   "sound": "pluck/kalimba_soft",
+   "align": "onset",
+   "level_db": -5.0,
+   "max_s": 0.7,
+   "takes": [
+    {
+     "file": "bell-short_E5.wav",
+     "seed": 8009,
+     "pitch": "E5",
+     "onset_s": 0.0032,
+     "peak_s": 0.0095,
+     "end_s": 0.687,
+     "dur_s": 0.7,
+     "peak_db": -1.0,
+     "lufs_m_max": -7.38,
+     "sha1": "5f0c6d3735cba94cd20db37f914fa6c3c9c4f327",
+     "key": "6c8f1a0cef842a41fab150303f006914e077bfcd",
+     "checks": []
+    },
+    {
+     "file": "bell-short_Fs5.wav",
+     "seed": 8009,
+     "pitch": "F#5",
+     "onset_s": 0.0032,
+     "peak_s": 0.0155,
+     "end_s": 0.684,
+     "dur_s": 0.7,
+     "peak_db": -1.0,
+     "lufs_m_max": -8.51,
+     "sha1": "bfedd9bdcdbb4ffe8cffff441f6dadc65f3bcfe0",
+     "key": "b5f3389dc3e24cedfee63b27ae34cc846faf066d",
+     "checks": []
+    },
+    {
+     "file": "bell-short_A5.wav",
+     "seed": 8009,
+     "pitch": "A5",
+     "onset_s": 0.0032,
+     "peak_s": 0.0315,
+     "end_s": 0.684,
+     "dur_s": 0.7,
+     "peak_db": -1.0,
+     "lufs_m_max": -7.7,
+     "sha1": "e0f76c0966f6cfed2952f9d0617e3e88f4a15235",
+     "key": "02182a168174643382ac6fd21edf15cf5b7c5bc7",
+     "checks": []
+    },
+    {
+     "file": "bell-short_B5.wav",
+     "seed": 8009,
+     "pitch": "B5",
+     "onset_s": 0.0032,
+     "peak_s": 0.0235,
+     "end_s": 0.682,
+     "dur_s": 0.7,
+     "peak_db": -1.0,
+     "lufs_m_max": -7.55,
+     "sha1": "38ce40a6d69f8ff83123bff07f6b26b73564dd71",
+     "key": "1ce8abca100cc7af2fc86c7bf4c37669daa4d36d",
+     "checks": []
+    }
+   ]
+  }
  }
 }

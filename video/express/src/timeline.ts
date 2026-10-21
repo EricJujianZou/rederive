@@ -155,7 +155,7 @@ export type Copy = {
 const routeIn = (i: number) => CUE.routesIn + f60(6) * i;
 
 export const COPY: Copy[] = [
-  { id: 'intro', text: 'Learn any codebase by re-designing it yourself from first principles.', in: CUE.introIn, resolved: CUE.introResolved, out: CUE.introOut },
+  { id: 'intro', text: 'Learn any codebase by re-designing it\nyourself from first principles.', in: CUE.introIn, resolved: CUE.introResolved, out: CUE.introOut },
   { id: 'cmd', text: '/rederive express', in: CUE.typeCmd, resolved: CUE.cmdDone, out: CUE.composerOut, kind: 'ui' },
   { id: 'repoName', text: 'expressjs/express', in: CUE.cardLand - f60(6), resolved: CUE.cardLand, out: CUE.cardShrink, kind: 'ui' },
   { id: 'repoDesc', text: 'fast, unopinionated web framework for Node.js', in: CUE.cardLand - f60(6), resolved: CUE.cardLand, out: CUE.cardShrink, kind: 'ui' },
@@ -182,7 +182,7 @@ export const COPY: Copy[] = [
   { id: 'boxRate', text: 'rate limit', in: CUE.rateIn - f60(10), resolved: CUE.rateIn, out: CUE.iris, kind: 'ui' },
   { id: 'step3', text: 'Problem 3 of 3', in: CUE.label3, resolved: CUE.label3 + f60(8), out: CUE.mwIn - f60(10), kind: 'ui' },
   { id: 'constraint2', text: 'That could work, but consider this new problem: logging, body parsing and rate limits each need that same spot.', in: CUE.constraint2In, resolved: CUE.constraint2Resolved, out: CUE.mwIn - f60(10), kind: 'ui' },
-  { id: 'answer3', text: 'Make it a list. Each function does its job, then calls the next.', in: CUE.type3, resolved: CUE.type3Done, out: CUE.pullOut2 - f60(10), kind: 'ui' },
+  { id: 'answer3', text: 'Make it a list. Each function does its job, then calls the next.', in: CUE.type3, resolved: CUE.type3Done, out: CUE.mwIn - f60(6), kind: 'ui' },
   { id: 'payoff', text: 'You successfully rederived the middleware chain. Express does exactly this.', in: CUE.mwSwap, resolved: CUE.payoffResolved, out: CUE.iris, kind: 'ui' },
   { id: 'wordmark', text: 'rederive', in: CUE.markLand, resolved: CUE.nameLock, out: TOTAL },
   { id: 'tagline', text: 'Learn any codebase\nby re-designing it yourself\nfrom first principles.', in: CUE.tagline, resolved: CUE.tagline + f60(54), out: TOTAL },

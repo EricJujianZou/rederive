@@ -9,7 +9,7 @@ import { Schedule, shownAt } from './typing';
 // The chat layer (a HUD above the drawing: the camera never moves it). One rederive bubble at the
 // top, one composer or sent line at the bottom. Every piece places itself by transform only.
 
-export const Avatar: React.FC<{ x: number; y: number; size: number; opacity?: number; ring?: number }> = ({ x, y, size, opacity = 1, ring = 0 }) => (
+export const Avatar: React.FC<{ x: number; y: number; size: number; opacity?: number }> = ({ x, y, size, opacity = 1 }) => (
   <div
     style={{
       position: 'absolute',
@@ -23,7 +23,6 @@ export const Avatar: React.FC<{ x: number; y: number; size: number; opacity?: nu
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      boxShadow: ring > 0 ? `0 0 0 ${(3 * ring).toFixed(2)}px ${C.accent}` : undefined,
       transform: `translate(${x - size / 2}px, ${y - size / 2}px)`,
     }}
   >
@@ -283,14 +282,14 @@ export const RepoCard: React.FC<{
   lang: string;
 }> = ({ frame, dropStart, shrink, shrinkDone, box, pill, u, name, desc, lang }) => {
   if (frame < dropStart) return null;
-  const s = spr(frame, dropStart, SPR.land);
-  const drop0 = (1 - Math.min(s, 1)) * -220 * u;
+  const s = Math.min(1, spr(frame, dropStart, SPR.firm)); // a firm arrival, no overshoot
+  const drop0 = (1 - s) * -220 * u;
   const drop = Math.abs(drop0) < 0.75 ? 0 : drop0; // rest exactly once it has landed: a sub-pixel settle stair-steps
-  const sq = s > 1 ? 1 + (s - 1) * 0.8 : 1;
+  const sq = 1;
   const fadeIn = prog(frame, dropStart, dropStart + f60(6), E.smooth);
   const m = prog(frame, shrink, shrinkDone, E.inOut);
   if (m >= 1) return null;
-  const content = 1 - prog(frame, shrink, shrink + f60(12), E.smooth);
+  const content = 1 - prog(frame, shrinkDone - f60(8), shrinkDone - f60(2), E.smooth); // the words ride the box into the pill, then hand over
   const x = box.cx - box.w / 2 + (pill.x - (box.cx - box.w / 2)) * m;
   const y = box.cy - box.h / 2 + drop + (pill.y - (box.cy - box.h / 2)) * m;
   const w = box.w + (pill.w - box.w) * m;
@@ -316,7 +315,7 @@ export const RepoCard: React.FC<{
         transformOrigin: '50% 100%',
       }}
     >
-      <div style={{ position: 'absolute', left: 32 * u, top: 28 * u, opacity: content, width: box.w - 64 * u }}>
+      <div style={{ position: 'absolute', left: 32 * u, top: 28 * u, opacity: content, width: box.w - 64 * u, transformOrigin: '0 0', transform: `scale(${(w / box.w).toFixed(4)})` }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 16 * u }}>
           <span data-text="repoName" style={{ ...typeStyle('ui', nameSize), fontWeight: 650, color: C.ink }}>{name}</span>
           <span data-text="repoLang" style={{ ...typeStyle('label', TYPE.label.size * u), color: C.mute, border: `1.5px solid ${C.line}`, borderRadius: 999, padding: `${2 * u}px ${12 * u}px` }}>{lang}</span>

@@ -16,9 +16,9 @@ export const GATE: P = { x: D.crowd[0].x, y: 0 };
 /** The gate's drop starts so its spring makes contact on CUE.gateLand (landing 1 of 2). */
 export const GATE_DROP_START = CUE.gateLand - delayTo(SPR.land, 1);
 /** The repo card's drop starts so its spring makes contact on CUE.cardLand. */
-export const CARD_DROP_START = CUE.cardLand - delayTo(SPR.land, 1);
+export const CARD_DROP_START = CUE.cardLand - delayTo(SPR.firm, 0.92); // a firm arrival: the gate and the chain are the film's two true landings
 /** A box's drop starts this many frames before its cue, so its spring makes contact on the cue. */
-export const BOX_DROP_LEAD = delayTo(SPR.land, 1);
+export const BOX_DROP_LEAD = delayTo(SPR.firm, 0.92);
 /** The handler the chain reaches pulses with a landing spring from this frame (landing 2 of 2). */
 export const CHAIN_LAND_START = CUE.chainLand - delayTo(SPR.land, 1);
 
@@ -50,7 +50,7 @@ export const scrollAt = (f: number) => {
 export const SCROLL = { from: CUE.scrollStart, to: CUE.scrollEnd };
 
 /** The routes counter: 5 -> 40 over the scroll (the reel reads the fractional value). */
-export const countAt = (f: number) => mix(5, D.routes, prog(f, CUE.scrollStart, CUE.scrollEnd, E.smooth));
+export const countAt = (f: number) => mix(5, D.routes, prog(f, CUE.scrollStart, CUE.scrollEnd, E.inOut)); // the same ease as the scroll, so the count matches the rows going by
 
 /** A point on a polyline at t in [0, 1], by arc length. */
 export const poly = (pts: P[], t: number): P => {

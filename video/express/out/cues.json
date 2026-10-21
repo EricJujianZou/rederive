@@ -136,7 +136,7 @@
    "id": "propose:intro-w1"
   },
   {
-   "f": 28,
+   "f": 29,
    "kind": "tick",
    "weight": 0.45,
    "pan": -0.25,
@@ -144,7 +144,7 @@
    "id": "propose:intro-w2"
   },
   {
-   "f": 34,
+   "f": 36,
    "kind": "tick",
    "weight": 0.45,
    "pan": -0.25,
@@ -152,7 +152,7 @@
    "id": "propose:intro-w3"
   },
   {
-   "f": 40,
+   "f": 42,
    "kind": "tick",
    "weight": 0.45,
    "pan": -0.25,
@@ -160,7 +160,7 @@
    "id": "propose:intro-w4"
   },
   {
-   "f": 46,
+   "f": 49,
    "kind": "tick",
    "weight": 0.45,
    "pan": -0.25,
@@ -168,7 +168,7 @@
    "id": "propose:intro-w5"
   },
   {
-   "f": 52,
+   "f": 56,
    "kind": "tick",
    "weight": 0.45,
    "pan": -0.25,
@@ -176,7 +176,7 @@
    "id": "propose:intro-w6"
   },
   {
-   "f": 58,
+   "f": 62,
    "kind": "tick",
    "weight": 0.45,
    "pan": -0.25,
@@ -184,20 +184,12 @@
    "id": "propose:intro-w7"
   },
   {
-   "f": 64,
+   "f": 69,
    "kind": "tick",
    "weight": 0.45,
    "pan": -0.25,
    "variant": "crisp",
    "id": "propose:intro-w8"
-  },
-  {
-   "f": 70,
-   "kind": "tick",
-   "weight": 0.45,
-   "pan": -0.25,
-   "variant": "crisp",
-   "id": "propose:intro-w9"
   },
   {
    "f": 106,
@@ -331,7 +323,7 @@
   {
    "f": 210,
    "kind": "land",
-   "weight": 1,
+   "weight": 0.8,
    "pan": 0,
    "id": "propose:card-land"
   },
@@ -347,7 +339,7 @@
    "f": 295,
    "kind": "tick",
    "weight": 0.3,
-   "pan": 0.335,
+   "pan": 0.366,
    "variant": "crisp",
    "id": "propose:row0"
   },
@@ -363,7 +355,7 @@
    "f": 301,
    "kind": "tick",
    "weight": 0.3,
-   "pan": 0.335,
+   "pan": 0.366,
    "variant": "crisp",
    "id": "propose:row1"
   },
@@ -371,7 +363,7 @@
    "f": 307,
    "kind": "tick",
    "weight": 0.3,
-   "pan": 0.335,
+   "pan": 0.366,
    "variant": "crisp",
    "id": "propose:row2"
   },
@@ -379,7 +371,7 @@
    "f": 313,
    "kind": "tick",
    "weight": 0.3,
-   "pan": 0.335,
+   "pan": 0.366,
    "variant": "crisp",
    "id": "propose:row3"
   },
@@ -394,7 +386,7 @@
    "f": 319,
    "kind": "tick",
    "weight": 0.3,
-   "pan": 0.335,
+   "pan": 0.366,
    "variant": "crisp",
    "id": "propose:row4"
   },
@@ -545,21 +537,21 @@
   {
    "f": 481,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "propose:answer1-k0"
   },
   {
    "f": 482,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "propose:answer1-k1"
   },
   {
    "f": 483,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "variant": "word",
    "id": "propose:answer1-k2"
@@ -567,28 +559,28 @@
   {
    "f": 484,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "propose:answer1-k3"
   },
   {
    "f": 485,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "propose:answer1-k4"
   },
   {
    "f": 486,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "propose:answer1-k5"
   },
   {
    "f": 488,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "variant": "word",
    "id": "propose:answer1-k6"
@@ -596,28 +588,28 @@
   {
    "f": 489,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "propose:answer1-k7"
   },
   {
    "f": 490,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "propose:answer1-k8"
   },
   {
    "f": 492,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "propose:answer1-k9"
   },
   {
    "f": 493,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "variant": "word",
    "id": "propose:answer1-k10"
@@ -625,21 +617,21 @@
   {
    "f": 494,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "propose:answer1-k11"
   },
   {
    "f": 496,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "propose:answer1-k12"
   },
   {
    "f": 497,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "variant": "word",
    "id": "propose:answer1-k13"
@@ -647,35 +639,35 @@
   {
    "f": 499,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "propose:answer1-k14"
   },
   {
    "f": 500,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "propose:answer1-k15"
   },
   {
    "f": 502,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "propose:answer1-k16"
   },
   {
    "f": 503,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "propose:answer1-k17"
   },
   {
    "f": 505,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "variant": "word",
    "id": "propose:answer1-k18"
@@ -683,42 +675,42 @@
   {
    "f": 507,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "propose:answer1-k19"
   },
   {
    "f": 509,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "propose:answer1-k20"
   },
   {
    "f": 510,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "propose:answer1-k21"
   },
   {
    "f": 512,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "propose:answer1-k22"
   },
   {
    "f": 514,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "propose:answer1-k23"
   },
   {
    "f": 516,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "variant": "word",
    "id": "propose:answer1-k24"
@@ -726,56 +718,56 @@
   {
    "f": 519,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "propose:answer1-k25"
   },
   {
    "f": 521,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "propose:answer1-k26"
   },
   {
    "f": 524,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "propose:answer1-k27"
   },
   {
    "f": 526,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "propose:answer1-k28"
   },
   {
    "f": 529,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "propose:answer1-k29"
   },
   {
    "f": 533,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "propose:answer1-k30"
   },
   {
    "f": 537,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "propose:answer1-k31"
   },
   {
    "f": 542,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "propose:answer1-k32"
   },
@@ -792,49 +784,49 @@
    "f": 574,
    "kind": "tick",
    "weight": 0.4,
-   "pan": 0.118,
+   "pan": 0.148,
    "id": "propose:lock0"
   },
   {
    "f": 580,
    "kind": "tick",
    "weight": 0.4,
-   "pan": 0.118,
+   "pan": 0.148,
    "id": "propose:lock1"
   },
   {
    "f": 586,
    "kind": "tick",
    "weight": 0.4,
-   "pan": 0.118,
+   "pan": 0.148,
    "id": "propose:lock2"
   },
   {
    "f": 592,
    "kind": "tick",
    "weight": 0.4,
-   "pan": 0.118,
+   "pan": 0.148,
    "id": "propose:lock3"
   },
   {
    "f": 598,
    "kind": "tick",
    "weight": 0.4,
-   "pan": 0.118,
+   "pan": 0.148,
    "id": "propose:lock4"
   },
   {
    "f": 630,
    "kind": "tick",
    "weight": 0.7,
-   "pan": 0.118,
+   "pan": 0.148,
    "id": "propose:lock-pass"
   },
   {
    "f": 645,
    "kind": "land",
    "weight": 0.6,
-   "pan": 0.553,
+   "pan": 0.584,
    "variant": "light",
    "id": "propose:handler1"
   },
@@ -842,7 +834,7 @@
    "f": 705,
    "kind": "whoosh",
    "weight": 0.5,
-   "pan": 0.168,
+   "pan": 0.183,
    "apexFrac": 0.5,
    "dur": 60,
    "id": "propose:scroll"
@@ -851,7 +843,7 @@
    "f": 743,
    "kind": "whoosh",
    "weight": 0.5,
-   "pan": 0.168,
+   "pan": 0.183,
    "apexFrac": 0.28,
    "dur": 50,
    "id": "propose:push1"
@@ -860,7 +852,7 @@
    "f": 795,
    "kind": "hit",
    "weight": 1,
-   "pan": 0.277,
+   "pan": 0.292,
    "id": "propose:breach"
   },
   {
@@ -1009,28 +1001,28 @@
   {
    "f": 946,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "resolve:answer2-k0"
   },
   {
    "f": 947,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "resolve:answer2-k1"
   },
   {
    "f": 948,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "resolve:answer2-k2"
   },
   {
    "f": 949,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "variant": "word",
    "id": "resolve:answer2-k3"
@@ -1038,63 +1030,63 @@
   {
    "f": 950,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "resolve:answer2-k4"
   },
   {
    "f": 951,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "resolve:answer2-k5"
   },
   {
    "f": 952,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "resolve:answer2-k6"
   },
   {
    "f": 953,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "resolve:answer2-k7"
   },
   {
    "f": 954,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "resolve:answer2-k8"
   },
   {
    "f": 955,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "resolve:answer2-k9"
   },
   {
    "f": 956,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "resolve:answer2-k10"
   },
   {
    "f": 957,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "resolve:answer2-k11"
   },
   {
    "f": 958,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "variant": "word",
    "id": "resolve:answer2-k12"
@@ -1102,42 +1094,42 @@
   {
    "f": 960,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "resolve:answer2-k13"
   },
   {
    "f": 961,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "resolve:answer2-k14"
   },
   {
    "f": 962,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "resolve:answer2-k15"
   },
   {
    "f": 963,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "resolve:answer2-k16"
   },
   {
    "f": 964,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "resolve:answer2-k17"
   },
   {
    "f": 966,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "variant": "word",
    "id": "resolve:answer2-k18"
@@ -1145,56 +1137,56 @@
   {
    "f": 967,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "resolve:answer2-k19"
   },
   {
    "f": 968,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "resolve:answer2-k20"
   },
   {
    "f": 969,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "resolve:answer2-k21"
   },
   {
    "f": 971,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "resolve:answer2-k22"
   },
   {
    "f": 972,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "resolve:answer2-k23"
   },
   {
    "f": 973,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "resolve:answer2-k24"
   },
   {
    "f": 974,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "resolve:answer2-k25"
   },
   {
    "f": 976,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "variant": "word",
    "id": "resolve:answer2-k26"
@@ -1202,49 +1194,49 @@
   {
    "f": 977,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "resolve:answer2-k27"
   },
   {
    "f": 979,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "resolve:answer2-k28"
   },
   {
    "f": 980,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "resolve:answer2-k29"
   },
   {
    "f": 981,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "resolve:answer2-k30"
   },
   {
    "f": 983,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "resolve:answer2-k31"
   },
   {
    "f": 984,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "resolve:answer2-k32"
   },
   {
    "f": 986,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "variant": "word",
    "id": "resolve:answer2-k33"
@@ -1252,56 +1244,56 @@
   {
    "f": 988,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "resolve:answer2-k34"
   },
   {
    "f": 989,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "resolve:answer2-k35"
   },
   {
    "f": 991,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "resolve:answer2-k36"
   },
   {
    "f": 992,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "resolve:answer2-k37"
   },
   {
    "f": 994,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "resolve:answer2-k38"
   },
   {
    "f": 996,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "resolve:answer2-k39"
   },
   {
    "f": 998,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "resolve:answer2-k40"
   },
   {
    "f": 999,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "variant": "word",
    "id": "resolve:answer2-k41"
@@ -1309,49 +1301,49 @@
   {
    "f": 1001,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "resolve:answer2-k42"
   },
   {
    "f": 1003,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "resolve:answer2-k43"
   },
   {
    "f": 1005,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "resolve:answer2-k44"
   },
   {
    "f": 1007,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "resolve:answer2-k45"
   },
   {
    "f": 1009,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "resolve:answer2-k46"
   },
   {
    "f": 1011,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "resolve:answer2-k47"
   },
   {
    "f": 1014,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "variant": "word",
    "id": "resolve:answer2-k48"
@@ -1359,28 +1351,28 @@
   {
    "f": 1016,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "resolve:answer2-k49"
   },
   {
    "f": 1019,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "resolve:answer2-k50"
   },
   {
    "f": 1021,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "resolve:answer2-k51"
   },
   {
    "f": 1024,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "variant": "word",
    "id": "resolve:answer2-k52"
@@ -1388,42 +1380,42 @@
   {
    "f": 1027,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "resolve:answer2-k53"
   },
   {
    "f": 1030,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "resolve:answer2-k54"
   },
   {
    "f": 1034,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "resolve:answer2-k55"
   },
   {
    "f": 1038,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "resolve:answer2-k56"
   },
   {
    "f": 1043,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "resolve:answer2-k57"
   },
   {
    "f": 1049,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "resolve:answer2-k58"
   },
@@ -1440,7 +1432,7 @@
    "f": 1110,
    "kind": "whoosh",
    "weight": 0.4,
-   "pan": 0.036,
+   "pan": 0.051,
    "apexFrac": 0.5,
    "dur": 60,
    "id": "resolve:locks-lift"
@@ -1449,21 +1441,21 @@
    "f": 1140,
    "kind": "land",
    "weight": 1,
-   "pan": 0.071,
+   "pan": 0.102,
    "id": "resolve:gate-land"
   },
   {
    "f": 1185,
    "kind": "tick",
    "weight": 0.7,
-   "pan": 0.071,
+   "pan": 0.102,
    "id": "resolve:gate-pass"
   },
   {
    "f": 1215,
    "kind": "land",
    "weight": 0.6,
-   "pan": 0.553,
+   "pan": 0.584,
    "variant": "light",
    "id": "resolve:handler2"
   },
@@ -1471,14 +1463,14 @@
    "f": 1245,
    "kind": "tock",
    "weight": 0.7,
-   "pan": 0.071,
+   "pan": 0.102,
    "id": "resolve:bounce"
   },
   {
    "f": 1260,
    "kind": "land",
    "weight": 0.5,
-   "pan": 0.071,
+   "pan": 0.102,
    "variant": "light",
    "id": "resolve:box-log"
   },
@@ -1486,7 +1478,7 @@
    "f": 1275,
    "kind": "land",
    "weight": 0.5,
-   "pan": 0.071,
+   "pan": 0.102,
    "variant": "light",
    "id": "resolve:box-parse"
   },
@@ -1494,7 +1486,7 @@
    "f": 1290,
    "kind": "land",
    "weight": 0.5,
-   "pan": 0.071,
+   "pan": 0.102,
    "variant": "light",
    "id": "resolve:box-rate"
   },
@@ -1660,35 +1652,35 @@
   {
    "f": 1471,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "resolve:answer3-k0"
   },
   {
    "f": 1471,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "resolve:answer3-k1"
   },
   {
    "f": 1472,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "resolve:answer3-k2"
   },
   {
    "f": 1473,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "resolve:answer3-k3"
   },
   {
    "f": 1474,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "variant": "word",
    "id": "resolve:answer3-k4"
@@ -1696,21 +1688,21 @@
   {
    "f": 1475,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "resolve:answer3-k5"
   },
   {
    "f": 1476,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "resolve:answer3-k6"
   },
   {
    "f": 1477,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "variant": "word",
    "id": "resolve:answer3-k7"
@@ -1718,14 +1710,14 @@
   {
    "f": 1478,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "resolve:answer3-k8"
   },
   {
    "f": 1479,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "variant": "word",
    "id": "resolve:answer3-k9"
@@ -1733,42 +1725,42 @@
   {
    "f": 1480,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "resolve:answer3-k10"
   },
   {
    "f": 1481,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "resolve:answer3-k11"
   },
   {
    "f": 1482,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "resolve:answer3-k12"
   },
   {
    "f": 1483,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "resolve:answer3-k13"
   },
   {
    "f": 1484,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "resolve:answer3-k14"
   },
   {
    "f": 1486,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "variant": "word",
    "id": "resolve:answer3-k15"
@@ -1776,35 +1768,35 @@
   {
    "f": 1487,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "resolve:answer3-k16"
   },
   {
    "f": 1488,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "resolve:answer3-k17"
   },
   {
    "f": 1489,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "resolve:answer3-k18"
   },
   {
    "f": 1490,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "resolve:answer3-k19"
   },
   {
    "f": 1491,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "variant": "word",
    "id": "resolve:answer3-k20"
@@ -1812,63 +1804,63 @@
   {
    "f": 1492,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "resolve:answer3-k21"
   },
   {
    "f": 1493,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "resolve:answer3-k22"
   },
   {
    "f": 1495,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "resolve:answer3-k23"
   },
   {
    "f": 1496,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "resolve:answer3-k24"
   },
   {
    "f": 1497,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "resolve:answer3-k25"
   },
   {
    "f": 1498,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "resolve:answer3-k26"
   },
   {
    "f": 1499,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "resolve:answer3-k27"
   },
   {
    "f": 1501,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "resolve:answer3-k28"
   },
   {
    "f": 1502,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "variant": "word",
    "id": "resolve:answer3-k29"
@@ -1876,35 +1868,35 @@
   {
    "f": 1503,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "resolve:answer3-k30"
   },
   {
    "f": 1504,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "resolve:answer3-k31"
   },
   {
    "f": 1506,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "resolve:answer3-k32"
   },
   {
    "f": 1507,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "resolve:answer3-k33"
   },
   {
    "f": 1508,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "variant": "word",
    "id": "resolve:answer3-k34"
@@ -1912,28 +1904,28 @@
   {
    "f": 1510,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "resolve:answer3-k35"
   },
   {
    "f": 1511,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "resolve:answer3-k36"
   },
   {
    "f": 1513,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "resolve:answer3-k37"
   },
   {
    "f": 1514,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "variant": "word",
    "id": "resolve:answer3-k38"
@@ -1941,35 +1933,35 @@
   {
    "f": 1516,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "resolve:answer3-k39"
   },
   {
    "f": 1517,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "resolve:answer3-k40"
   },
   {
    "f": 1519,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "resolve:answer3-k41"
   },
   {
    "f": 1520,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "resolve:answer3-k42"
   },
   {
    "f": 1522,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "variant": "word",
    "id": "resolve:answer3-k43"
@@ -1977,35 +1969,35 @@
   {
    "f": 1524,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "resolve:answer3-k44"
   },
   {
    "f": 1525,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "resolve:answer3-k45"
   },
   {
    "f": 1527,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "resolve:answer3-k46"
   },
   {
    "f": 1529,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "resolve:answer3-k47"
   },
   {
    "f": 1546,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "variant": "word",
    "id": "resolve:answer3-k48"
@@ -2013,42 +2005,42 @@
   {
    "f": 1548,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "resolve:answer3-k49"
   },
   {
    "f": 1550,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "resolve:answer3-k50"
   },
   {
    "f": 1552,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "resolve:answer3-k51"
   },
   {
    "f": 1554,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "resolve:answer3-k52"
   },
   {
    "f": 1556,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "resolve:answer3-k53"
   },
   {
    "f": 1558,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "variant": "word",
    "id": "resolve:answer3-k54"
@@ -2056,28 +2048,28 @@
   {
    "f": 1561,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "resolve:answer3-k55"
   },
   {
    "f": 1563,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "resolve:answer3-k56"
   },
   {
    "f": 1566,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "resolve:answer3-k57"
   },
   {
    "f": 1569,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "variant": "word",
    "id": "resolve:answer3-k58"
@@ -2085,35 +2077,35 @@
   {
    "f": 1572,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "resolve:answer3-k59"
   },
   {
    "f": 1575,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "resolve:answer3-k60"
   },
   {
    "f": 1579,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "resolve:answer3-k61"
   },
   {
    "f": 1584,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "resolve:answer3-k62"
   },
   {
    "f": 1590,
    "kind": "key",
-   "weight": 0.6,
+   "weight": 0.8,
    "pan": 0.15,
    "id": "resolve:answer3-k63"
   },
@@ -2147,7 +2139,7 @@
    "f": 1740,
    "kind": "bell",
    "weight": 0.8,
-   "pan": -0.397,
+   "pan": -0.394,
    "pitch": "E5",
    "id": "resolve:chain1"
   },
@@ -2155,7 +2147,7 @@
    "f": 1755,
    "kind": "bell",
    "weight": 0.8,
-   "pan": -0.262,
+   "pan": -0.252,
    "pitch": "F#5",
    "id": "resolve:chain2"
   },
@@ -2163,7 +2155,7 @@
    "f": 1770,
    "kind": "bell",
    "weight": 0.8,
-   "pan": -0.128,
+   "pan": -0.11,
    "pitch": "A5",
    "id": "resolve:chain3"
   },
@@ -2171,7 +2163,7 @@
    "f": 1785,
    "kind": "bell",
    "weight": 0.8,
-   "pan": 0.006,
+   "pan": 0.033,
    "pitch": "B5",
    "id": "resolve:chain4"
   },
@@ -2187,7 +2179,7 @@
    "f": 1800,
    "kind": "land",
    "weight": 1.4,
-   "pan": 0.277,
+   "pan": 0.292,
    "id": "resolve:chain-land"
   },
   {

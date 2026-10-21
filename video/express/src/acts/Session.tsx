@@ -33,11 +33,17 @@ export const shotAt = (frame: number, L: ReturnType<typeof layoutFor>): Shot => 
   const breath = 1 + 0.02 * Math.sin((frame / 60) * 0.9);
   // the drawing opens a touch wide and eases to rest while the first problem is posed
   const settle = lmix(1.06, 1, prog(frame, CUE.drawIn, CUE.problemResolved, E.cam));
-  const k1 = lmix(1, 1.4, z1) * lmix(1, 1.2, z2) * breath * settle * dip;
+  // while the user types, the camera leans in 4 percent and lets go on the send (the wide shot never locks off)
+  const lean = ([
+    [CUE.type1, CUE.send1],
+    [CUE.type2, CUE.send2],
+    [CUE.type3, CUE.send3],
+  ] as const).reduce((acc, [t, s]) => acc + prog(frame, t, s, E.inOut) * (1 - prog(frame, s, s + f60(20), E.out)), 0);
+  const k1 = lmix(1, 1.25, z1) * lmix(1, 1.15, z2) * breath * settle * dip * (1 + 0.04 * lean); // 1.25 keeps the server's counter under the bubble and its last row above the composer
   const ax = cx + (row.x - cx) * z1 + (chain.x - cx) * z2;
   const ay = cy + (row.y - cy) * z1;
   const sx = cx + (row.x - cx) * z1 * 0.3 + (chain.x - cx) * z2 * 0.4;
-  const sy = cy + (row.y - cy) * z1 * 0.3;
+  const sy = cy + (row.y - cy) * z1 * 0.3 + 36 * L.u * z2; // the chain shot sits a touch lower, clear of the bubble
   return { ...home, ax, ay, sx, sy, k: k1 };
 };
 
@@ -48,9 +54,10 @@ const Intro: React.FC<{ frame: number; L: ReturnType<typeof layoutFor> }> = ({ f
   const u = L.u;
   const size = L.intro.markSize;
   const w = size * (GLYPH.w / GLYPH.h);
-  const draw = prog(frame, CUE.markIn, CUE.markIn + f60(30), E.out);
-  const fill = prog(frame, CUE.markIn + f60(14), CUE.markIn + f60(40), E.smooth); // the ink sweeps up through the outline (ui-outline-led-reveal)
-  const settle = lmix(1.06, 1, prog(frame, CUE.markIn, CUE.introResolved + f60(30), E.cam)); // the block eases to rest
+  // frame 0 is already inside the draw: the outline is a third of the way round, the ink sweeps up from f2 (ui-outline-led-reveal)
+  const draw = prog(frame, CUE.markIn - f60(18), CUE.markIn + f60(12), E.out);
+  const fill = prog(frame, CUE.markIn + f60(2), CUE.markIn + f60(26), E.smooth);
+  const settle = lmix(1.16, 1, prog(frame, CUE.markIn - f60(12), CUE.introResolved + f60(30), E.cam)); // the block eases to rest
   const lineW = 1500 * u;
   const lineSize = L.intro.lineSize;
   const oy = L.intro.markY + 90 * u; // the block scales about a point between the mark and the line
@@ -84,8 +91,9 @@ export const Session: React.FC<{ frame: number }> = ({ frame }) => {
   const mwP = prog(frame, CUE.mwIn, CUE.mwIn + f60(14), E.out);
   const mwQ = prog(frame, CUE.mwSwap, CUE.mwSwap + f60(6), E.in);
   const mwOn = frame >= CUE.mwIn && mwQ < 1;
-  const mwSize = TYPE.display.size * 1.5 * u;
-  const mwY = L.diagram.cy - 40 * u;
+  // the giant word punches in where the bubble will be (the band the constraint just left), then swaps into it
+  const mwSize = TYPE.display.size * 1.1 * u;
+  const mwY = A.ay + 10 * u;
   return (
     <>
       <div style={{ ...camera(shot), width: L.W, height: L.H, opacity: dim }}>
@@ -119,7 +127,7 @@ export const Session: React.FC<{ frame: number }> = ({ frame }) => {
         <Composer s={SCHEDULES.cmd} frame={frame} x={L.composer.x} y={L.composer.y} w={L.composer.w} u={u} send={CUE.sendCmd} rise={CUE.composerIn} out={CUE.composerOut} id="cmd" />
         <Composer s={SCHEDULES.answer1} frame={frame} x={L.composer.x} y={L.composer.y} w={L.composer.w} u={u} send={CUE.send1} out={CUE.type2 - f60(32)} id="answer1" />
         <Composer s={SCHEDULES.answer2} frame={frame} x={L.composer.x} y={L.composer.y} w={L.composer.w} u={u} send={CUE.send2} out={CUE.type3 - f60(32)} id="answer2" />
-        <Composer s={SCHEDULES.answer3} frame={frame} x={L.composer.x} y={L.composer.y} w={L.composer.w} u={u} send={CUE.send3} out={CUE.pullOut2 - f60(10)} id="answer3" />
+        <Composer s={SCHEDULES.answer3} frame={frame} x={L.composer.x} y={L.composer.y} w={L.composer.w} u={u} send={CUE.send3} out={CUE.mwIn - f60(6)} id="answer3" />
         {/* the giant word */}
         {mwOn && (
           <div
@@ -129,20 +137,28 @@ export const Session: React.FC<{ frame: number }> = ({ frame }) => {
               position: 'absolute',
               left: 0,
               top: 0,
-              width: 1400 * u,
-              textAlign: 'center',
+              width: A.maxW,
+              textAlign: 'left',
               color: C.accent,
               opacity: clamp(mwP * 2) * (1 - mwQ),
               filter: `blur(${(blurIn(mwP, 10) + blurOut(mwQ, 12)).toFixed(2)}px)`,
-              transform: `translate(${(L.W / 2 - 700 * u).toFixed(2)}px, ${(mwY - mwSize / 2).toFixed(2)}px) scale(${(lmix(1.25, 1, mwP) * lmix(1, 0.85, mwQ)).toFixed(4)})`,
+              transformOrigin: '0 50%',
+              transform: `translate(${A.bx.toFixed(2)}px, ${(mwY - mwSize / 2).toFixed(2)}px) scale(${(lmix(1.25, 1, mwP) * lmix(1, 0.85, mwQ)).toFixed(4)})`,
             }}
           >
             middleware
           </div>
         )}
       </div>
-      {/* the iris seed: the accent dot grows on the avatar before the lockup act takes over */}
-      {frame >= CUE.seed && frame < CUE.iris && <Avatar x={A.ax} y={A.ay} size={44 * u} opacity={prog(frame, CUE.seed, CUE.seed + f60(8), E.smooth)} ring={spr(frame, CUE.seed, SPR.firm)} />}
+      {/* the iris seed: the avatar stays, and an accent ring grows around it before the lockup act takes over */}
+      {frame >= CUE.seed && frame < CUE.iris && (
+        <>
+          <Avatar x={A.ax} y={A.ay} size={44 * u} opacity={prog(frame, CUE.seed, CUE.seed + f60(8), E.smooth)} />
+          <svg width={80 * u} height={80 * u} viewBox="0 0 80 80" style={{ position: 'absolute', left: 0, top: 0, transform: `translate(${(A.ax - 40 * u).toFixed(2)}px, ${(A.ay - 40 * u).toFixed(2)}px)`, opacity: prog(frame, CUE.seed, CUE.seed + f60(6), E.smooth) }}>
+            <circle cx={40} cy={40} r={(25 + 7 * Math.min(1, spr(frame, CUE.seed, SPR.firm))).toFixed(2)} fill="none" stroke={C.accent} strokeWidth={(5 * Math.min(1, spr(frame, CUE.seed, SPR.firm))).toFixed(2)} />
+          </svg>
+        </>
+      )}
     </>
   );
 };

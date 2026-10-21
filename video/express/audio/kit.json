@@ -142,6 +142,20 @@
   "riser": null,
   "drop": null,
   "swell": null,
-  "text": null
+  "text": null,
+  "bell.short": {
+   "sound": "pluck/kalimba_soft",
+   "pitches": [
+    "E5",
+    "F#5",
+    "A5",
+    "B5"
+   ],
+   "takes": 1,
+   "max_s": 0.7,
+   "align": "onset",
+   "level_db": -5.0,
+   "note": "the chain's four steps: the soft kalimba trimmed to 0.7 s, so the music's breath before the landing stays a breath"
+  }
  }
 }

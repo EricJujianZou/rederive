@@ -182,6 +182,9 @@ const Server: React.FC<{ frame: number }> = ({ frame }) => {
     <g transform={`translate(${(px - x).toFixed(2)} 0)`}>
       <rect x={x - w / 2} y={-h / 2} width={w} height={h} rx={18} fill={C.paper} stroke={C.ink} strokeWidth={STROKE} />
       <line x1={SV.left + 2} y1={SV.top - 8} x2={SV.right - 2} y2={SV.top - 8} stroke={C.line} strokeWidth={1.5} />
+      <text data-text="labelServer" x={SV.left + D.server.pad} y={-h / 2 + D.server.pad + 12 + 24 * 0.36} style={label()} opacity={prog(frame, CUE.labelsIn, CUE.labelsIn + f60(14), E.smooth)}>
+        server
+      </text>
       <Counter frame={frame} />
       <clipPath id="routesClip">
         <rect x={SV.left + 2} y={SV.top} width={w - 4} height={SV.bottom - SV.top} />
@@ -216,7 +219,8 @@ const LiftingLocks: React.FC<{ frame: number }> = ({ frame }) => {
 const Box: React.FC<{ name: keyof typeof BOX_ORDER; frame: number; at: number; text: string; id: string }> = ({ name, frame, at, text, id }) => {
   const dropStart = name === 'auth' ? GATE_DROP_START : at - BOX_DROP_LEAD;
   if (frame < dropStart) return null;
-  const s = spr(frame, dropStart, SPR.land);
+  // the gate is a true landing (overshoot, landing 1 of 2); the other boxes arrive firm
+  const s = spr(frame, dropStart, name === 'auth' ? SPR.land : SPR.firm);
   const drop = mix(-160, 0, Math.min(s, 1));
   const sq = s > 1 ? 1 + (s - 1) * 1.0 : 1;
   const fadeIn = prog(frame, dropStart, dropStart + f60(6), E.smooth);
@@ -233,12 +237,12 @@ const Box: React.FC<{ name: keyof typeof BOX_ORDER; frame: number; at: number; t
       {name === 'auth' ? (
         <>
           <Lock x={-w / 2 + 24} y={2} scale={0.8} color={stroke} />
-          <text data-text={id} x={-w / 2 + 42} y={7} style={mono(20, stroke)}>
+          <text data-text={id} x={-w / 2 + 42} y={7} style={mono(18, stroke)}>
             {text}
           </text>
         </>
       ) : (
-        <text data-text={id} x={0} y={7} textAnchor="middle" style={mono(20, stroke)}>
+        <text data-text={id} x={0} y={7} textAnchor="middle" style={mono(18, stroke)}>
           {text}
         </text>
       )}
@@ -271,11 +275,11 @@ const Chevrons: React.FC<{ frame: number }> = ({ frame }) => {
   if (p <= 0) return null;
   const green = greenAt(frame);
   const col = mixColor(C.mute, C.accent, green);
-  const xs = [...D.chainX, ENTRANCE.x + D.box.w / 2 + 6];
+  const xs = D.chainX;
   return (
     <g opacity={p}>
-      {xs.slice(0, 4).map((x, k) => {
-        const mx = (x + xs[k + 1]) / 2 - (k === 3 ? 22 : 0);
+      {xs.slice(0, 3).map((x, k) => {
+        const mx = (x + xs[k + 1]) / 2;
         return <path key={k} d={`M ${mx - 4} -7 L ${mx + 3} 0 L ${mx - 4} 7`} fill="none" stroke={col} strokeWidth={3} strokeLinecap="round" strokeLinejoin="round" transform={`translate(${(-6 * (1 - p)).toFixed(2)} 0)`} />;
       })}
     </g>
@@ -341,7 +345,6 @@ export const Diagram: React.FC<{ frame: number; L: Layout }> = ({ frame, L }) =>
         {chain && chainFade > 0 && <Dot p={chain} opacity={chainFade} ring color={mixColor(C.ink, C.accent, green)} />}
         <g opacity={labels}>
           <text data-text="labelBrowser" x={D.browser.x} y={D.browser.h / 2 + 38} textAnchor="middle" style={label()}>browser</text>
-          <text data-text="labelServer" x={D.server.x} y={D.server.h / 2 + 38} textAnchor="middle" style={label()}>server</text>
         </g>
       </g>
     </svg>

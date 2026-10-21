@@ -20,7 +20,7 @@ export const Act3: React.FC = () => {
   const u = L.u;
   const A = L.assistant;
   // the iris: an ink disc from the avatar, radius in log space at a constant ratio per frame
-  const R = Math.hypot(Math.max(A.ax, L.W - A.ax), Math.max(A.ay, L.H - A.ay)) * 1.05;
+  const R = Math.hypot(L.W / 2, Math.max(L.end.cy, L.H - L.end.cy)) + 2 * u; // the disc covers the last corner on the iris's last frame, where its sound sits
   const ip = prog(frame, IRIS.from, IRIS.from + IRIS.dur, E.linear);
   const r = frame < IRIS.from ? 0 : lmix(22 * u, R, ip);
   const cxp = prog(frame, IRIS.from, IRIS.from + IRIS.dur, E.smooth);
@@ -42,14 +42,14 @@ export const Act3: React.FC = () => {
   const lockX = L.W / 2 - totalW / 2 + lockMarkW / 2; // the mark's centre once the name has arrived
   const mx = (A.ax + (L.W / 2 - A.ax) * mp) * (1 - np) + lockX * np;
   const my = A.ay + (L.end.cy - A.ay) * mp;
-  const nameX = lockX + lockMarkW / 2 + gap - (1 - np) * 40 * u;
-  const nameO = clamp(np * 1.6);
+  const nameX = lockX + lockMarkW / 2 + gap - (1 - np) * nameW * 0.55; // starts mostly behind the mark and spills out
+  const nameO = clamp(np * 3);
   // tagline lines and the URL rise in one after another
   const tagSize = TYPE.secondary.size * (L.tall ? 0.9 : 1) * u;
   const tagLines = copy('tagline').text.split('\n');
   copy('url');
   const tagY0 = L.end.cy + L.end.markSize * 0.62 + 20 * u + tagSize;
-  const urlSize = TYPE.mono.size * u;
+  const urlSize = TYPE.mono.size * 1.2 * u;
   const urlY = tagY0 + (tagLines.length - 1) * tagSize * 1.35 + 36 * u + urlSize;
   const up = prog(frame, CUE.url, CUE.url + f60(22), E.out);
   // the slow push through the hold, on the whole card
@@ -61,14 +61,18 @@ export const Act3: React.FC = () => {
       <div style={{ position: 'absolute', inset: 0, clipPath: `circle(${r.toFixed(2)}px at ${ix.toFixed(2)}px ${iy.toFixed(2)}px)`, background: C.ink }}>
         <svg width={L.W} height={L.H} viewBox={`0 0 ${L.W} ${L.H}`} style={{ position: 'absolute', left: 0, top: 0 }}>
           <g transform={`translate(${L.W / 2} ${(L.end.cy + 40 * u).toFixed(2)}) scale(${push.toFixed(4)}) translate(${-L.W / 2} ${(-(L.end.cy + 40 * u)).toFixed(2)})`}>
+            {/* the name slides out from behind the mark (ty-occlusion-spill-from-mark): clipped to the mark's right until it locks */}
+            <clipPath id="nameClip">
+              <rect x={(mx + (markW * 1) / 2 - 6).toFixed(2)} y={0} width={L.W} height={L.H} />
+            </clipPath>
+            <path d={OUTLINE.name.d} fill={C.paper} opacity={nameO} clipPath="url(#nameClip)" transform={`translate(${nameX.toFixed(2)} ${(L.end.cy + nameSize * 0.36).toFixed(2)}) scale(${nameK.toFixed(4)})`} />
             <path d={GLYPH.d} fill={C.paper} fillRule="evenodd" transform={markT(1)} />
-            <path d={OUTLINE.name.d} fill={C.paper} opacity={nameO} transform={`translate(${nameX.toFixed(2)} ${(L.end.cy + nameSize * 0.36).toFixed(2)}) scale(${nameK.toFixed(4)})`} />
             {[OUTLINE.tag0, OUTLINE.tag1, OUTLINE.tag2].map((o, li) => {
               const p = prog(frame, CUE.tagline + li * f60(14), CUE.tagline + li * f60(14) + f60(26), E.out);
               const k = tagSize / o.size;
               return <path key={li} d={o.d} fill={C.paper} opacity={p} transform={`translate(${(L.W / 2 - (o.w * k) / 2).toFixed(2)} ${(tagY0 + li * tagSize * 1.35 + (1 - p) * 18 * u).toFixed(2)}) scale(${k.toFixed(4)})`} />;
             })}
-            <path d={OUTLINE.url.d} fill={C.mute} opacity={up} transform={`translate(${(L.W / 2 - (OUTLINE.url.w * (urlSize / OUTLINE.url.size)) / 2).toFixed(2)} ${(urlY + (1 - up) * 14 * u).toFixed(2)}) scale(${(urlSize / OUTLINE.url.size).toFixed(4)})`} />
+            <path d={OUTLINE.url.d} fill={C.line} opacity={up} transform={`translate(${(L.W / 2 - (OUTLINE.url.w * (urlSize / OUTLINE.url.size)) / 2).toFixed(2)} ${(urlY + (1 - up) * 14 * u).toFixed(2)}) scale(${(urlSize / OUTLINE.url.size).toFixed(4)})`} />
           </g>
         </svg>
       </div>

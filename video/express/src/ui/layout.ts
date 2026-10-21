@@ -24,9 +24,9 @@ export const layoutFor = (W: number, H: number) => {
     // the composer: left edge, vertical centre, width
     composer: { x: (W - bubbleW) / 2, y: bottom - 110 * u, w: bubbleW },
     // the proposition: the mark and the line beneath it
-    intro: { markY: H * 0.36, markSize: 240 * u, lineY: H * 0.36 + 215 * u, lineSize: 52 * u },
+    intro: { markY: H * 0.32, markSize: 240 * u, lineY: H * 0.32 + 230 * u, lineSize: 80 * u },
     // the repo card
-    card: { w: 820 * u, h: 176 * u, cx: W / 2, cy: H * 0.47 },
+    card: { w: 820 * u, h: 176 * u, cx: W / 2, cy: H * 0.28 }, // above the drawing, so the rows draw in uncovered
     // the end card
     end: { markSize: 180 * u, cy: H / 2 - 80 * u },
   };
@@ -35,18 +35,18 @@ export const layoutFor = (W: number, H: number) => {
 // The drawing's own geometry, in drawing units (scaled by diagram.k, centred on diagram.cx/cy).
 export const D = {
   browser: { x: -600, w: 280, h: 190 },
-  server: { x: 330, w: 520, h: 380, pad: 24, head: 32 }, // head: the strip with the counter
+  server: { x: 360, w: 520, h: 348, pad: 24, head: 32 }, // head: the strip with the counter; the height shows exactly five rows
   row: { h: 44, pitch: 56 }, // rows inside the server, 56 units apart
   rowsVisible: 5,
   routes: 40,
   openRow: 22, // GET /admin/users: the one row without a lock
-  box: { w: 118, h: 56 },
-  chainX: [-390, -258, -126, 6], // log, parse, auth, rate limit centres once lined up
+  box: { w: 128, h: 56 },
+  chainX: [-388, -248, -108, 32], // log, parse, auth, rate limit centres once lined up, 140 apart, the last 4 units short of the entrance
   crowd: [
-    { x: 70, y: 0 }, // auth: the gate's own spot, straddling the entrance
-    { x: 34, y: -30 }, // log
-    { x: 104, y: 24 }, // parse
-    { x: 60, y: -4 }, // rate limit
+    { x: 100, y: 0 }, // auth: the gate's own spot, straddling the entrance
+    { x: 64, y: -30 }, // log
+    { x: 134, y: 24 }, // parse
+    { x: 90, y: -4 }, // rate limit
   ],
   dot: 18,
 };
