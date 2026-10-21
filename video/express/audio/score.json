@@ -1,0 +1,23 @@
+{
+  "key": "A major",
+  "bpm": 120,
+  "chords": ["Aadd9", "-", "F#m9", "Dmaj9", "Aadd9", "E7sus4", "F#m9", "Dmaj9", "Esus4 E", "Aadd9", "-", "Dmaj9", "Aadd9", "-"],
+  "sections": [
+    { "bars": [1, 2], "style": "intro", "level": 0.8 },
+    { "bars": [3, 6], "style": "groove", "level": 0.78, "hats": true },
+    { "bars": [7, 9], "style": "build", "level": 0.9 },
+    { "bars": [10, 11], "style": "resolve", "level": 1.0 },
+    { "bars": [12, 12], "style": "breakdown", "level": 0.65 },
+    { "bars": [13, 13], "style": "resolve", "level": 0.55, "layers": { "drums": 0 } },
+    { "bars": [14, 14], "style": "hold" }
+  ],
+  "signature": { "tick": "A6", "tock": "E6", "motif": [0, 4, 7], "rhythm": [0, 0.5, 1] },
+  "typing": "auto",
+  "progress": { "match": "send", "kind": "click", "resolve": "@directLand" },
+  "motifs": [{ "at": "@nameLock", "gain": 0.8 }],
+  "drops": [{ "at": "@directLand", "silence": "1/16", "suck": 0.2 }],
+  "silences": [{ "from": "@iris+24", "to": "@markLand", "depth": 0.85 }],
+  "payoff": "@directLand",
+  "mix": { "music": 1.0, "sfx": 1.0, "reverb": 1.0, "sidechain": 0.55, "duck_db": 3, "typing_duck_db": 14 },
+  "master": { "lufs": -14, "ceiling": 0.77, "fade": 1.3 }
+}
