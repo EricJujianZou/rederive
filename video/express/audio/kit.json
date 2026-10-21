@@ -30,7 +30,7 @@
    "sound": "fit/tick/domino",
    "takes": 3,
    "align": "onset",
-   "level_db": -6.0,
+   "level_db": -3.0,
    "note": "domino pieces knocking: a request meeting a lock or the gate, a lock snapping onto a row"
   },
   "tick.crisp": {

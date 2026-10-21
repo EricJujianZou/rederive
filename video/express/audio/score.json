@@ -29,7 +29,7 @@
         2
       ],
       "style": "intro",
-      "level": 0.65
+      "level": 0.72
     },
     {
       "bars": [
@@ -110,7 +110,7 @@
         14
       ],
       "style": "breakdown",
-      "level": 0.5,
+      "level": 0.55,
       "layers": {
         "drums": 0.0,
         "arp": 0.0

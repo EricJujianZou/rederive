@@ -16,7 +16,7 @@ export const GATE: P = { x: D.crowd[0].x, y: 0 };
 /** The gate's drop starts so its spring makes contact on CUE.gateLand (landing 1 of 2). */
 export const GATE_DROP_START = CUE.gateLand - delayTo(SPR.land, 1);
 /** The repo card's drop starts so its spring makes contact on CUE.cardLand. */
-export const CARD_DROP_START = CUE.cardLand - delayTo(SPR.firm, 0.92); // a firm arrival: the gate and the chain are the film's two true landings
+export const CARD_DROP_START = CUE.cardLand - f60(22); // an eased arrival that rests exactly on cardLand: the gate and the chain are the film's two true landings
 /** A box's drop starts this many frames before its cue, so its spring makes contact on the cue. */
 export const BOX_DROP_LEAD = delayTo(SPR.firm, 0.92);
 /** The handler the chain reaches pulses with a landing spring from this frame (landing 2 of 2). */

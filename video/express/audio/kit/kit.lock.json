@@ -290,7 +290,7 @@
   "tick": {
    "sound": "fit/tick/domino",
    "align": "onset",
-   "level_db": -6.0,
+   "level_db": -3.0,
    "max_s": null,
    "takes": [
     {

@@ -63,9 +63,12 @@ export const Act3: React.FC = () => {
           <g transform={`translate(${L.W / 2} ${(L.end.cy + 40 * u).toFixed(2)}) scale(${push.toFixed(4)}) translate(${-L.W / 2} ${(-(L.end.cy + 40 * u)).toFixed(2)})`}>
             {/* the name slides out from behind the mark (ty-occlusion-spill-from-mark): clipped to the mark's right until it locks */}
             <clipPath id="nameClip">
-              <rect x={(mx + (markW * 1) / 2 - 6).toFixed(2)} y={0} width={L.W} height={L.H} />
+              <rect x={(mx + markW / 2 - 6).toFixed(2)} y={0} width={L.W} height={L.H} />
             </clipPath>
-            <path d={OUTLINE.name.d} fill={C.paper} opacity={nameO} clipPath="url(#nameClip)" transform={`translate(${nameX.toFixed(2)} ${(L.end.cy + nameSize * 0.36).toFixed(2)}) scale(${nameK.toFixed(4)})`} />
+            {/* the clip sits on a plain group, so its rect is in the card's space, not the scaled name's */}
+            <g clipPath="url(#nameClip)">
+              <path d={OUTLINE.name.d} fill={C.paper} opacity={nameO} transform={`translate(${nameX.toFixed(2)} ${(L.end.cy + nameSize * 0.36).toFixed(2)}) scale(${nameK.toFixed(4)})`} />
+            </g>
             <path d={GLYPH.d} fill={C.paper} fillRule="evenodd" transform={markT(1)} />
             {[OUTLINE.tag0, OUTLINE.tag1, OUTLINE.tag2].map((o, li) => {
               const p = prog(frame, CUE.tagline + li * f60(14), CUE.tagline + li * f60(14) + f60(26), E.out);

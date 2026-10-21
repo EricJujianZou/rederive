@@ -6,7 +6,7 @@ import { IRIS } from './acts/Act3';
 import { E, SPR } from './lib/anim';
 import { hit, peak, settleOf } from './lib/sync';
 import { ACT, CUE, f60, TOTAL, W } from './timeline';
-import { BOX_DROP_LEAD, BROWSER_EXIT, CHAIN_LAND_START, ENTRANCE, GATE, GATE_DROP_START, SCROLL, CARD_DROP_START } from './ui/diagram-math';
+import { BOX_DROP_LEAD, BROWSER_EXIT, CHAIN_LAND_START, ENTRANCE, GATE, GATE_DROP_START, SCROLL } from './ui/diagram-math';
 import { D, layoutFor, SV } from './ui/layout';
 import { isWordFrame, SCHEDULES, unitFrames } from './ui/typing';
 
@@ -55,7 +55,7 @@ export default function cues(): SoundEvent[] {
   ).forEach(([f, pitch, id]) => ev.push({ f, kind: 'click', weight: 0.9, pan: 0.3, pitch, variant: 'confirm', role: 'click.confirm', id }));
 
   // Bar 2-3: the repo card lands, the browser and the server settle, the rows fill, the card becomes the pill
-  ev.push({ f: hit(CARD_DROP_START, SPR.firm, 0.92), kind: 'land', weight: 0.8, pan: 0, role: 'land', id: 'card-land' });
+  ev.push({ f: CUE.cardLand, kind: 'land', weight: 0.5, pan: 0, variant: 'light', role: 'land.light', id: 'card-land' });
   ev.push({ f: hit(CUE.drawIn, SPR.soft, 0.92), kind: 'land', weight: 0.5, pan: 0, variant: 'light', role: 'land.light', id: 'draw-land' });
   for (let i = 0; i < D.rowsVisible; i++) ev.push({ f: CUE.routesIn + f60(6) * i + f60(10), kind: 'tick', weight: 0.3, pan: dx(D.server.x), variant: 'crisp', role: 'tick.crisp', id: `row${i}` });
   ev.push({ f: CUE.headerIn, kind: 'land', weight: 0.4, pan: -0.5, variant: 'light', role: 'land.light', id: 'header' });
@@ -88,7 +88,7 @@ export default function cues(): SoundEvent[] {
 
   // Bar 14-16: the boxes line up, the request steps through them (four plucks up the scale) and lands (landing 2 of 2)
   ev.push({ f: peak(CUE.lineUp, CUE.lineUpDone - f60(12), E.inOut), kind: 'whoosh', weight: 0.4, pan: dx(-200) * 0.5, dur: CUE.lineUpDone - CUE.lineUp, apexFrac: 0.45, role: 'whoosh.short', id: 'line-up' });
-  ev.push({ f: CUE.lineUpDone, kind: 'land', weight: 0.6, pan: dx(-120), variant: 'light', role: 'land.light', id: 'line-up-done' });
+  ev.push({ f: settleOf(CUE.lineUp + f60(12), CUE.lineUpDone, E.inOut), kind: 'land', weight: 0.6, pan: dx(-120), variant: 'light', role: 'land.light', id: 'line-up-done' });
   ([[CUE.chain1, 'E5'], [CUE.chain2, 'F#5'], [CUE.chain3, 'A5'], [CUE.chain4, 'B5']] as const).forEach(([f, pitch], i) =>
     ev.push({ f, kind: 'bell', weight: 0.8, pan: dx(D.chainX[i]), pitch, role: 'bell.short', id: `chain${i + 1}` }),
   );

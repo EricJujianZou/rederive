@@ -62,7 +62,7 @@ const Intro: React.FC<{ frame: number; L: ReturnType<typeof layoutFor> }> = ({ f
   const lineSize = L.intro.lineSize;
   const oy = L.intro.markY + 90 * u; // the block scales about a point between the mark and the line
   return (
-    <div style={{ position: 'absolute', inset: 0, opacity: 1 - out, transformOrigin: `${L.W / 2}px ${oy.toFixed(2)}px`, transform: `translateY(${(-30 * u * out).toFixed(2)}px) scale(${settle.toFixed(4)})` }}>
+    <div style={{ position: 'absolute', inset: 0, opacity: 1 - out, transformOrigin: `${L.W / 2}px ${oy.toFixed(2)}px`, transform: `translateY(${(-30 * u * out).toFixed(2)}px) scale(${(settle * (1 - 0.03 * out)).toFixed(4)})` }}>
       <svg width={w} height={size} viewBox={`0 0 ${GLYPH.w} ${GLYPH.h}`} style={{ position: 'absolute', left: 0, top: 0, overflow: 'visible', transform: `translate(${(L.W / 2 - w / 2).toFixed(2)}px, ${(L.intro.markY - size / 2).toFixed(2)}px)` }}>
         <clipPath id="introFill">
           <rect x={-10} y={GLYPH.h * (1 - fill)} width={GLYPH.w + 20} height={GLYPH.h * fill + 2} />

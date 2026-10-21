@@ -282,10 +282,11 @@ export const RepoCard: React.FC<{
   lang: string;
 }> = ({ frame, dropStart, shrink, shrinkDone, box, pill, u, name, desc, lang }) => {
   if (frame < dropStart) return null;
-  const s = Math.min(1, spr(frame, dropStart, SPR.firm)); // a firm arrival, no overshoot
-  const drop0 = (1 - s) * -220 * u;
-  const drop = Math.abs(drop0) < 0.75 ? 0 : drop0; // rest exactly once it has landed: a sub-pixel settle stair-steps
+  // an eased drop that rests exactly on the landing frame (a spring's tail stair-steps at sub-pixel speed)
+  const s = prog(frame, dropStart, dropStart + f60(22), E.out);
+  const drop = (1 - s) * -220 * u;
   const sq = 1;
+  const arrive = 1 + 0.02 * (1 - s); // a hair of scale while it moves, so the text never sits on an identity transform mid-move
   const fadeIn = prog(frame, dropStart, dropStart + f60(6), E.smooth);
   const m = prog(frame, shrink, shrinkDone, E.inOut);
   if (m >= 1) return null;
@@ -311,7 +312,7 @@ export const RepoCard: React.FC<{
         boxSizing: 'border-box',
         opacity: fadeIn * (1 - E.in(clamp((m - 0.75) / 0.25))),
         overflow: 'hidden',
-        transform: `translate(${x.toFixed(2)}px, ${y.toFixed(2)}px) scale(${sq.toFixed(4)}, ${(1 / sq).toFixed(4)})`,
+        transform: `translate(${x.toFixed(2)}px, ${y.toFixed(2)}px) scale(${(sq * arrive).toFixed(4)}, ${(arrive / sq).toFixed(4)})`,
         transformOrigin: '50% 100%',
       }}
     >

@@ -323,8 +323,9 @@
   {
    "f": 210,
    "kind": "land",
-   "weight": 0.8,
+   "weight": 0.5,
    "pan": 0,
+   "variant": "light",
    "id": "propose:card-land"
   },
   {
@@ -2128,7 +2129,7 @@
    "id": "resolve:line-up"
   },
   {
-   "f": 1680,
+   "f": 1670,
    "kind": "land",
    "weight": 0.6,
    "pan": -0.122,
