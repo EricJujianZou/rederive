@@ -48,17 +48,23 @@ const Intro: React.FC<{ frame: number; L: ReturnType<typeof layoutFor> }> = ({ f
   const u = L.u;
   const size = L.intro.markSize;
   const w = size * (GLYPH.w / GLYPH.h);
-  const draw = prog(frame, CUE.markIn, CUE.markIn + f60(40), E.out);
-  const fill = prog(frame, CUE.markIn + f60(22), CUE.markIn + f60(44), E.smooth);
+  const draw = prog(frame, CUE.markIn, CUE.markIn + f60(30), E.out);
+  const fill = prog(frame, CUE.markIn + f60(14), CUE.markIn + f60(40), E.smooth); // the ink sweeps up through the outline (ui-outline-led-reveal)
+  const settle = lmix(1.06, 1, prog(frame, CUE.markIn, CUE.introResolved + f60(30), E.cam)); // the block eases to rest
   const lineW = 1500 * u;
+  const lineSize = L.intro.lineSize;
+  const oy = L.intro.markY + 90 * u; // the block scales about a point between the mark and the line
   return (
-    <div style={{ position: 'absolute', inset: 0, opacity: 1 - out, transform: `translateY(${(-30 * u * out).toFixed(2)}px)` }}>
+    <div style={{ position: 'absolute', inset: 0, opacity: 1 - out, transformOrigin: `${L.W / 2}px ${oy.toFixed(2)}px`, transform: `translateY(${(-30 * u * out).toFixed(2)}px) scale(${settle.toFixed(4)})` }}>
       <svg width={w} height={size} viewBox={`0 0 ${GLYPH.w} ${GLYPH.h}`} style={{ position: 'absolute', left: 0, top: 0, overflow: 'visible', transform: `translate(${(L.W / 2 - w / 2).toFixed(2)}px, ${(L.intro.markY - size / 2).toFixed(2)}px)` }}>
-        <path d={GLYPH.d} fill={C.ink} fillRule="evenodd" opacity={fill} />
-        <path d={GLYPH.d} fill="none" stroke={C.ink} strokeWidth={1.4} strokeLinecap="round" pathLength={1} strokeDasharray={1} strokeDashoffset={1 - draw} opacity={1 - fill} />
+        <clipPath id="introFill">
+          <rect x={-10} y={GLYPH.h * (1 - fill)} width={GLYPH.w + 20} height={GLYPH.h * fill + 2} />
+        </clipPath>
+        <path d={GLYPH.d} fill={C.ink} fillRule="evenodd" clipPath="url(#introFill)" />
+        <path d={GLYPH.d} fill="none" stroke={C.ink} strokeWidth={2.2} strokeLinecap="round" pathLength={1} strokeDasharray={1} strokeDashoffset={1 - draw} opacity={1 - E.in(fill)} />
       </svg>
-      <div style={{ position: 'absolute', left: 0, top: 0, width: lineW, transform: `translate(${(L.W / 2 - lineW / 2).toFixed(2)}px, ${(L.intro.lineY - (TYPE.secondary.size * u * TYPE.secondary.lead) / 2).toFixed(2)}px)` }}>
-        <Typed s={SCHEDULES.intro} frame={frame} color={C.ink} size={TYPE.secondary.size * u} role="secondary" align="center" width={lineW} id="intro" />
+      <div style={{ position: 'absolute', left: 0, top: 0, width: lineW, transform: `translate(${(L.W / 2 - lineW / 2).toFixed(2)}px, ${(L.intro.lineY - (lineSize * TYPE.secondary.lead) / 2).toFixed(2)}px)` }}>
+        <Typed s={SCHEDULES.intro} frame={frame} color={C.ink} size={lineSize} role="secondary" align="center" width={lineW} id="intro" />
       </div>
     </div>
   );

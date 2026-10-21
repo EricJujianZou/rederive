@@ -284,7 +284,8 @@ export const RepoCard: React.FC<{
 }> = ({ frame, dropStart, shrink, shrinkDone, box, pill, u, name, desc, lang }) => {
   if (frame < dropStart) return null;
   const s = spr(frame, dropStart, SPR.land);
-  const drop = (1 - Math.min(s, 1)) * -220 * u;
+  const drop0 = (1 - Math.min(s, 1)) * -220 * u;
+  const drop = Math.abs(drop0) < 0.75 ? 0 : drop0; // rest exactly once it has landed: a sub-pixel settle stair-steps
   const sq = s > 1 ? 1 + (s - 1) * 0.8 : 1;
   const fadeIn = prog(frame, dropStart, dropStart + f60(6), E.smooth);
   const m = prog(frame, shrink, shrinkDone, E.inOut);

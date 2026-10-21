@@ -61,7 +61,7 @@
    "sound": "pro_pop_in/knock",
    "takes": 3,
    "align": "onset",
-   "level_db": -2.0,
+   "level_db": 0.0,
    "note": "a knock with a low body: the repo card, the gate, the chain landing, the iris; the knock part sits above the bass where a pure thump was masked"
   },
   "land.light": {

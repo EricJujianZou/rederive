@@ -39,7 +39,7 @@ export default function cues(): SoundEvent[] {
     const human = s.mode === 'char';
     const pan = human ? 0.15 : -0.25;
     frames.forEach((F, i) => {
-      if (human) ev.push({ f: F, kind: 'key', weight: id === 'cmd' ? 0.3 : 0.9, pan, variant: isWordFrame(s, F) ? 'word' : undefined, id: `${id}-k${i}` });
+      if (human) ev.push({ f: F, kind: 'key', weight: id === 'cmd' ? 0.3 : 0.6, pan, variant: isWordFrame(s, F) ? 'word' : undefined, id: `${id}-k${i}` });
       else ev.push({ f: F, kind: 'tick', weight: 0.45, pan, variant: 'crisp', role: 'tick.crisp', id: `${id}-w${i}` });
     });
   }
@@ -96,7 +96,7 @@ export default function cues(): SoundEvent[] {
   ev.push({ f: CUE.chainLand, kind: 'bell', weight: 1.1, pan: 0, pitch: 'D6', role: 'bell', id: 'chain-tonic' });
   // the giant word punches in; the payoff line resolves on the motif
   ev.push({ f: CUE.mwIn + 2, kind: 'hit', weight: 0.9, pan: 0, role: 'hit', id: 'middleware' });
-  ev.push({ f: CUE.payoffResolved, kind: 'bell', weight: 0.9, pan: -0.2, variant: 'motif', role: 'bell', id: 'payoff-bell' });
+  ev.push({ f: CUE.payoffResolved, kind: 'bell', weight: 0.6, pan: -0.2, variant: 'motif', role: 'bell', id: 'payoff-bell' });
 
   // Lockup: the seed swells, the iris swallows (suck into the cut), the mark lands, the name locks, the tagline settles
   ev.push({ f: CUE.seed, kind: 'swell', weight: 0.6, pan: -0.3, dur: CUE.iris - CUE.seed, id: 'seed' });

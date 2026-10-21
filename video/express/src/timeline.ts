@@ -31,22 +31,22 @@ export const CUE = {
   markIn: b(1), // the ∂ outline draws, then fills
   introIn: b(1, 0, 2), // the product line streams beneath it
   introHalf: b(1, 1, 2), // the mark fills; the line's middle word lands
-  introResolved: b(1, 3),
-  composerIn: b(1, 3), // the composer rises from the bottom
+  introResolved: b(1, 2, 2),
+  composerIn: b(1, 2), // the composer rises from the bottom
   typeCmd: b(1, 3, 2), // the user types the command
   cmdHalf: b(2, 0, 2),
   cmdDone: b(2, 2),
   // bar 2: the example is named
   sendCmd: b(2, 2, 2), // the send press
-  introOut: b(2, 2, 2), // the mark and the line clear as the card falls
+  introOut: b(2, 2), // the mark and the line clear before the card falls
   cardLand: b(2, 3), // the repo card's spring makes contact
-  drawIn: b(2, 3, 2), // the browser and the server set off from the frame edges
+  drawIn: b(3, 1), // the browser and the server set off from the frame edges as the card leaves
   // bar 3: the drawing and the first problem
   composerOut: b(3, 0), // the sent command leaves
-  drawLand: b(3, 0, 2), // the browser and the server settle
-  routesIn: b(3, 0, 2), // the five route rows outline and fill, 6 f apart
-  cardShrink: b(3, 1), // the card flies into the header pill
-  labelsIn: b(3, 1, 2), // "browser" and "server" fade in under the drawing
+  drawLand: b(3, 1, 2), // the browser and the server settle
+  routesIn: b(3, 1, 2), // the five route rows outline and fill, 6 f apart
+  cardShrink: b(3, 1), // the card flies into the header pill as the drawing arrives
+  labelsIn: b(3, 2), // "browser" and "server" fade in under the drawing
   headerIn: b(3, 2), // the pill reads "rederive · express"
   label1: b(3, 2, 2), // the step line pops: Problem 1 of 3
   ring1: b(3, 2, 2), // the thinking ring spins beside the avatar

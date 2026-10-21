@@ -24,9 +24,9 @@ export const layoutFor = (W: number, H: number) => {
     // the composer: left edge, vertical centre, width
     composer: { x: (W - bubbleW) / 2, y: bottom - 110 * u, w: bubbleW },
     // the proposition: the mark and the line beneath it
-    intro: { markY: H * 0.33, markSize: 170 * u, lineY: H * 0.33 + 170 * u },
+    intro: { markY: H * 0.36, markSize: 240 * u, lineY: H * 0.36 + 215 * u, lineSize: 52 * u },
     // the repo card
-    card: { w: 820 * u, h: 176 * u, cx: W / 2, cy: H * 0.5 },
+    card: { w: 820 * u, h: 176 * u, cx: W / 2, cy: H * 0.47 },
     // the end card
     end: { markSize: 180 * u, cy: H / 2 - 80 * u },
   };
