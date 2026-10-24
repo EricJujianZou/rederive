@@ -1,8 +1,0 @@
-node_modules
-out/*
-!out/cues.json
-public/audio/*.wav
-deliver/*
-.DS_Store
-*.log
-__pycache__/
