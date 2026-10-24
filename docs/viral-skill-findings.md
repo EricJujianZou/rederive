@@ -108,7 +108,7 @@ First month:
 | One-word name | Done. |
 | One-line free install | Done. `npx skills add EricJujianZou/rederive` installs into Claude Code, Codex, Cursor and 22 other agents. |
 | Measurable claim on the first screen | Missing. Candidates: the number of questions it takes to rederive Express's middleware chain, or the time to the first design named on your own repo. Both come from one counted session. |
-| Without/with video | In progress. The current brief in `video/BRIEF-launch.md` is a 28-second product film, not a side-by-side comparison. |
+| Without/with video | In progress. The current brief (video/BRIEF-launch.md in the rederive-media repo) is a 28-second product film, not a side-by-side comparison. |
 | Same-day launch on Reddit, HN, X and Discord | Not started. |
 | Wave to ride | Not chosen. The nearest existing conversation is "I built it with AI and can't explain it in the interview." |
 | Product behind the skill | None yet. |
