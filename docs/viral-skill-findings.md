@@ -82,9 +82,13 @@ Before launch:
 
 Launch day:
 
-5. Post everywhere on the same day: r/ClaudeAI with the video, a Show HN in the
-   US morning, the X post with the video, and the Claude developer Discord.
-   Never ask anyone for upvotes. Reddit and Hacker News both penalize it.
+5. Post everywhere on the same day: a short first-person text post with one
+   screenshot on r/ClaudeAI, the X post with the video, and the Claude
+   developer Discord. Never ask anyone for upvotes. Reddit and Hacker News both
+   penalize it. The two Reddit cases in this study (the joke post behind
+   caveman and the i-have-adhd creator's post) were text posts, so there is no
+   evidence here for video on Reddit. The "video beat links" finding is from X.
+   Skip a self-submitted Show HN: those scored 1, 2 and 43 points for Matt.
 
 First month:
 
