@@ -5,7 +5,7 @@
   </picture>
 </p>
 
-<p align="center"><b>Rederive takes you through Express's 7 design decisions in 22 questions.</b></p>
+<p align="center"><b>Stop being a meat proxy. Start solving problems instead of memorizing what the agent said.</b></p>
 
 <p align="center">
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-24292f?style=flat" alt="MIT License" /></a>
