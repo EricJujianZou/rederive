@@ -32,7 +32,7 @@ echo "commits: $total | first: $first | last: $last | authors: $authors | HEAD: 
 # trees, so it stays fast on a clone made with --filter=blob:none; counting lines would
 # download every old version of every file.
 sizes=$(git log --no-merges --format='@%h %ad %s' --date=short --name-only \
-  | NOISE="$noise" awk 'BEGIN { noise = ENVIRON["NOISE"]; tests = "(^|/)(tests?|__tests__|spec)/|(^|/)test_|[._](test|spec)\\.[a-z]+$" }
+  | awk -v noise="${noise//\\/\\\\}" 'BEGIN { tests = "(^|/)(tests?|__tests__|spec)/|(^|/)test_|[._](test|spec)\\.[a-z]+$" }
       /^@/ { if (sha != "") print n "\t" sha; sha = substr($0, 2); n = 0; next }
       NF > 0 && $0 !~ noise && $0 !~ tests { n++ }
       END { if (sha != "") print n "\t" sha }' \
