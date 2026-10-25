@@ -36,26 +36,67 @@ How it works: it reads the repo, finds the decisions that shaped the code (why t
 
 [Your reason for building it, in one or two sentences.]
 
-122 stars so far from two reels. I'd like to know where it breaks on your repos.
+224 stars in the first week, mostly from two reels. I'd like to know where it breaks on your repos.
 
-## 9:15 X update
+## 9:30 Reddit, r/vibecoding
+
+Read the sidebar rules first and use the self-promotion or showcase flair if
+there is one. Post at least 30 minutes after r/ClaudeAI with different text,
+because the same text in two subreddits within minutes trips Reddit's spam
+filter.
+
+Title:
+
+Made a skill that teaches you the codebase you vibecoded by asking you to design each part yourself first
+
+Body:
+
+If your agent wrote most of your project, you can ship it and still not be able to explain why it works. rederive reads your repo, finds the decisions that shaped it, and gives you each one as a problem. You answer, then it shows you what the code really does and where your answer was different.
+
+Install (Claude Code, Codex, Cursor and about 22 other agents):
+
+    npx skills add EricJujianZou/rederive
+
+Repo: https://github.com/EricJujianZou/rederive
+
+[Your reason for building it, in one or two sentences.]
+
+## 10:00 Reddit, r/cursor
+
+Use the "Showcase" or "Resources" flair if the menu has one.
+
+Title:
+
+A skill that teaches you a repo by making you re-design it before it shows you the code, installs in Cursor with one line
+
+Body:
+
+rederive is an agent skill. You run it on your own repo or on an open source one like Express, and it asks you to solve the design problems the code solves (why the middleware is a chain, where state lives) before it shows you the answer. It works in Cursor through the skills installer:
+
+    npx skills add EricJujianZou/rederive
+
+Repo: https://github.com/EricJujianZou/rederive
+
+224 stars in its first week. Tell me if it breaks on your repo.
+
+## 10:15 X update
 
 Attach the trimmed reel or the Express demo film.
 
-rederive got to 122 stars in 5 days. It's a skill for coding agents that teaches you a codebase you built with AI by making you re-design it yourself, one decision at a time. Works in Claude Code, Codex, Cursor and 22 more.
+rederive got to 224 stars in its first week. It's a skill for coding agents that teaches you a codebase you built with AI by making you re-design it yourself, one decision at a time. Works in Claude Code, Codex, Cursor and 22 more.
 
 npx skills add EricJujianZou/rederive
 
-## 9:30 Curator messages
+## 10:30 Curator messages
 
 Send to @GithubProjects and to two or three Chinese- and Spanish-language AI
 curators on X. Find curators by looking at who quote-posted taste-skill or
 mattpocock/skills in those languages. Same text for each, English is fine,
 they translate.
 
-Hi, I made rederive, a skill for coding agents that teaches you a codebase by making you re-design it yourself. 122 stars in its first 5 days, 25 agents supported with one install line. Repo: https://github.com/EricJujianZou/rederive. Short demo attached if it fits your feed.
+Hi, I made rederive, a skill for coding agents that teaches you a codebase by making you re-design it yourself. 224 stars in its first week, 25 agents supported with one install line. Repo: https://github.com/EricJujianZou/rederive. Short demo attached if it fits your feed.
 
-## 9:45 Lists
+## 10:45 Lists
 
 - Open a pull request adding rederive to the awesome-agent-skills list (one
   line: name, link, one-sentence description from the README).
