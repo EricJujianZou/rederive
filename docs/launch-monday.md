@@ -1,10 +1,10 @@
-# Wednesday launch, October 28, 2026
+# Monday launch, October 26, 2026
 
 Everything below is drafted so the morning takes about 30 minutes. Times are
 Eastern. All posts go out in one window so the stars arrive together, which is
 what puts a repo on GitHub Trending.
 
-## Before Wednesday
+## Before Monday
 
 - Upload the 40k reel to the devbox so the "comment for the repo" ending can be
   trimmed off. Reddit treats that ending as engagement farming and the link goes
