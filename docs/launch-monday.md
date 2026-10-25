@@ -34,7 +34,7 @@ Install in Claude Code, Codex, Cursor and about 22 other agents:
 
 How it works: it reads the repo, finds the decisions that shaped the code (why the middleware runs as a chain, why state lives where it does) and gives each one to you as a problem before it shows you what the code did. You answer, it compares your answer with the real design, and moves on to the next decision. It works on your own repo or on open source repos like Express and Redis.
 
-[Your reason for building it, in one or two sentences.]
+I built rederive because I'm afraid that developers will become meat proxies. I use it because I genuinely find it to be the most fun way of learning: solving problems and being creative about something I am passionate about. It beats memorizing what an agent says or coding problems by a mile.
 
 224 stars in the first week, mostly from two reels. I'd like to know where it breaks on your repos.
 
@@ -59,7 +59,7 @@ Install (Claude Code, Codex, Cursor and about 22 other agents):
 
 Repo: https://github.com/EricJujianZou/rederive
 
-[Your reason for building it, in one or two sentences.]
+I built rederive because I'm afraid that developers will become meat proxies. I use it because I genuinely find it to be the most fun way of learning: solving problems and being creative about something I am passionate about. It beats memorizing what an agent says or coding problems by a mile.
 
 ## 10:00 Reddit, r/cursor
 
