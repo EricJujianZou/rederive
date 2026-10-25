@@ -12,7 +12,7 @@ The user designs the system themselves from the bare problem and the basic facts
 - No argument: the current directory. A local path: that path.
 - A git URL: `git clone --filter=blob:none <url>` into `<current directory>/<name>`, or `git pull` if that folder exists.
 
-State lives in `<repo>/.rederive/`. Add `.rederive/` to `<repo>/.git/info/exclude` the first time. The repo is the user's own when most commits are by `git config user.email`, or they say it is.
+State lives in `<repo>/.rederive/`. Add `.rederive/` to `<repo>/.git/info/exclude` the first time. Treat a local path as the user's own repo unless they say otherwise, and a cloned URL as someone else's.
 
 If the user wants to start over, delete `map.md` and `log.md`. If `map.md` exists, read it and go to step 4.
 
