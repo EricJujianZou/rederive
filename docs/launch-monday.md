@@ -12,72 +12,44 @@ what puts a repo on GitHub Trending.
 - Decide the measurable claim for the first screen of the README (see
   `viral-skill-findings.md`, "Where rederive stands against this").
 
-## 9:00 Reddit, r/ClaudeAI
+## Now: Reddit, r/ClaudeAI
 
-Post type: video, uploaded natively (not an Instagram or TikTok link). Flair:
-whichever of "Built with Claude" or "Showcase" the flair menu offers. Do not
-ask for upvotes anywhere.
+Post type: text post with one screenshot of a rederive session (the skill
+asking a design question). The reel goes to X only. The viral-skill study
+found no evidence for video on Reddit, and both Reddit examples in it were
+text posts. Flair: "Built with Claude" or "Showcase". Do not ask for upvotes.
 
-Title (pick one):
+Rules to meet (Rule 7, read through ThreadFox, not checked live): say in detail
+how Claude helped build it, say it is free, keep promotional language low, no
+referral links. Posting needs more than 100 karma and may be limited to
+approved users, so check that the post appears in /new after posting.
+
+Title:
 
 I made a skill that teaches you your own vibecoded project by making you re-derive its design decisions
 
-If you built your project with Claude and can't explain it yet, this skill makes you re-design it yourself before it shows you the code
-
-First comment, posted right after the video:
-
-Repo: https://github.com/EricJujianZou/rederive
-
-Install in Claude Code, Codex, Cursor and about 22 other agents:
-
-    npx skills add EricJujianZou/rederive
-
-How it works: it reads the repo, finds the decisions that shaped the code (why the middleware runs as a chain, why state lives where it does) and gives each one to you as a problem before it shows you what the code did. You answer, it compares your answer with the real design, and moves on to the next decision. It works on your own repo or on open source repos like Express and Redis.
+Body:
 
 I built rederive because I'm afraid that developers will become meat proxies. I use it because I genuinely find it to be the most fun way of learning: solving problems and being creative about something I am passionate about. It beats memorizing what an agent says or coding problems by a mile.
 
-263 stars in 8 days, mostly from two reels. I'd like to know where it breaks on your repos.
+What it does: it reads a repo, finds the decisions that shaped the code (why the middleware runs as a chain, why state lives where it does) and gives each one to you as a problem before it shows you what the code did. You answer, it compares your answer with the real design, and moves on to the next decision. It works on your own repo or on open source repos like Express and Redis.
 
-## 9:30 Reddit, r/vibecoding
+How Claude helped: I built it in Claude Code over the last 8 days, and 75 of its 76 commits were written with Claude. The skill also runs on Claude: Claude reads the repo, picks the decisions and asks the questions. Most of my work was testing sessions on real repos and cutting questions that gave the answer away.
 
-Read the sidebar rules first and use the self-promotion or showcase flair if
-there is one. Post at least 30 minutes after r/ClaudeAI with different text,
-because the same text in two subreddits within minutes trips Reddit's spam
-filter.
-
-Title:
-
-Made a skill that teaches you the codebase you vibecoded by asking you to design each part yourself first
-
-Body:
-
-If your agent wrote most of your project, you can ship it and still not be able to explain why it works. rederive reads your repo, finds the decisions that shaped it, and gives you each one as a problem. You answer, then it shows you what the code really does and where your answer was different.
-
-Install (Claude Code, Codex, Cursor and about 22 other agents):
+It's free and MIT licensed. Install in Claude Code, Codex, Cursor and about 22 other agents:
 
     npx skills add EricJujianZou/rederive
 
 Repo: https://github.com/EricJujianZou/rederive
 
-I built rederive because I'm afraid that developers will become meat proxies. I use it because I genuinely find it to be the most fun way of learning: solving problems and being creative about something I am passionate about. It beats memorizing what an agent says or coding problems by a mile.
+263 stars so far. I'd like to know where it breaks on your repos.
 
-## 10:00 Reddit, r/cursor
+## Later: r/vibecoding, after mod approval
 
-Use the "Showcase" or "Resources" flair if the menu has one.
-
-Title:
-
-A skill that teaches you a repo by making you re-design it before it shows you the code, installs in Cursor with one line
-
-Body:
-
-rederive is an agent skill. You run it on your own repo or on an open source one like Express, and it asks you to solve the design problems the code solves (why the middleware is a chain, where state lives) before it shows you the answer. It works in Cursor through the skills installer:
-
-    npx skills add EricJujianZou/rederive
-
-Repo: https://github.com/EricJujianZou/rederive
-
-263 stars in 8 days. Tell me if it breaks on your repo.
+Dev tools need mod approval first, asked through the subreddit's X community
+(ThreadFox reading of the rules, not checked live). After approval you get one
+intro post. Use the "here's the project, here's how I made it" frame and adapt
+the r/ClaudeAI body. Do not post before approval.
 
 ## 10:15 X update
 
@@ -107,6 +79,8 @@ Hi, I made rederive, a skill for coding agents that teaches you a codebase by ma
 
 - Show HN. Self-submitted posts scored 1, 2 and 43 points in the study.
 - Discord. Already shared there, posting again reads as spam.
+- r/cursor. Self-promotion posts are likely removed there (ThreadFox reading of
+  the rules) and the subreddit caps self-promotion at 10% of your activity.
 
 ## Through the day
 
