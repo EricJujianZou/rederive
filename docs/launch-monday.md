@@ -36,7 +36,7 @@ How it works: it reads the repo, finds the decisions that shaped the code (why t
 
 I built rederive because I'm afraid that developers will become meat proxies. I use it because I genuinely find it to be the most fun way of learning: solving problems and being creative about something I am passionate about. It beats memorizing what an agent says or coding problems by a mile.
 
-224 stars in the first week, mostly from two reels. I'd like to know where it breaks on your repos.
+263 stars in 8 days, mostly from two reels. I'd like to know where it breaks on your repos.
 
 ## 9:30 Reddit, r/vibecoding
 
@@ -77,13 +77,13 @@ rederive is an agent skill. You run it on your own repo or on an open source one
 
 Repo: https://github.com/EricJujianZou/rederive
 
-224 stars in its first week. Tell me if it breaks on your repo.
+263 stars in 8 days. Tell me if it breaks on your repo.
 
 ## 10:15 X update
 
 Attach the trimmed reel or the Express demo film.
 
-rederive got to 224 stars in its first week. It's a skill for coding agents that teaches you a codebase you built with AI by making you re-design it yourself, one decision at a time. Works in Claude Code, Codex, Cursor and 22 more.
+rederive got to 263 stars in 8 days. It's a skill for coding agents that teaches you a codebase you built with AI by making you re-design it yourself, one decision at a time. Works in Claude Code, Codex, Cursor and 22 more.
 
 npx skills add EricJujianZou/rederive
 
@@ -94,7 +94,7 @@ curators on X. Find curators by looking at who quote-posted taste-skill or
 mattpocock/skills in those languages. Same text for each, English is fine,
 they translate.
 
-Hi, I made rederive, a skill for coding agents that teaches you a codebase by making you re-design it yourself. 224 stars in its first week, 25 agents supported with one install line. Repo: https://github.com/EricJujianZou/rederive. Short demo attached if it fits your feed.
+Hi, I made rederive, a skill for coding agents that teaches you a codebase by making you re-design it yourself. 263 stars in 8 days, 25 agents supported with one install line. Repo: https://github.com/EricJujianZou/rederive. Short demo attached if it fits your feed.
 
 ## 10:45 Lists
 
