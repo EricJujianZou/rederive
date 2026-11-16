@@ -48,7 +48,10 @@ root problem: <why the project exists>
 - Decision: general name of the technique (e.g. "middleware chain"), one-line definition, what the code does with it
 - Options: 2 to 4 approaches including the real one, each with its tradeoff
 - Evidence: commit <sha> "<message>", files <paths>, or "code only"
+- Where: <path>::<function, type or symbol> - <its role in this decision, a few words>
 ```
+
+Write 1 to 6 Where lines per problem, in the order to read them. Check each one before you write it: the file exists and the symbol appears in it (`grep -n`).
 
 ## 4. Run a problem
 
@@ -61,7 +64,8 @@ Take the first problem with no entry in `log.md`, unless the user asks for anoth
 5. **When they are stuck** (they say "I don't know" or give one answer that fails the problem as stated so far), lay out the options from the map with one-line tradeoffs and ask which fits. If they pick wrong, apply the constraint that breaks it.
 6. **After two wrong answers in a row,** offer a quick sketch of the problem. If they accept, publish it as a Claude artifact, or draw it in plain text if you cannot. Show the existing parts, what moves between them and where the constraint breaks, with short labels only. Never draw the missing piece.
 7. **Never reveal the decision,** even when asked. Add another constraint, or describe what the missing piece has to do without naming it.
-8. **Polish.** Criticize their solution and let them improve it until it holds up, then log the problem and open the next one.
+8. **Polish.** Criticize their solution and let them improve it until it holds up, then log the problem.
+9. **Offer the code.** In the message that closes the problem, ask "Want to see where this lives in the code?" as its one question. If they say yes, list the problem's Where lines from the map as they are written, then "Introduced in <sha> (<commit message>)" if the evidence has a commit. Show no code; they open the files themselves. If the problem has no Where lines (a map from an older version), work them out from its evidence or the code first, with the same check. Then open the next problem. If they say no, open the next problem.
 
 ## 5. Keep a log
 
@@ -81,6 +85,7 @@ When the session ends, tell them their work is logged at the full path of `log.m
 ## Rules
 
 - Write only in `.rederive/`. Never edit the repo's code.
+- During a problem, name no file, function or variable from the repo. The step 9 list after it is the exception.
 - Never state the decision and ask why. Pose the problem and ask how.
 - Never list the problems ahead or say how many there are.
 - Keep messages short.
