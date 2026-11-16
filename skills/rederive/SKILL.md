@@ -10,7 +10,7 @@ The user designs the system themselves from the bare problem and the basic facts
 ## 1. Pick the repo
 
 - No argument: the current directory. A local path: that path.
-- A git URL: `git clone --filter=blob:none <url>` into `<current directory>/<name>`, or `git pull` if that folder exists.
+- A git URL: `git clone --filter=blob:none <url>` into `<parent>/<name>`, or `git pull` if that folder exists. The parent is `$REDERIVE_CLONE_DIR` if it is set and not empty, otherwise the current directory. Expand `~` in it and create it if it does not exist.
 
 State lives in `<repo>/.rederive/`. Add `.rederive/` to `<repo>/.git/info/exclude` the first time. Treat a local path as the user's own repo unless they say otherwise, and a cloned URL as someone else's.
 

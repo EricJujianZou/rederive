@@ -63,8 +63,10 @@ The start of a session on Express (an example, shortened):
 ```
 /rederive                                       # the repo you are in
 /rederive ~/code/myapp                          # a local repo
-/rederive https://github.com/expressjs/express  # clones it into the current folder
+/rederive https://github.com/expressjs/express  # clones it into the current folder by default
 ```
+
+To clone URLs somewhere else, set `REDERIVE_CLONE_DIR` in your shell before you start your agent, for example `export REDERIVE_CLONE_DIR=~/src`.
 
 Talk to it in plain words. Tell it you're stuck, ask to skip a problem, or say you want to start over.
 
