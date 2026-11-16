@@ -87,3 +87,21 @@ Hi, I made rederive, a skill for coding agents that teaches you a codebase by ma
 Reply to every Reddit comment within the hour. Comments are what keep a post
 on the subreddit's front page. If someone reports the skill breaking on their
 repo, fix it the same day and reply with the commit.
+
+## After launch: the November 13 spike
+
+Stars went from 530 on November 13 to 954 on November 16. Before that the
+repo got 5 to 25 stars a day. skills.sh installs went from 294 to 743 in the
+same days.
+
+The source was an Instagram reel by Prasad, @prasadexplains ("Prasad | Tech
+Explained"), posted 2026-11-13 at about 13:20 UTC:
+https://www.instagram.com/reel/DfrpzXOP8Xw/. It had about 300k views, 5402
+likes and 155 comments after 3 days. The caption names rederive but has no
+link, so people searched for it. Google became the top referrer (1127 unique
+visitors in 14 days) and India became the largest stargazer country (29% of
+stargazers with a location, many of them students).
+
+Eric found the reel by hand. The research agents could not find it, because
+web search cannot read Instagram. Next time a spike shows up as search
+traffic, check Instagram first.
