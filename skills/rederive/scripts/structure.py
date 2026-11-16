@@ -32,9 +32,15 @@ PY_FROM = re.compile(r"^\s*from\s+(\.*[\w.]*)\s+import\s+([\w*, ()]+)", re.M)
 PY_IMPORT = re.compile(r"^\s*import\s+([\w., ]+)", re.M)
 GO_IMPORT_BLOCK = re.compile(r"import\s*\(([^)]*)\)", re.S)
 GO_IMPORT_ONE = re.compile(r'import\s+(?:\w+\s+)?"([^"]+)"')
-RS_MOD = re.compile(r"^\s*(?:pub\s+)?mod\s+(\w+)\s*;", re.M)
-RS_USE = re.compile(r"^\s*(?:pub\s+)?use\s+(crate|super|self)::(\w+)", re.M)
-RS_EXT = re.compile(r"^\s*(?:pub\s+)?use\s+(\w+)::", re.M)
+# `mod x;` (a module in its own file) and `mod x {` (an inline module), in one pass.
+RS_MOD = re.compile(r"^[ \t]*(?:#\[[^\]]*\][ \t]*)*(?:pub(?:\([^)]*\))?[ \t]+)?mod[ \t]+(\w+)[ \t]*([;{])", re.M)
+# The tree must start like a path, so a string line such as "use a larger buffer;" is skipped.
+RS_USE = re.compile(r"^\s*(?:pub(?:\([^)]*\))?\s+)?use\s+((?:::)?(?:r#)?\w+(?:\s*::[^;]*|\s+as\s+\w+)?)\s*;", re.M)
+RS_PACKAGE = re.compile(r"^\[package\][ \t]*$(.*?)(?=^\[|\Z)", re.M | re.S)
+RS_NAME = re.compile(r'^name\s*=\s*"([^"]+)"', re.M)
+# Comments, strings and char literals, blanked before counting braces.
+RS_NOISE = re.compile(r"//[^\n]*|/\*.*?\*/|\"(?:\\.|[^\"\\])*\"|'(?:\\.|[^'\\])'", re.S)
+RS_ROOT_DIRS = ("bin", "benches", "examples", "tests")
 
 
 def list_files():
@@ -102,12 +108,154 @@ def resolve_py(src, module, names):
     return specific or hits
 
 
+def rs_paths(tree):
+    # "crate::{a, b::{c, d}}" -> ["crate::a", "crate::b::c", "crate::b::d"]
+    tree = re.sub(r"\s+", "", re.sub(r"//[^\n]*|\s+as\s+\w+", "", tree))
+    out = []
+
+    def walk(prefix, part):
+        i = part.find("{")
+        if i < 0:
+            out.append(prefix + part)
+            return
+        head, body, depth, start = prefix + part[:i], part[i + 1:part.rfind("}")], 0, 0
+        for j, ch in enumerate(body + ","):
+            depth += (ch == "{") - (ch == "}")
+            if ch == "," and depth == 0:
+                if body[start:j]:
+                    walk(head, body[start:j])
+                start = j + 1
+
+    walk("", tree)
+    return out
+
+
+def rs_root_dir(d):
+    # bin/, benches/, examples/ or tests/ right under a package (or its src/), not any folder with that name.
+    return os.path.basename(d) in RS_ROOT_DIRS and os.path.dirname(d) in rs_root_parents
+
+
+def rs_is_root(path):
+    # A crate root file: the package's lib.rs/main.rs, build.rs next to Cargo.toml, a file directly
+    # in bin/, benches/, examples/ or tests/, or main.rs of a folder there (src/bin/tool/main.rs).
+    stem = os.path.splitext(os.path.basename(path))[0]
+    here = os.path.dirname(path)
+    if rs_root_dir(here):
+        return True
+    if stem == "build":
+        return os.path.join(here, "Cargo.toml") in fileset
+    return stem in ("lib", "main") and (here in crate_srcs or here == "src" or rs_root_dir(os.path.dirname(here)))
+
+
+def rs_crate_src(path):
+    # The folder crate:: starts from: the nearest binary, bench or example root, else the package's src/.
+    here = d = os.path.dirname(path)
+    while d:
+        if d in crate_srcs:
+            return d
+        if rs_root_dir(os.path.dirname(d)) and os.path.join(d, "main.rs") in fileset:
+            return d
+        if d == here and rs_root_dir(d):
+            return d
+        d = os.path.dirname(d)
+    return "src"
+
+
+def rs_mod_dir(path):
+    # Folder that holds a module's children: src/a/mod.rs and src/a.rs both own src/a/,
+    # and a crate root owns its own folder.
+    stem = os.path.splitext(os.path.basename(path))[0]
+    here = os.path.dirname(path)
+    return here if stem == "mod" or rs_is_root(path) else os.path.join(here, stem)
+
+
+def rs_module_file(d):
+    return next((c for c in (d + ".rs", os.path.join(d, "mod.rs")) if c in fileset), None)
+
+
+def rs_file(base, segs):
+    # The longest prefix of the path that is a module file: crate::a::b::Item -> src/a/b.rs.
+    for n in range(len(segs), 0, -1):
+        hit = rs_module_file(os.path.join(base, *segs[:n]))
+        if hit:
+            return hit
+    return None
+
+
+def rs_inline_spans(text, inline):
+    # (start, end) of each inline `mod name { ... }` body, with braces in comments and literals ignored.
+    # Only the text from the first inline mod on is scanned; it is usually `mod tests` at the end.
+    if not inline:
+        return []
+    base = inline[0].start()
+    clean = RS_NOISE.sub(lambda m: " " * (m.end() - m.start()), text[base:])
+    close, stack = {}, []
+    for m in re.finditer(r"[{}]", clean):
+        if m.group() == "{":
+            stack.append(m.start())
+        elif stack:
+            close[stack.pop()] = m.start()
+    return [(m.end(), base + close.get(m.end() - 1 - base, len(clean))) for m in inline]
+
+
+def resolve_rs(src, path, inline=0, local=()):
+    """Returns (internal file or None, external crate name or None) for one use path.
+    inline is how many inline `mod x { }` blocks the use sits in; each one uses up a super.
+    local holds the modules this file declares, so `mod x; use x::Y;` stays inside the crate."""
+    segs = [x[2:] if x.startswith("r#") else x for x in path.split("::") if x and x != "*"]
+    if len(segs) > 1 and segs[-1] == "self":  # use a::b::{self} means a::b
+        segs = segs[:-1]
+    if not segs:
+        return None, None
+    first = segs[0]
+    if first == "crate":
+        # ponytail: an item at the crate root (crate::Foo -> lib.rs) gets no edge, lib.rs is mostly re-exports.
+        return rs_file(rs_crate_src(src), segs[1:]), None
+    if first in ("self", "super"):
+        if first == "self" and inline:
+            return None, None  # self:: inside an inline mod points into this same file
+        supers = next((i for i, x in enumerate(segs) if x != "super"), len(segs))
+        if first == "super" and supers <= inline:
+            return None, None  # super:: that only climbs out of inline mods stays in this file
+        segs = segs[inline:] if first == "super" else segs
+        base = rs_mod_dir(src)
+        if first == "self":
+            segs = segs[1:]
+        while segs and segs[0] == "super":
+            base, segs = os.path.dirname(base), segs[1:]
+        hit = rs_file(base, segs)
+        if not hit and base != rs_crate_src(src):
+            hit = rs_module_file(base)  # super::Item lives in the parent module's own file
+        return hit, None
+    if first in local:
+        return rs_file(rs_mod_dir(src), segs), None
+    if first in crate_by_name:
+        return rs_file(crate_by_name[first], segs[1:]), None
+    if first in ("std", "core", "alloc") or first[0].isupper():  # use Enum::* is not a crate
+        return None, None
+    return None, first
+
+
 def go_pkg_files(pkg_dir):
     return [f for f in sources if os.path.dirname(f) == pkg_dir and f.endswith(".go") and not f.endswith("_test.go")]
 
 
 edges = defaultdict(set)
 external = Counter()
+# Each Cargo package's source folder (src/, or the package folder when it has none), by crate
+# name, so workspaces resolve crate:: and each other.
+crate_by_name = {}
+rs_dirs = {os.path.dirname(f) for f in sources if f.endswith(".rs")}
+for f in files:
+    if os.path.basename(f) == "Cargo.toml":
+        pkg = RS_PACKAGE.search(read(f))
+        name = pkg and RS_NAME.search(pkg.group(1))
+        if name:
+            root = os.path.dirname(f)
+            src_dir = os.path.join(root, "src")
+            crate_by_name[name.group(1).replace("-", "_")] = src_dir if src_dir in rs_dirs else root
+crate_srcs = set(crate_by_name.values())
+rs_root_parents = crate_srcs | {os.path.dirname(d) for d in crate_srcs} | {"", "src"}
 
 for src in sources:
     text = read(src)
@@ -149,18 +297,23 @@ for src in sources:
             else:
                 external[spec] += 1
     elif ext == ".rs":
-        here = os.path.dirname(src)
-        for name in RS_MOD.findall(text):
-            for c in (os.path.join(here, name + ".rs"), os.path.join(here, name, "mod.rs")):
-                if os.path.normpath(c) in fileset:
-                    edges[src].add(os.path.normpath(c))
-        for _, name in RS_USE.findall(text):
-            for c in (os.path.join(here, name + ".rs"), os.path.join("src", name + ".rs"), os.path.join("src", name, "mod.rs")):
-                if os.path.normpath(c) in fileset:
-                    edges[src].add(os.path.normpath(c))
-        for crate in RS_EXT.findall(text):
-            if crate not in ("crate", "super", "self", "std", "core", "alloc"):
-                external[crate] += 1
+        mods = list(RS_MOD.finditer(text))
+        for m in mods:
+            hit = m.group(2) == ";" and rs_module_file(os.path.normpath(os.path.join(rs_mod_dir(src), m.group(1))))
+            if hit:
+                edges[src].add(hit)
+        spans = rs_inline_spans(text, [m for m in mods if m.group(2) == "{"])
+        local = {m.group(1) for m in mods}
+        for m in RS_USE.finditer(text):
+            crates = set()
+            inline = sum(a <= m.start() <= b for a, b in spans)
+            for path in rs_paths(m.group(1)):
+                hit, crate = resolve_rs(src, path, inline, local)
+                if hit:
+                    edges[src].add(hit)
+                elif crate:
+                    crates.add(crate)
+            external.update(crates)  # once per use statement, as before
 
 for src in list(edges):
     edges[src].discard(src)
