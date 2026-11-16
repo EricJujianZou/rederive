@@ -64,6 +64,7 @@ The start of a session on Express (an example, shortened):
 /rederive                                       # the repo you are in
 /rederive ~/code/myapp                          # a local repo
 /rederive https://github.com/expressjs/express  # clones it into the current folder
+/rederive ~/code/myapp src/billing              # one part of a repo
 ```
 
 Talk to it in plain words. Tell it you're stuck, ask to skip a problem, or say you want to start over.
