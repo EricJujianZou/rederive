@@ -12,19 +12,22 @@
   &nbsp;
   <a href="https://agentskills.io"><img src="https://img.shields.io/badge/Agent_Skills-compatible-24292f?style=flat" alt="Agent Skills compatible" /></a>
   &nbsp;
-  <a href="#install"><img src="https://img.shields.io/badge/works_in-Claude_Code%2C_Codex%2C_Cursor_%2B_22_more-24292f?style=flat" alt="Works in Claude Code, Codex, Cursor and 22 more agents" /></a>
+  <a href="#install"><img src="https://img.shields.io/badge/works_in-Claude_Code%2C_Codex%2C_Cursor_%2B_75_more-24292f?style=flat" alt="Works in Claude Code, Codex, Cursor and 75 more agents" /></a>
 </p>
 
 <p align="center"><sub><a href="#install">Install</a> · <a href="#a-session">A session</a> · <a href="#how-it-works">How it works</a> · <a href="#license">License</a></sub></p>
 
-**rederive** is a skill for coding agents that teaches you a codebase by making you design it yourself from first principles. It only asks you questions to guide you to the right answer, and it won't explain things. We made this on purpose to aim for understanding through derivation, instead of memorizing what the agent says.
+**rederive** helps you explain code that AI wrote for you, in an interview or at work. It is a skill for coding agents that asks how you would build each part of your repo, so you re-derive its design decisions yourself from first principles. It also works on open source repos you want to learn.
+
+It only asks you questions to guide you to the right answer, and it won't explain things. We made this on purpose to aim for understanding through derivation, instead of memorizing what the agent says.
+
 ## Install
 
 ```
 npx skills add EricJujianZou/rederive
 ```
 
-The same command installs it in Claude Code, Codex, Cursor, Gemini CLI, GitHub Copilot, opencode, Windsurf, Amp, Goose and about 15 other agents. It puts the skill in every agent folder it finds in your project. Add `-g` to install it for every project instead. Then type `/rederive` in your agent.
+The same command installs it in Claude Code, Codex, Cursor, Gemini CLI, GitHub Copilot, opencode, Windsurf, Amp, Goose and about 70 other agents. It puts the skill in every agent folder it finds in your project. Add `-g` to install it for every project instead. Then type `/rederive` in your agent.
 
 It needs `git`, `bash` and `python3`.
 
