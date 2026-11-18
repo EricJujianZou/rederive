@@ -15,6 +15,16 @@
   <a href="#install"><img src="https://img.shields.io/badge/works_in-Claude_Code%2C_Codex%2C_Cursor_%2B_75_more-24292f?style=flat" alt="Works in Claude Code, Codex, Cursor and 75 more agents" /></a>
 </p>
 
+<p align="center">
+  <a href="https://github.com/EricJujianZou/rederive/stargazers"><img src="https://img.shields.io/github/stars/EricJujianZou/rederive?style=flat&label=stars&color=24292f" alt="GitHub stars" /></a>
+  &nbsp;
+  <a href="https://x.com/SleppyEric"><img src="https://img.shields.io/badge/X-%40SleppyEric-24292f?style=flat" alt="Eric on X: @SleppyEric" /></a>
+  &nbsp;
+  <a href="https://www.instagram.com/sleppyeric/"><img src="https://img.shields.io/badge/Instagram-%40sleppyeric-24292f?style=flat" alt="Eric on Instagram: @sleppyeric" /></a>
+  &nbsp;
+  <a href="https://ericzou.dev"><img src="https://img.shields.io/badge/made_by-ericzou.dev-24292f?style=flat" alt="Made by Eric Zou, ericzou.dev" /></a>
+</p>
+
 <p align="center"><sub><a href="#install">Install</a> · <a href="#a-session">A session</a> · <a href="#how-it-works">How it works</a> · <a href="#license">License</a></sub></p>
 
 **rederive** helps you explain code that AI wrote for you, in an interview or at work. It is a skill for coding agents that asks how you would build each part of your repo, so you re-derive its design decisions yourself from first principles. It also works on open source repos you want to learn.
