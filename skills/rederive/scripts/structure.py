@@ -167,7 +167,8 @@ for src in list(edges):
     if TEST.search(src):
         del edges[src]
 
-indegree = Counter(t for targets in edges.values() for t in targets)
+# Sorted, so files with equal counts come out in the same order on every run.
+indegree = Counter(t for targets in edges.values() for t in sorted(targets))
 
 
 def lines(path):
