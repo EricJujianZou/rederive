@@ -77,6 +77,8 @@ The start of a session on Express (an example, shortened):
 /rederive                                       # the repo you are in
 /rederive ~/code/myapp                          # a local repo
 /rederive https://github.com/expressjs/express  # clones it into the current folder by default
+/rederive ~/code/myapp src/billing              # one part of a repo
+/rederive review                                # patterns across every repo you studied
 ```
 
 To clone URLs somewhere else, set `REDERIVE_CLONE_DIR` in your shell before you start your agent, for example `export REDERIVE_CLONE_DIR=~/src`.
@@ -91,8 +93,9 @@ Talk to it in plain words. Tell it you're stuck, ask to skip a problem, or say y
 - **When you're stuck,** it narrows the problem to a few approaches to choose from. After two wrong answers in a row it offers to sketch the problem for you.
 - **After each problem, it offers to show where the design lives in the code:** the files and functions to read, in order, and the commit that added them. No code is shown, so you read it yourself.
 - **It keeps notes on how you did** in `.rederive/log.md`: where you struggled and what you worked out alone. Read it at the end to see what to practice.
+- **It keeps a list of the repos you studied** in `~/.rederive/index.md`. `/rederive review` reads all their logs and writes `~/.rederive/review.md`: what you keep getting stuck on, what you do well, and which problems to redo.
 
-Everything stays on your machine. `.rederive/` goes in the repo's local git exclude list, so it never shows up in your commits. rederive sends no telemetry.
+Everything stays on your machine, in each repo's `.rederive/` and in `~/.rederive/`. `.rederive/` goes in the repo's local git exclude list, so it never shows up in your commits. rederive sends no telemetry.
 
 ## License
 
