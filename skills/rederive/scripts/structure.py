@@ -4,7 +4,7 @@
 Usage: python3 -I structure.py <repo path>
 Prints entry points, the internal import graph (most imported files, files that import
 the most, edges among the central files) and the external packages used most.
-Covers JS/TS, Python, Go and Rust. Output is capped so it fits in context.
+Covers JS/TS, Python, Go, Rust and C/C++. Output is capped so it fits in context.
 """
 import json
 import os
@@ -15,12 +15,17 @@ from collections import Counter, defaultdict
 
 repo = os.path.abspath(sys.argv[1] if len(sys.argv) > 1 else ".")
 
-SOURCE_EXT = {".js", ".jsx", ".mjs", ".cjs", ".ts", ".tsx", ".py", ".go", ".rs"}
+C_HEADER_EXT = {".h", ".hh", ".hpp", ".hxx"}
+C_SOURCE_EXT = [".c", ".cc", ".cpp", ".cxx"]
+C_EXT = C_HEADER_EXT | set(C_SOURCE_EXT)
+SOURCE_EXT = {".js", ".jsx", ".mjs", ".cjs", ".ts", ".tsx", ".py", ".go", ".rs"} | C_EXT
 JS_EXT = [".ts", ".tsx", ".js", ".jsx", ".mjs", ".cjs"]
 NOISE = re.compile(
     r"(^|/)(node_modules|vendor|dist|build|\.next|target|third_party|__pycache__|\.venv|venv)/"
     r"|\.min\.js$|\.d\.ts$"
 )
+# C projects keep vendored libraries in deps/ (redis, h2o). Only C files there count as noise.
+C_NOISE = re.compile(r"(^|/)deps/.*\.(c|h|cc|cpp|cxx|hpp|hh|hxx)$")
 ENTRY_NAMES = re.compile(
     r"(^|/)(main|index|app|server|cli|__main__|manage|background|content|popup|worker)\.[a-z]+$"
 )
@@ -35,6 +40,8 @@ GO_IMPORT_ONE = re.compile(r'import\s+(?:\w+\s+)?"([^"]+)"')
 RS_MOD = re.compile(r"^\s*(?:pub\s+)?mod\s+(\w+)\s*;", re.M)
 RS_USE = re.compile(r"^\s*(?:pub\s+)?use\s+(crate|super|self)::(\w+)", re.M)
 RS_EXT = re.compile(r"^\s*(?:pub\s+)?use\s+(\w+)::", re.M)
+C_INCLUDE = re.compile(r'^\s*#\s*include\s*[<"]([^>"]+)[>"]', re.M)
+C_MAIN = re.compile(r"\bint\s+main\s*\(")
 
 
 def list_files():
@@ -47,13 +54,13 @@ def list_files():
             dirs[:] = [d for d in dirs if not d.startswith(".")]
             for n in names:
                 files.append(os.path.relpath(os.path.join(root, n), repo))
-    return [f for f in files if not NOISE.search(f)]
+    return [f for f in files if not NOISE.search(f) and not C_NOISE.search(f)]
 
 
-def read(path):
+def read(path, limit=400_000):
     try:
         with open(os.path.join(repo, path), encoding="utf-8", errors="replace") as fh:
-            return fh.read(400_000)
+            return fh.read(limit)
     except OSError:
         return ""
 
@@ -102,12 +109,45 @@ def resolve_py(src, module, names):
     return specific or hits
 
 
+def resolve_c(src, spec):
+    # Without the build's include paths, try the including file's folder, then any file
+    # whose path ends with the spec, closest folder first.
+    near = os.path.normpath(os.path.join(os.path.dirname(src), spec))
+    if near in fileset:
+        return near
+    spec = re.sub(r"^(\.\.?/)+", "", spec)  # "../x/y.h" that missed above: match it as "x/y.h"
+    hits = [f for f in by_name.get(os.path.basename(spec), ()) if f == spec or f.endswith("/" + spec)]
+    if not hits:
+        return None
+    here = os.path.dirname(src).split("/")
+
+    def shared(f):
+        n = 0
+        for a, b in zip(here, os.path.dirname(f).split("/")):
+            if a != b:
+                break
+            n += 1
+        return n
+
+    return min(hits, key=lambda f: (-shared(f), len(f), f))
+
+
+def impl_for(header):
+    stem, ext = os.path.splitext(header)
+    if ext not in C_HEADER_EXT:
+        return None
+    return next((stem + e for e in C_SOURCE_EXT if stem + e in fileset), None)
+
+
 def go_pkg_files(pkg_dir):
     return [f for f in sources if os.path.dirname(f) == pkg_dir and f.endswith(".go") and not f.endswith("_test.go")]
 
 
 edges = defaultdict(set)
 external = Counter()
+by_name = defaultdict(list)  # basename -> files, so an include is a dict lookup, not a scan of every file
+for f in files:
+    by_name[os.path.basename(f)].append(f)
 
 for src in sources:
     text = read(src)
@@ -161,6 +201,13 @@ for src in sources:
         for crate in RS_EXT.findall(text):
             if crate not in ("crate", "super", "self", "std", "core", "alloc"):
                 external[crate] += 1
+    elif ext in C_EXT:
+        for spec in C_INCLUDE.findall(text):
+            target = resolve_c(src, spec)
+            if target:
+                edges[src].add(target)
+            elif not spec.startswith("."):  # a relative path is never an outside package
+                external[spec.split("/")[0]] += 1
 
 for src in list(edges):
     edges[src].discard(src)
@@ -173,6 +220,12 @@ indegree = Counter(t for targets in edges.values() for t in sorted(targets))
 
 def lines(path):
     return read(path).count("\n")
+
+
+def label(path):
+    impl = impl_for(path)
+    extra = f", impl: {impl}, {lines(impl)} lines" if impl else ""
+    return f"{path} ({lines(path)} lines{extra})"
 
 
 print("## Code size")
@@ -200,8 +253,12 @@ for f in files:
     if f.endswith("manifest.json") and f.count("/") <= 2:
         entries.append(f"extension or app manifest: {f}")
 for f in sources:
-    if f.count("/") <= 3 and (ENTRY_NAMES.search(f) or "if __name__" in read(f)[-3000:]):
-        if indegree[f] == 0 or ENTRY_NAMES.search(f):
+    if os.path.splitext(f)[1] in C_HEADER_EXT:
+        continue
+    # main() is often at the end of a large C file, past the usual read limit.
+    c_main = os.path.splitext(f)[1] in C_SOURCE_EXT and not TEST.search(f) and C_MAIN.search(read(f, None))
+    if f.count("/") <= 3 and (ENTRY_NAMES.search(f) or "if __name__" in read(f)[-3000:] or c_main):
+        if indegree[f] == 0 or ENTRY_NAMES.search(f) or c_main:
             entries.append(f"{f} ({lines(f)} lines, imported by {indegree[f]})")
 for e in entries[:20]:
     print(e)
@@ -211,13 +268,13 @@ if not entries:
 print()
 print("## Most imported internal files (top 15): the shared core")
 for f, n in indegree.most_common(15):
-    print(f"{n:3d}  {f} ({lines(f)} lines)")
+    print(f"{n:3d}  {label(f)}")
 
 print()
 print("## Files that import the most internal files (top 10): the orchestrators")
 for f, t in sorted(edges.items(), key=lambda kv: -len(kv[1]))[:10]:
     if t:
-        print(f"{len(t):3d}  {f} ({lines(f)} lines)")
+        print(f"{len(t):3d}  {label(f)}")
 
 print()
 print("## Largest source files (top 10)")
