@@ -60,6 +60,9 @@ def list_files():
             dirs[:] = [d for d in dirs if not d.startswith(".")]
             for n in names:
                 files.append(os.path.relpath(os.path.join(root, n), repo))
+    # os.walk yields the platform separator, so on Windows the NOISE patterns, which are
+    # written with "/", would never match and dist/, node_modules/ etc. would leak in.
+    files = [f.replace(os.sep, "/") for f in files]
     return [f for f in files if not NOISE.search(f) and not C_NOISE.search(f)]
 
 
