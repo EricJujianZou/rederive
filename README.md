@@ -12,19 +12,32 @@
   &nbsp;
   <a href="https://agentskills.io"><img src="https://img.shields.io/badge/Agent_Skills-compatible-24292f?style=flat" alt="Agent Skills compatible" /></a>
   &nbsp;
-  <a href="#install"><img src="https://img.shields.io/badge/works_in-Claude_Code%2C_Codex%2C_Cursor_%2B_22_more-24292f?style=flat" alt="Works in Claude Code, Codex, Cursor and 22 more agents" /></a>
+  <a href="#install"><img src="https://img.shields.io/badge/works_in-Claude_Code%2C_Codex%2C_Cursor_%2B_75_more-24292f?style=flat" alt="Works in Claude Code, Codex, Cursor and 75 more agents" /></a>
+</p>
+
+<p align="center">
+  <a href="https://github.com/EricJujianZou/rederive/stargazers"><img src="https://img.shields.io/github/stars/EricJujianZou/rederive?style=flat&label=stars&color=24292f" alt="GitHub stars" /></a>
+  &nbsp;
+  <a href="https://x.com/SleppyEric"><img src="https://img.shields.io/badge/X-%40SleppyEric-24292f?style=flat" alt="Eric on X: @SleppyEric" /></a>
+  &nbsp;
+  <a href="https://www.instagram.com/sleppyeric/"><img src="https://img.shields.io/badge/Instagram-%40sleppyeric-24292f?style=flat" alt="Eric on Instagram: @sleppyeric" /></a>
+  &nbsp;
+  <a href="https://ericzou.dev"><img src="https://img.shields.io/badge/made_by-ericzou.dev-24292f?style=flat" alt="Made by Eric Zou, ericzou.dev" /></a>
 </p>
 
 <p align="center"><sub><a href="#install">Install</a> · <a href="#a-session">A session</a> · <a href="#how-it-works">How it works</a> · <a href="#license">License</a></sub></p>
 
-**rederive** is a skill for coding agents that teaches you a codebase by making you design it yourself from first principles. It only asks you questions to guide you to the right answer, and it won't explain things. We made this on purpose to aim for understanding through derivation, instead of memorizing what the agent says.
+**rederive** helps you explain code that AI wrote for you, in an interview or at work. It is a skill for coding agents that asks how you would build each part of your repo, so you re-derive its design decisions yourself from first principles. It also works on open source repos you want to learn.
+
+It only asks you questions to guide you to the right answer, and it won't explain things. We made this on purpose to aim for understanding through derivation, instead of memorizing what the agent says.
+
 ## Install
 
 ```
 npx skills add EricJujianZou/rederive
 ```
 
-The same command installs it in Claude Code, Codex, Cursor, Gemini CLI, GitHub Copilot, opencode, Windsurf, Amp, Goose and about 15 other agents. It puts the skill in every agent folder it finds in your project. Add `-g` to install it for every project instead. Then type `/rederive` in your agent.
+The same command installs it in Claude Code, Codex, Cursor, Gemini CLI, GitHub Copilot, opencode, Windsurf, Amp, Goose and about 70 other agents. It puts the skill in every agent folder it finds in your project. Add `-g` to install it for every project instead. Then type `/rederive` in your agent.
 
 It needs `git`, `bash` and `python3`.
 
@@ -63,8 +76,10 @@ The start of a session on Express (an example, shortened):
 ```
 /rederive                                       # the repo you are in
 /rederive ~/code/myapp                          # a local repo
-/rederive https://github.com/expressjs/express  # clones it into the current folder
+/rederive https://github.com/expressjs/express  # clones it into the current folder by default
 ```
+
+To clone URLs somewhere else, set `REDERIVE_CLONE_DIR` in your shell before you start your agent, for example `export REDERIVE_CLONE_DIR=~/src`.
 
 Talk to it in plain words. Tell it you're stuck, ask to skip a problem, or say you want to start over.
 
@@ -74,6 +89,7 @@ Talk to it in plain words. Tell it you're stuck, ask to skip a problem, or say y
 - **A background agent maps the repo while you answer.** It reads the code, the import links between files and the commits where the design changed. It doesn't trust commit messages, so repos built with AI in a few big commits work too.
 - **The map holds 5 to 10 problems** in the order the system would be built, each with its constraints and the real design. It lives in `.rederive/map.md`. Don't open it until you're done, because it has the answers.
 - **When you're stuck,** it narrows the problem to a few approaches to choose from. After two wrong answers in a row it offers to sketch the problem for you.
+- **After each problem, it offers to show where the design lives in the code:** the files and functions to read, in order, and the commit that added them. No code is shown, so you read it yourself.
 - **It keeps notes on how you did** in `.rederive/log.md`: where you struggled and what you worked out alone. Read it at the end to see what to practice.
 
 Everything stays on your machine. `.rederive/` goes in the repo's local git exclude list, so it never shows up in your commits. rederive sends no telemetry.
